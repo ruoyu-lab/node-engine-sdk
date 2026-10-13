@@ -1,0 +1,50 @@
+.connection-create-menu {
+  position: fixed;
+  z-index: 80;
+  display: grid;
+  gap: 2px;
+  width: 240px;
+  padding: 6px;
+  border: 1px solid var(--pg-border);
+  border-radius: var(--pg-radius-lg);
+  background: var(--pg-surface-solid);
+  box-shadow: var(--pg-shadow-lg);
+}
+
+.connection-create-menu__title {
+  padding: 4px 8px 6px;
+  color: var(--pg-text-muted);
+  font-size: var(--pg-text-xs);
+  font-weight: 550;
+  letter-spacing: 0.02em;
+}
+
+.connection-create-menu__item {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--pg-radius-md);
+  background: transparent;
+  color: var(--pg-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.connection-create-menu__item:hover,
+.connection-create-menu__item:focus-visible {
+  background: var(--pg-surface-hover);
+}
+
+.connection-create-menu__item span {
+  font-size: var(--pg-text-md);
+  font-weight: 550;
+  line-height: 1.25;
+}
+
+.connection-create-menu__item small {
+  color: var(--pg-text-muted);
+  font-size: var(--pg-text-xs);
+  line-height: 1.35;
+}

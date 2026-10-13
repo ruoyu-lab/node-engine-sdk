@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {
+      "@node-engine-sdk/core": ["../packages/core/src/index.ts"],
+      "@node-engine-sdk/core/protocol": ["../packages/core/src/protocol/index.ts"],
+      "@node-engine-sdk/core/store": ["../packages/core/src/store/index.ts"],
+      "@node-engine-sdk/core/semantics": ["../packages/core/src/semantics/index.ts"],
+      "@node-engine-sdk/core/runtime": ["../packages/core/src/runtime/index.ts"],
+      "@node-engine-sdk/core/layout": ["../packages/core/src/layout/index.ts"],
+      "@node-engine-sdk/core/debug": ["../packages/core/src/debug/index.ts"],
+      "@node-engine-sdk/core/view": ["../packages/core/src/view/index.ts"],
+      "@node-engine-sdk/vue": ["../packages/vue/src/index.ts"],
+      "@node-engine-sdk/react": ["../packages/react/src/index.ts"],
+      "@node-engine-sdk/presets": ["../packages/presets/src/index.ts"],
+      "@node-engine-sdk/presets/nodes/dataflow": [
+        "../packages/presets/src/nodes/dataflow/index.ts"
+      ],
+      "@node-engine-sdk/presets/nodes/execflow": [
+        "../packages/presets/src/nodes/execflow/index.ts"
+      ],
+      "@node-engine-sdk/presets/nodes/function": [
+        "../packages/presets/src/nodes/function/index.ts"
+      ],
+      "@node-engine-sdk/presets/nodes/subgraph": [
+        "../packages/presets/src/nodes/subgraph/index.ts"
+      ],
+      "@playground/shared/*": ["./src/*"]
+    },
+    "types": ["vite/client"]
+  }
+}

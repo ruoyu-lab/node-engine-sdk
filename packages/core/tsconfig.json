@@ -1,0 +1,13 @@
+{
+  // The base config includes the DOM lib for `src/view`, the editor controller. Every other core
+  // module must stay runnable without a browser: test/module-boundaries.test.ts rejects browser
+  // globals outside `src/view` and UI framework imports anywhere in core.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "tsBuildInfoFile": "../../node_modules/.cache/node-engine/core.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"]
+}

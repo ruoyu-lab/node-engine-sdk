@@ -1,0 +1,61 @@
+{
+  "name": "@node-engine-sdk/presets",
+  "version": "0.1.0-beta.2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruoyu-lab/node-engine-sdk.git",
+    "directory": "packages/presets"
+  },
+  "homepage": "https://github.com/ruoyu-lab/node-engine-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/ruoyu-lab/node-engine-sdk/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./nodes/dataflow": {
+      "types": "./dist/nodes/dataflow/index.d.ts",
+      "import": "./dist/nodes/dataflow/index.js"
+    },
+    "./nodes/execflow": {
+      "types": "./dist/nodes/execflow/index.d.ts",
+      "import": "./dist/nodes/execflow/index.js"
+    },
+    "./nodes/function": {
+      "types": "./dist/nodes/function/index.d.ts",
+      "import": "./dist/nodes/function/index.js"
+    },
+    "./nodes/subgraph": {
+      "types": "./dist/nodes/subgraph/index.d.ts",
+      "import": "./dist/nodes/subgraph/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@node-engine-sdk/core": "0.1.0-beta.2"
+  },
+  "description": "Official Node Engine SDK preset nodes: dataflow, execflow, function and subgraph nodes with ready-to-use presets"
+}

@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+coverage
+*.tsbuildinfo
+.idea
+*.tgz
+.npm-pack-cache
+.claude/
+packed/
+playwright-report/
+test-results/
+.playwright-cli/

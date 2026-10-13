@@ -1,0 +1,11 @@
+node_modules
+dist
+**/dist
+coverage
+packed
+.playwright-cli
+playwright-report
+test-results
+package-lock.json
+*.tgz
+*.tsbuildinfo

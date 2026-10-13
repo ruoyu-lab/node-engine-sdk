@@ -1,0 +1,73 @@
+{
+  "name": "@node-engine-sdk/core",
+  "version": "0.1.0-beta.2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruoyu-lab/node-engine-sdk.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/ruoyu-lab/node-engine-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/ruoyu-lab/node-engine-sdk/issues"
+  },
+  "type": "module",
+  "sideEffects": [
+    "./dist/view/style.css"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./protocol": {
+      "types": "./dist/protocol/index.d.ts",
+      "import": "./dist/protocol/index.js"
+    },
+    "./store": {
+      "types": "./dist/store/index.d.ts",
+      "import": "./dist/store/index.js"
+    },
+    "./semantics": {
+      "types": "./dist/semantics/index.d.ts",
+      "import": "./dist/semantics/index.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.js"
+    },
+    "./layout": {
+      "types": "./dist/layout/index.d.ts",
+      "import": "./dist/layout/index.js"
+    },
+    "./debug": {
+      "types": "./dist/debug/index.d.ts",
+      "import": "./dist/debug/index.js"
+    },
+    "./view": {
+      "types": "./dist/view/index.d.ts",
+      "import": "./dist/view/index.js"
+    },
+    "./view/style.css": "./dist/view/style.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/view/style.css dist/view/style.css",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "description": "Node Engine SDK core: framework-agnostic graph protocol, store, semantics, runtime, layout, debugging and editor controller"
+}

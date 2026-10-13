@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title-dark">
+  <title id="title-dark">Node Engine SDK: a framework-agnostic node-graph SDK with official Vue 3 and React adapters</title>
+  <defs>
+    <pattern id="dots-dark" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1.3" fill="#2a2d34"/>
+    </pattern>
+    <linearGradient id="fade-dark" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0.38" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.62" stop-color="#fff" stop-opacity="1"/>
+    </linearGradient>
+    <mask id="grid-mask-dark">
+      <rect width="1280" height="360" fill="url(#fade-dark)"/>
+    </mask>
+  </defs>
+  <rect x="0.5" y="0.5" width="1279" height="359" rx="20" fill="#111214" stroke="#24262c"/>
+  <rect x="1" y="1" width="1278" height="358" rx="20" fill="url(#dots-dark)" mask="url(#grid-mask-dark)"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif">
+    <text x="76" y="142" fill="#ecedf0" font-size="64" font-weight="700" letter-spacing="-1.4">Node Engine SDK</text>
+    <text x="80" y="192" fill="#8b93ff" font-size="28" font-weight="600" letter-spacing="4">节点引擎 SDK</text>
+    <text x="80" y="244" fill="#a3a7b1" font-size="18">Framework-agnostic node-graph SDK · Vue 3 and React adapters</text>
+  </g>
+  <text x="80" y="290" fill="#737884" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="15">protocol · store · semantics · runtime · layout · debug · view</text>
+  <g>
+    <path d="M850 118C890 118 860 170 900 170" fill="none" stroke="#2f8fef" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M850 254C890 254 860 194 900 194" fill="none" stroke="#9d6bf0" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M1060 170C1100 170 1060 104 1100 104" fill="none" stroke="#2f8fef" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M1060 214C1100 214 1090 252 1130 252" fill="none" stroke="#e0508a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6 6"/>
+    <g>
+    <rect x="700" y="74" width="150" height="92" rx="10" fill="#000000" opacity="0.35"/>
+    <rect x="700" y="70" width="150" height="92" rx="10" fill="#1a1b1f" stroke="#2c2e35"/>
+    <path d="M700 80a10 10 0 0 1 10-10h130a10 10 0 0 1 10 10v16h-150z" fill="#202126"/>
+    <circle cx="714" cy="83" r="3.5" fill="#2f8fef"/>
+    <rect x="724" y="80" width="57" height="6" rx="3" fill="#3a3d46"/>
+    <rect x="714" y="114" width="34" height="5" rx="2.5" fill="#3a3d46" opacity="0.8"/>
+    <rect x="772" y="108" width="64" height="16" rx="4" fill="#131417"/>
+    <rect x="714" y="136" width="26" height="5" rx="2.5" fill="#3a3d46" opacity="0.8"/>
+    <rect x="772" y="130" width="64" height="16" rx="4" fill="#131417"/>
+    
+    <circle cx="850" cy="118" r="5" fill="#2f8fef" stroke="#1a1b1f" stroke-width="2"/>
+    </g>
+    <g>
+    <rect x="700" y="210" width="150" height="92" rx="10" fill="#000000" opacity="0.35"/>
+    <rect x="700" y="206" width="150" height="92" rx="10" fill="#1a1b1f" stroke="#2c2e35"/>
+    <path d="M700 216a10 10 0 0 1 10-10h130a10 10 0 0 1 10 10v16h-150z" fill="#202126"/>
+    <circle cx="714" cy="219" r="3.5" fill="#9d6bf0"/>
+    <rect x="724" y="216" width="57" height="6" rx="3" fill="#3a3d46"/>
+    <rect x="714" y="250" width="30" height="5" rx="2.5" fill="#3a3d46" opacity="0.8"/>
+    <rect x="772" y="244" width="64" height="16" rx="4" fill="#131417"/>
+    <rect x="714" y="272" width="40" height="5" rx="2.5" fill="#3a3d46" opacity="0.8"/>
+    <rect x="786" y="266" width="50" height="16" rx="4" fill="#131417"/>
+    
+    <circle cx="850" cy="254" r="5" fill="#9d6bf0" stroke="#1a1b1f" stroke-width="2"/>
+    </g>
+    <g>
+    <rect x="900" y="128" width="160" height="116" rx="10" fill="#000000" opacity="0.35"/>
+    <rect x="900" y="124" width="160" height="116" rx="10" fill="#1a1b1f" stroke="#2c2e35"/>
+    <path d="M900 134a10 10 0 0 1 10-10h140a10 10 0 0 1 10 10v16h-160z" fill="#202126"/>
+    <circle cx="914" cy="137" r="3.5" fill="#8b93ff"/>
+    <rect x="924" y="134" width="60" height="6" rx="3" fill="#3a3d46"/>
+    <rect x="914" y="168" width="28" height="5" rx="2.5" fill="#3a3d46" opacity="0.8"/>
+    <rect x="914" y="190" width="34" height="5" rx="2.5" fill="#3a3d46" opacity="0.8"/>
+    <rect x="974" y="184" width="72" height="16" rx="4" fill="#131417"/>
+    <rect x="914" y="212" width="26" height="5" rx="2.5" fill="#3a3d46" opacity="0.8"/>
+    <rect x="974" y="206" width="72" height="16" rx="4" fill="#131417"/>
+    
+    <circle cx="900" cy="170" r="5" fill="#2f8fef" stroke="#1a1b1f" stroke-width="2"/>
+    <circle cx="900" cy="194" r="5" fill="#9d6bf0" stroke="#1a1b1f" stroke-width="2"/>
+    <circle cx="1060" cy="170" r="5" fill="#2f8fef" stroke="#1a1b1f" stroke-width="2"/>
+    <circle cx="1060" cy="214" r="5" fill="#e0508a" stroke="#1a1b1f" stroke-width="2"/>
+    </g>
+    <g>
+    <rect x="1100" y="58" width="140" height="168" rx="10" fill="#000000" opacity="0.35"/>
+    <rect x="1100" y="54" width="140" height="168" rx="10" fill="#1a1b1f" stroke="#2c2e35"/>
+    <path d="M1100 64a10 10 0 0 1 10-10h120a10 10 0 0 1 10 10v16h-140z" fill="#202126"/>
+    <circle cx="1114" cy="67" r="3.5" fill="#e0508a"/>
+    <rect x="1124" y="64" width="53" height="6" rx="3" fill="#3a3d46"/>
+    <clipPath id="img-dark"><rect x="1112" y="92" width="116" height="118" rx="6"/></clipPath>
+    <g clip-path="url(#img-dark)">
+      <rect x="1112" y="92" width="116" height="118" fill="#1f2034"/>
+      <circle cx="1193.2" cy="129.76" r="11" fill="#e0508a" opacity="0.9"/>
+      <path d="M1112 184.04000000000002L1146.8 141.56L1172.32 169.88L1195.52 151.0L1228 186.4V210H1112z" fill="#3d4072"/>
+      <path d="M1112 195.84L1164.2 174.6L1228 198.2V210H1112z" fill="#2b2d52"/>
+    </g>
+    <circle cx="1100" cy="104" r="5" fill="#2f8fef" stroke="#1a1b1f" stroke-width="2"/>
+    </g>
+    <circle cx="1130" cy="252" r="4" fill="none" stroke="#e0508a" stroke-width="2"/>
+  </g>
+</svg>

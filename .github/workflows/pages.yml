@@ -1,0 +1,57 @@
+name: Pages
+
+# Publishes the Node Engine SDK playground: the Vue app at the site root and the React app under /react/.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a running deployment is allowed to finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build playground site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - id: pages
+        uses: actions/configure-pages@v5
+      # PAGES_BASE is the site root path (for example /node-engine-sdk/); each playground config
+      # derives its own base and the link to the other app from it.
+      - run: npm run build
+        env:
+          PAGES_BASE: ${{ steps.pages.outputs.base_path }}/
+      - name: Assemble site
+        run: |
+          mkdir -p _site/react
+          cp -R playground/dist/. _site/
+          cp -R playground-react/dist/. _site/react/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,69 @@
+name: Release
+
+# Publishes the four Node Engine SDK packages to npm. Run it by hand from the Actions tab.
+# Requires the repository secret NPM_TOKEN (an npm granular access token with
+# read and write access to the @node-engine-sdk scope).
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: Run every check and `npm publish --dry-run` without publishing
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write # npm provenance
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: npm
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      # quality, types, build, unit tests, package build, isolated consumer tests
+      - run: npm run verify:release
+
+      - name: Check npm credentials
+        if: ${{ !inputs.dry-run }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::error::The NPM_TOKEN repository secret is not set."
+            exit 1
+          fi
+          npm whoami
+
+      - name: Publish packages
+        env:
+          DRY_RUN: ${{ inputs.dry-run }}
+        run: |
+          set -euo pipefail
+          # Dependency order: presets, vue and react depend on core.
+          for package in core presets vue react; do
+            name=$(node -p "require('./packages/$package/package.json').name")
+            version=$(node -p "require('./packages/$package/package.json').version")
+            if npm view "$name@$version" version >/dev/null 2>&1; then
+              echo "$name@$version is already on npm, skipping."
+              continue
+            fi
+            if [ "$DRY_RUN" = "true" ]; then
+              npm publish --workspace "packages/$package" --tag latest --access public --dry-run
+            else
+              npm publish --workspace "packages/$package" --tag latest --access public --provenance
+            fi
+          done

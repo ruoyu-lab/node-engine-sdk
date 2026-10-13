@@ -1,0 +1,116 @@
+/*
+ * Design tokens of the playground chrome. The shell renders `data-theme="dark|light"`; the editor
+ * itself takes the matching built-in palette through `theme.colorScheme`.
+ */
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Typography */
+  --pg-font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
+  --pg-font-mono:
+    ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --pg-text-xs: 11px;
+  --pg-text-sm: 12px;
+  --pg-text-md: 13px;
+  --pg-text-lg: 15px;
+
+  /* Spacing scale */
+  --pg-space-1: 4px;
+  --pg-space-2: 8px;
+  --pg-space-3: 12px;
+  --pg-space-4: 16px;
+  --pg-space-5: 20px;
+  --pg-space-6: 24px;
+  --pg-edge: 12px;
+
+  /* Shape */
+  --pg-radius-sm: 6px;
+  --pg-radius-md: 8px;
+  --pg-radius-lg: 12px;
+  --pg-radius-xl: 14px;
+  --pg-radius-pill: 999px;
+
+  /* Motion */
+  --pg-duration-fast: 120ms;
+  --pg-duration: 200ms;
+  --pg-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Neutral surfaces */
+  --pg-bg: #111214;
+  --pg-surface: rgb(25 26 30 / 0.82);
+  --pg-surface-solid: #191a1e;
+  --pg-surface-hover: rgb(255 255 255 / 0.06);
+  --pg-surface-active: rgb(255 255 255 / 0.1);
+  --pg-surface-sunken: rgb(0 0 0 / 0.28);
+  --pg-border: rgb(255 255 255 / 0.08);
+  --pg-border-strong: rgb(255 255 255 / 0.14);
+  --pg-divider: rgb(255 255 255 / 0.06);
+  --pg-shadow-lg: 0 18px 44px -14px rgb(0 0 0 / 0.65), 0 2px 8px -2px rgb(0 0 0 / 0.35);
+  --pg-shadow-md: 0 10px 28px -10px rgb(0 0 0 / 0.6), 0 1px 3px rgb(0 0 0 / 0.3);
+  --pg-blur: blur(18px) saturate(150%);
+
+  /* Text */
+  --pg-text: #ecedf0;
+  --pg-text-secondary: #c2c5cc;
+  --pg-text-muted: #8f949e;
+  --pg-text-faint: #646974;
+
+  /* Brand and states */
+  --pg-brand: #5b64e6;
+  --pg-brand-hover: #6a73ef;
+  --pg-brand-text: #9ba2ff;
+  --pg-brand-soft: rgb(139 147 255 / 0.14);
+  --pg-on-brand: #ffffff;
+  --pg-focus: #8b93ff;
+  --pg-success: #4cc38a;
+  --pg-success-soft: rgb(76 195 138 / 0.14);
+  --pg-warning: #e5a83b;
+  --pg-warning-soft: rgb(229 168 59 / 0.14);
+  --pg-danger: #f27272;
+  --pg-danger-soft: rgb(241 106 106 / 0.14);
+
+  /* Node families (match `PRESET_NODE_ACCENTS` and `AI_IMAGE_ACCENT`) */
+  --pg-accent-ai: #e0508a;
+  --pg-accent-data: #2f8fef;
+  --pg-accent-exec: #e0703a;
+  --pg-accent-function: #9d6bf0;
+  --pg-accent-subgraph: #14a38b;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --pg-bg: #f5f6f8;
+  --pg-surface: rgb(255 255 255 / 0.86);
+  --pg-surface-solid: #ffffff;
+  --pg-surface-hover: rgb(16 24 40 / 0.05);
+  --pg-surface-active: rgb(16 24 40 / 0.09);
+  --pg-surface-sunken: rgb(16 24 40 / 0.04);
+  --pg-border: rgb(16 24 40 / 0.1);
+  --pg-border-strong: rgb(16 24 40 / 0.16);
+  --pg-divider: rgb(16 24 40 / 0.07);
+  --pg-shadow-lg: 0 18px 44px -18px rgb(16 24 40 / 0.28), 0 2px 6px rgb(16 24 40 / 0.06);
+  --pg-shadow-md: 0 10px 28px -12px rgb(16 24 40 / 0.24), 0 1px 3px rgb(16 24 40 / 0.06);
+
+  --pg-text: #16181d;
+  --pg-text-secondary: #3b404b;
+  --pg-text-muted: #5e6472;
+  --pg-text-faint: #9097a3;
+
+  --pg-brand: #4b53d6;
+  --pg-brand-hover: #3f47c4;
+  --pg-brand-text: #4148c8;
+  --pg-brand-soft: rgb(75 83 214 / 0.1);
+  --pg-on-brand: #ffffff;
+  --pg-focus: #4b53d6;
+  --pg-success: #1b7d4c;
+  --pg-success-soft: rgb(31 138 85 / 0.1);
+  --pg-warning: #a86400;
+  --pg-warning-soft: rgb(178 106 0 / 0.1);
+  --pg-danger: #cc3636;
+  --pg-danger-soft: rgb(208 59 59 / 0.09);
+}

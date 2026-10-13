@@ -1,0 +1,12 @@
+/*
+ * Shared stylesheet of the Vue and React playground apps; both render the same class names.
+ * The app shell comes last: its responsive rules override the panels it lays out.
+ */
+@import './tokens.css';
+@import './base.css';
+@import './controls.css';
+@import './demo-sidebar.css';
+@import './runtime-panel.css';
+@import './connection-create-menu.css';
+@import './ai-image-display.css';
+@import './app-shell.css';

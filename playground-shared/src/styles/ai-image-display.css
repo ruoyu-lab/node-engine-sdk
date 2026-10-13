@@ -1,0 +1,53 @@
+/* Business DOM node: the default node plus its generation result as a caption on the image. */
+.ai-image-display {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.ai-image-display__badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 140px);
+  overflow: hidden;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: rgb(12 13 16 / 0.62);
+  color: #e9eaee;
+  font:
+    500 11px/1.3 ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    'PingFang SC',
+    'Microsoft YaHei',
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+.ai-image-display__badge::before {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a1a6b0;
+  content: '';
+}
+
+.ai-image-display__badge--ready::before {
+  background: #4cc38a;
+}
+
+.ai-image-display__badge--invalid::before {
+  background: #f16a6a;
+}

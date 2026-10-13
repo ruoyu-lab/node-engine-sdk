@@ -1,0 +1,197 @@
+/* Shared controls of the playground chrome: icons, buttons, chips and tooltips. */
+
+.pg-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+}
+
+.pg-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.pg-icon path.pg-icon__solid {
+  fill: currentColor;
+  stroke: none;
+}
+
+.pg-icon-button,
+.pg-toolbar-button,
+.pg-chip-button {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--pg-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--pg-duration-fast) var(--pg-ease),
+    border-color var(--pg-duration-fast) var(--pg-ease),
+    color var(--pg-duration-fast) var(--pg-ease);
+}
+
+.pg-icon-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--pg-radius-md);
+}
+
+.pg-icon-button--small {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--pg-radius-sm);
+}
+
+.pg-icon-button:hover:not(:disabled),
+.pg-chip-button:hover:not(:disabled) {
+  background: var(--pg-surface-hover);
+  color: var(--pg-text);
+}
+
+.pg-icon-button:active:not(:disabled),
+.pg-chip-button:active:not(:disabled) {
+  background: var(--pg-surface-active);
+}
+
+.pg-icon-button[aria-pressed='true'] {
+  background: var(--pg-brand-soft);
+  color: var(--pg-brand-text);
+}
+
+.pg-icon-button:disabled,
+.pg-toolbar-button:disabled,
+.pg-chip-button:disabled {
+  color: var(--pg-text-faint);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pg-toolbar-button {
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px 0 10px;
+  border-radius: var(--pg-radius-md);
+  font-size: var(--pg-text-md);
+  font-weight: 600;
+}
+
+.pg-toolbar-button--primary {
+  border-color: rgb(255 255 255 / 0.08);
+  background: var(--pg-brand);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.18) inset,
+    0 1px 2px rgb(0 0 0 / 0.25);
+  color: var(--pg-on-brand);
+}
+
+.pg-toolbar-button--primary:hover:not(:disabled) {
+  background: var(--pg-brand-hover);
+}
+
+.pg-toolbar-button--primary:disabled {
+  background: var(--pg-brand);
+  color: var(--pg-on-brand);
+  opacity: 0.5;
+}
+
+.pg-toolbar-separator {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: var(--pg-border);
+}
+
+.pg-chip-button {
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px 0 9px;
+  border-color: var(--pg-border);
+  border-radius: var(--pg-radius-pill);
+  background: var(--pg-surface);
+  box-shadow: var(--pg-shadow-md);
+  color: var(--pg-text-muted);
+  font-size: var(--pg-text-sm);
+  font-weight: 500;
+  backdrop-filter: var(--pg-blur);
+}
+
+.pg-chip-button[aria-pressed='true'],
+.pg-chip-button[aria-expanded='true'] {
+  border-color: color-mix(in srgb, var(--pg-focus) 40%, transparent);
+  color: var(--pg-brand-text);
+}
+
+/* Tooltips: the accessible name stays on `aria-label`, `data-tooltip` only shows it. */
+.pg-icon-button[data-tooltip]::after,
+.demo-sidebar--collapsed .demo-sidebar__item[data-tooltip]::after {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 40;
+  padding: 5px 8px;
+  border: 1px solid var(--pg-border);
+  border-radius: var(--pg-radius-sm);
+  background: var(--pg-surface-solid);
+  box-shadow: var(--pg-shadow-md);
+  color: var(--pg-text);
+  font-size: var(--pg-text-xs);
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  content: attr(data-tooltip);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -2px);
+  transition:
+    opacity var(--pg-duration-fast) var(--pg-ease),
+    transform var(--pg-duration-fast) var(--pg-ease);
+}
+
+.pg-icon-button[data-tooltip-side='top']::after {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform: translate(-50%, 2px);
+}
+
+.pg-icon-button[data-tooltip]:hover::after,
+.pg-icon-button[data-tooltip]:focus-visible::after,
+.demo-sidebar--collapsed .demo-sidebar__item[data-tooltip]:hover::after,
+.demo-sidebar--collapsed .demo-sidebar__item[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition-delay: 350ms;
+}
+
+@media (hover: none) {
+  .pg-icon-button[data-tooltip]::after {
+    content: none;
+  }
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border: 1px solid var(--pg-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--pg-surface-sunken);
+  color: var(--pg-text-secondary);
+  font-family: var(--pg-font-sans);
+  font-size: var(--pg-text-xs);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}

@@ -1,0 +1,26 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/vue"
+    },
+    {
+      "path": "./packages/react"
+    },
+    {
+      "path": "./packages/presets"
+    },
+    {
+      "path": "./playground-shared"
+    },
+    {
+      "path": "./playground"
+    },
+    {
+      "path": "./playground-react"
+    }
+  ]
+}

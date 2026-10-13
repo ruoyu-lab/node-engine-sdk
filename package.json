@@ -1,0 +1,79 @@
+{
+  "name": "node-engine-sdk-workspace",
+  "version": "0.1.0-beta.2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruoyu-lab/node-engine-sdk.git"
+  },
+  "homepage": "https://github.com/ruoyu-lab/node-engine-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/ruoyu-lab/node-engine-sdk/issues"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
+  },
+  "browserslist": [
+    "Chrome >= 120",
+    "Edge >= 120",
+    "Firefox >= 121",
+    "Safari >= 17",
+    "iOS >= 17"
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build:packages && npm run build:playground",
+    "build:packages": "npm run build -w @node-engine-sdk/core && npm run build -w @node-engine-sdk/vue && npm run build -w @node-engine-sdk/react && npm run build -w @node-engine-sdk/presets",
+    "build:playground": "npm run typecheck:playground && vite build playground --config playground/config/vite.config.ts && vite build playground-react --config playground-react/config/vite.config.ts",
+    "typecheck": "npm run build -w @node-engine-sdk/core && npm run build -w @node-engine-sdk/vue && npm run typecheck:packages && npm run typecheck:playground",
+    "typecheck:packages": "npm run typecheck -w @node-engine-sdk/core && npm run typecheck -w @node-engine-sdk/vue && npm run typecheck -w @node-engine-sdk/react && npm run typecheck -w @node-engine-sdk/presets",
+    "typecheck:playground": "tsc -p playground-shared/tsconfig.json --noEmit && vue-tsc -p playground/tsconfig.json --noEmit && tsc -p playground-react/tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "quality": "npm run lint && npm run format:check",
+    "verify": "npm run quality && npm run typecheck && npm run build && npm run test",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "benchmark:graphs": "npm run build -w @node-engine-sdk/core && node scripts/benchmark-graphs.mjs",
+    "test:performance": "npm run benchmark:graphs -- --assert",
+    "pack:all": "npm run build:packages && node scripts/pack-all.mjs",
+    "test:packed": "node scripts/test-packed.mjs",
+    "verify:release": "npm run verify && npm run pack:all && npm run test:packed",
+    "dev": "vite playground --config playground/config/vite.config.ts",
+    "preview": "vite preview playground --config playground/config/vite.config.ts",
+    "dev:react": "vite playground-react --config playground-react/config/vite.config.ts",
+    "preview:react": "vite preview playground-react --config playground-react/config/vite.config.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitest/coverage-v8": "^5.0.4",
+    "eslint": "^10.7.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-vue": "^10.9.2",
+    "globals": "^17.7.0",
+    "happy-dom": "^20.14.5",
+    "prettier": "^3.9.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.64.0",
+    "vite": "^6.4.3",
+    "vitest": "^5.0.4",
+    "vue": "^3.5.13",
+    "vue-eslint-parser": "^10.4.1",
+    "vue-tsc": "^2.2.10"
+  },
+  "description": "Node Engine SDK: a framework-agnostic node graph SDK with official Vue 3 and React adapters"
+}
