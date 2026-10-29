@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="https://github.com/ruoyu-lab/node-engine-sdk/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ruoyu-lab/node-engine-sdk/ci.yml?branch=main&label=CI&style=flat" alt="CI"></a>
-  <img src="https://img.shields.io/badge/version-0.1.0--beta.2-5b64e6?style=flat" alt="Version 0.1.0-beta.2">
+  <img src="https://img.shields.io/badge/version-0.1.0--beta.3-5b64e6?style=flat" alt="Version 0.1.0-beta.3">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-4b53d6?style=flat" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat&logo=typescript&logoColor=white" alt="TypeScript strict">
   <img src="https://img.shields.io/badge/Vue-3.5%2B-42b883?style=flat&logo=vuedotjs&logoColor=white" alt="Vue 3.5+">
@@ -267,7 +267,7 @@ Start at the [documentation index](docs/README.md). The documentation is written
 
 ## Project status
 
-`0.1.0-beta.2` is a beta release: APIs may still change. See [CHANGELOG.md](CHANGELOG.md).
+`0.1.0-beta.3` is a beta release: APIs may still change. See [CHANGELOG.md](CHANGELOG.md).
 
 <details>
 <summary>What this release covers and what it does not</summary>

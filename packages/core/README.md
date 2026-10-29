@@ -10,7 +10,7 @@ The low-level SDK of Node Engine SDK: graph protocol, state store, semantic rule
 npm install @node-engine-sdk/core
 ```
 
-- Version: `0.1.0-beta.2` (beta; APIs may still change).
+- Version: `0.1.0-beta.3` (beta; APIs may still change).
 - Dependencies and peer dependencies: none.
 - Requirements: Node.js `>=20.19.0`; ESM-only, ES2022.
 

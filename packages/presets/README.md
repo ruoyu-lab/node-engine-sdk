@@ -10,7 +10,7 @@ The official preset nodes of Node Engine SDK. It combines the 15 primitive nodes
 npm install @node-engine-sdk/presets @node-engine-sdk/core
 ```
 
-- Version: `0.1.0-beta.2` (beta; APIs may still change).
+- Version: `0.1.0-beta.3` (beta; APIs may still change).
 - Dependencies: `@node-engine-sdk/core` (same version). No peer dependencies.
 - Requirements: Node.js `>=20.19.0`; ESM-only, ES2022. Works headless together with `@node-engine-sdk/core/runtime`.
 

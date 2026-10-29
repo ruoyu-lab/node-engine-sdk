@@ -83,7 +83,7 @@ flowchart BT
 
 ### 包之间（`packages/presets/test/package-boundaries.test.ts`）
 
-- workspace 恰好包含 `core`、`presets`、`react`、`vue` 四个包，版本与内部依赖版本统一为 `0.1.0-beta.2`。
+- workspace 恰好包含 `core`、`presets`、`react`、`vue` 四个包，版本与内部依赖版本统一为 `0.1.0-beta.3`。
 - 每个包声明的 `@node-engine-sdk/*` 依赖与源码实际导入完全一致；core 源码不导入任何 `@node-engine-sdk/*` 包。
 - 两个 UI 适配层只导入 `@node-engine-sdk/core/protocol` 与 `@node-engine-sdk/core/view`，不导入 semantics/runtime/layout/debug，也不导入对方的 UI 框架。
 - presets 只依赖 `@node-engine-sdk/core`，不导入任何 UI 框架；`nodes/*` 下的节点系统不导入 preset 组装代码；presets 源码不创建 `NodeEngineRuntime`。

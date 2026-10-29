@@ -1,6 +1,6 @@
 {
   "name": "@node-engine-sdk/presets",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -55,7 +55,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@node-engine-sdk/core": "0.1.0-beta.2"
+    "@node-engine-sdk/core": "0.1.0-beta.3"
   },
   "description": "Official Node Engine SDK preset nodes: dataflow, execflow, function and subgraph nodes with ready-to-use presets"
 }

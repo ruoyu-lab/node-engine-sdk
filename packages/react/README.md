@@ -10,7 +10,7 @@ The official React adapter of Node Engine SDK. All editor state and interaction 
 npm install @node-engine-sdk/react @node-engine-sdk/core react react-dom
 ```
 
-- Version: `0.1.0-beta.2` (beta; APIs may still change).
+- Version: `0.1.0-beta.3` (beta; APIs may still change).
 - Dependencies: `@node-engine-sdk/core` (same version).
 - Peer dependencies: `react` and `react-dom` `^18.3.0 || ^19.0.0`; `@types/react` is an optional peer.
 - Styles: import `@node-engine-sdk/react/style.css` once (it already includes `@node-engine-sdk/core/view/style.css`).

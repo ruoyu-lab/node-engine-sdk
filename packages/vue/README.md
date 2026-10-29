@@ -10,7 +10,7 @@ The official Vue 3 adapter of Node Engine SDK. All editor state and interaction 
 npm install @node-engine-sdk/vue @node-engine-sdk/core vue
 ```
 
-- Version: `0.1.0-beta.2` (beta; APIs may still change).
+- Version: `0.1.0-beta.3` (beta; APIs may still change).
 - Dependencies: `@node-engine-sdk/core` (same version).
 - Peer dependency: `vue ^3.5.13`, provided by the host application; Vue is not bundled into this package.
 - Styles: import `@node-engine-sdk/vue/style.css` once (it already includes `@node-engine-sdk/core/view/style.css`).

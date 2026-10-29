@@ -3,7 +3,7 @@ import { dirname, join, relative, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 const repositoryRoot = process.cwd()
-const workspaceVersion = '0.1.0-beta.2'
+const workspaceVersion = '0.1.0-beta.3'
 const optionalCoreModules = [
   '@node-engine-sdk/core/semantics',
   '@node-engine-sdk/core/runtime',
