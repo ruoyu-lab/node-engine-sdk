@@ -64,6 +64,11 @@ export function resolveDomNumberDraft(
 ): string {
   const draft = field.driven ? undefined : state.numberDrafts[field.key]
 
+  // Driven by what is no number, such as the name of what drives it, the field shows that.
+  if (draft === undefined && field.driven && typeof field.resolvedValue !== 'number') {
+    return field.resolvedTextValue
+  }
+
   return draft ?? String(resolveDomFieldNumberValue(field))
 }
 

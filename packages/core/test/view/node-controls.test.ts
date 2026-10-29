@@ -1,5 +1,6 @@
 import {
   createDomNodeControls,
+  formatDomFieldValue,
   isDomSelectOpen,
   normalizeDomFieldNumber,
   resolveDomFieldDisplayValue,
@@ -77,6 +78,23 @@ describe('default DOM field values', () => {
     expect(normalizeDomFieldNumber(stepped, 12)).toBe(9)
     expect(normalizeDomFieldNumber(stepped, -3)).toBe(1)
     expect(sanitizeDomNumberDraft('-1a2.3.4')).toBe('-12.34')
+  })
+
+  it('takes any number in a field without a step, clamped to its range', () => {
+    const free = field({ min: 0, max: 1 })
+
+    expect(normalizeDomFieldNumber(free, 0.333)).toBe(0.333)
+    expect(normalizeDomFieldNumber(free, 0.001)).toBe(0.001)
+    expect(normalizeDomFieldNumber(free, 4)).toBe(1)
+    expect(normalizeDomFieldNumber(field({}), -2.5)).toBe(-2.5)
+  })
+
+  it('shows numbers with every digit they have, but the noise of binary fractions', () => {
+    expect(formatDomFieldValue(0.001)).toBe('0.001')
+    expect(formatDomFieldValue(0.33)).toBe('0.33')
+    expect(formatDomFieldValue(0.1 + 0.2)).toBe('0.3')
+    expect(formatDomFieldValue(-1.25)).toBe('-1.25')
+    expect(formatDomFieldValue(12)).toBe('12')
   })
 
   it('formats display values, ranges, images, options and port tones', () => {
@@ -178,6 +196,16 @@ describe('default DOM node controls', () => {
 
     expect(api.params.update).not.toHaveBeenCalled()
     expect(resolveDomNumberDraft(controls.getState(), driven)).toBe('4')
+  })
+
+  it('shows what drives a number field where that is no number', () => {
+    const { source } = createSource([])
+    const controls = createDomNodeControls(() => source)
+    const byName = field({ driven: true, resolvedValue: 'Result', resolvedTextValue: 'Result' })
+    const unknown = field({ driven: true, resolvedValue: undefined, resolvedTextValue: '' })
+
+    expect(resolveDomNumberDraft(controls.getState(), byName)).toBe('Result')
+    expect(resolveDomNumberDraft(controls.getState(), unknown)).toBe('')
   })
 
   it('edits time segments and commits a normalized time', () => {

@@ -2,6 +2,14 @@
 
 本文件记录 Node Engine SDK 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [Unreleased]
+
+### Fixed
+
+- `api.nodes.create` / `api.nodes.add` 不再把定义端口与参数输入端口写进新节点的 `ports`。之前带参数输入端口（`parameter.input`）的节点定义一创建节点，整图校验就报 `NODE_PARAMETER_PORT_ID_CONFLICT`，Store 拒绝这次修改。现在节点只保存自己的端口，定义的端口从定义解析；只有节点类型默认端口、没有节点定义时才复制。
+- 编辑器创建的节点和边只写有值的字段，`api.graph.get()` 的结果可以直接交给 `parseGraph` 严格解析。之前 `edges.connect` 没给 `edgeType` / `data` 时会写出 `type: undefined` / `data: undefined`，严格解析报 `edges.N.type: expected a string`。
+- 默认 DOM 节点的数字字段：没有 `step` hint 时不再按整数对齐（之前输入 `0.5` 会变成 `1`）；非整数不再固定显示两位小数（之前 `0.001` 显示为 `0.00`）；被非数字的上游值驱动时显示它的文字，不再显示 `0` 或 `NaN`。
+
 ## [0.1.0-beta.2] - 2026-10-14
 
 ### Changed

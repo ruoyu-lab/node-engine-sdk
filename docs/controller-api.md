@@ -382,34 +382,36 @@ api.view.fit.graph({ top: 80, right: 376, bottom: 48, left: 272 })
 
 ### `nodes`
 
-| 方法                                                | 返回                                | 说明                                                                                                           |
-| --------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `nodes.create(type, patch?)`                        | `GraphNode \| null`                 | 按类型创建；`type` 为空字符串时返回 `null`                                                                     |
-| `nodes.add(node)`                                   | `GraphNode`                         | 新增节点，`id` 可省略；套用定义的尺寸、端口、`dataDefaults`、`metaDefaults` 与参数默认值，并按位置加入所在分组 |
-| `nodes.get(nodeId)`                                 | `GraphNode \| undefined`            | 已提交的节点                                                                                                   |
-| `nodes.getLive(nodeId)`                             | `GraphNode \| undefined`            | 含预览的实时节点                                                                                               |
-| `nodes.update(nodeId, patch)`                       | `GraphSnapshot`                     | 更新节点；位置或尺寸变化时同步分组成员                                                                         |
-| `nodes.move(nodeIds, delta)`                        | `GraphSnapshot`                     | 平移节点                                                                                                       |
-| `nodes.remove(nodeId)`                              | `GraphSnapshot`                     | 删除节点及其连线                                                                                               |
-| `nodes.bounds(nodeId, space?)`                      | `NodeEngineBounds \| null`          | `space` 为 `'graph'`（默认）或 `'screen'`                                                                      |
-| `nodes.params.update(nodeId, key, value, options?)` | `GraphSnapshot`                     | 修改一个参数（写入 `data.params`），发出 `node-param-change`                                                   |
-| `nodes.params.set(nodeId, params, options?)`        | `GraphSnapshot`                     | 合并（或 `options.replace` 替换）全部参数；不发出 `node-param-change`                                          |
-| `nodes.editor.open(nodeId)`                         | `boolean`                           | 打开内联节点编辑器；节点没有可编辑字段时返回 `false`                                                           |
-| `nodes.editor.close()`                              | `void`                              | 关闭节点编辑器                                                                                                 |
-| `nodes.editor.state()`                              | `NodeEngineNodeEditorState \| null` | 当前节点编辑器状态                                                                                             |
+| 方法                                                | 返回                                | 说明                                                                                                               |
+| --------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `nodes.create(type, patch?)`                        | `GraphNode \| null`                 | 按类型创建；`type` 为空字符串时返回 `null`                                                                         |
+| `nodes.add(node)`                                   | `GraphNode`                         | 新增节点，`id` 可省略；套用定义的尺寸、`dataDefaults`、`metaDefaults` 与参数默认值，并按位置加入所在分组（见下文） |
+| `nodes.get(nodeId)`                                 | `GraphNode \| undefined`            | 已提交的节点                                                                                                       |
+| `nodes.getLive(nodeId)`                             | `GraphNode \| undefined`            | 含预览的实时节点                                                                                                   |
+| `nodes.update(nodeId, patch)`                       | `GraphSnapshot`                     | 更新节点；位置或尺寸变化时同步分组成员                                                                             |
+| `nodes.move(nodeIds, delta)`                        | `GraphSnapshot`                     | 平移节点                                                                                                           |
+| `nodes.remove(nodeId)`                              | `GraphSnapshot`                     | 删除节点及其连线                                                                                                   |
+| `nodes.bounds(nodeId, space?)`                      | `NodeEngineBounds \| null`          | `space` 为 `'graph'`（默认）或 `'screen'`                                                                          |
+| `nodes.params.update(nodeId, key, value, options?)` | `GraphSnapshot`                     | 修改一个参数（写入 `data.params`），发出 `node-param-change`                                                       |
+| `nodes.params.set(nodeId, params, options?)`        | `GraphSnapshot`                     | 合并（或 `options.replace` 替换）全部参数；不发出 `node-param-change`                                              |
+| `nodes.editor.open(nodeId)`                         | `boolean`                           | 打开内联节点编辑器；节点没有可编辑字段时返回 `false`                                                               |
+| `nodes.editor.close()`                              | `void`                              | 关闭节点编辑器                                                                                                     |
+| `nodes.editor.state()`                              | `NodeEngineNodeEditorState \| null` | 当前节点编辑器状态                                                                                                 |
+
+`nodes.create` / `nodes.add` 产生的节点只写有值的字段，整张图始终能被 `parseGraph` 严格解析、通过 `validateGraph`。节点只保存自己的端口：给了 `ports` 时保存它们；有节点定义时，定义端口与参数输入端口都从定义解析，不写进节点（定义以后改了端口，已有节点跟着变）；没有节点定义、只有节点类型（`NodeTypeDefinition.ports`）的默认端口时才复制它们，因为协议层看不到节点类型。
 
 ### `edges`
 
-| 方法                                      | 返回                         | 说明                                                                           |
-| ----------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------ |
-| `edges.add(edge)`                         | `GraphEdge`                  | 直接新增边，不运行连接校验器（仍做协议结构校验），`id` 可省略                  |
-| `edges.get(edgeId)`                       | `GraphEdge \| undefined`     |                                                                                |
-| `edges.update(edgeId, patch)`             | `GraphSnapshot`              |                                                                                |
-| `edges.reconnect(edgeId, reconnect)`      | `ConnectionValidationResult` | 校验后重连一端                                                                 |
-| `edges.disconnect(edgeId, reason?)`       | `GraphSnapshot`              | 删除边并发出 `edge-disconnect`                                                 |
-| `edges.remove(edgeId)`                    | `GraphSnapshot`              | 只删除边，不发出 `edge-disconnect`                                             |
-| `edges.connect(source, target, options?)` | `ConnectionValidationResult` | 校验并连线；`options`：`edgeId`、`edgeType`、`data`；边的 `kind` 取源端口 kind |
-| `edges.validate(source, target)`          | `ConnectionValidationResult` | 只校验，不修改图                                                               |
+| 方法                                      | 返回                         | 说明                                                                                             |
+| ----------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| `edges.add(edge)`                         | `GraphEdge`                  | 直接新增边，不运行连接校验器（仍做协议结构校验），`id` 可省略                                    |
+| `edges.get(edgeId)`                       | `GraphEdge \| undefined`     |                                                                                                  |
+| `edges.update(edgeId, patch)`             | `GraphSnapshot`              |                                                                                                  |
+| `edges.reconnect(edgeId, reconnect)`      | `ConnectionValidationResult` | 校验后重连一端                                                                                   |
+| `edges.disconnect(edgeId, reason?)`       | `GraphSnapshot`              | 删除边并发出 `edge-disconnect`                                                                   |
+| `edges.remove(edgeId)`                    | `GraphSnapshot`              | 只删除边，不发出 `edge-disconnect`                                                               |
+| `edges.connect(source, target, options?)` | `ConnectionValidationResult` | 校验并连线；`options`：`edgeId`、`edgeType`、`data`（没给的不写进边）；边的 `kind` 取源端口 kind |
+| `edges.validate(source, target)`          | `ConnectionValidationResult` | 只校验，不修改图                                                                                 |
 
 ### `groups`
 
@@ -568,7 +570,7 @@ api.view.fit.graph({ top: 80, right: 376, bottom: 48, left: 272 })
 
 默认 DOM 节点与[内联节点编辑器](#内联节点编辑器)遵循同一条规则：字段只来自 `NodeDefinition.parameters`，每个参数一个字段；没有参数 schema 时不会从 `node.data` / `data.params` 推断字段。`fields` 只是同名参数的显示 hint（`label`、`description`、`kind`、`order`、`highlighted`、`placeholder`、`min`/`max`/`step`，以及图片字段的 `aspectRatio`、`fit`、`downloadable`、`openable`、`emptyHint`），没有对应参数的 hint 被忽略；hint 不能声明选项，选项（值域）始终是参数自身的 `options`（`NodeParameterOption[]`，`domModel.fields[i].options`）。未给 hint 时：标签取参数 `label`，未声明时为参数 `key`；占位符与说明取参数 `ui.placeholder` / `ui.description`；字段类型 `NodeEngineDomFieldKind`（`'value' | 'text' | 'textarea' | 'number' | 'boolean' | 'select' | 'range' | 'time' | 'image'`）由参数 `kind` 推导（`boolean`、`number`、`select` 对应同名，`json`/`code` 为 `textarea`，其余为 `text`）。
 
-参数默认只是本地字段。节点定义 `parameterInputs: true`，或参数上 `input: true` / `input: { portId }`，会生成参数输入端口；字段被上游连线驱动时显示上游值并禁用本地编辑。参数行输入端口默认在悬停或聚焦该行时显示，已连接时常显。
+参数默认只是本地字段。节点定义 `parameterInputs: true`，或参数上 `input: true` / `input: { portId }`，会生成参数输入端口；字段被上游连线驱动时显示上游值并禁用本地编辑，上游值不是数字时数字字段显示它的文字（比如 `resolvePortValue` 给出的上游端口名），解析不出上游值时为空。数字字段的 hint 给了 `step` 时，输入值按步长对齐（以 `min` 或 0 为起点）；没给 `step` 时接受任意数字，只按 `min` / `max` 截断，步进按钮与拖动按 1 调整。数字显示它本身的全部位数，只去掉二进制小数的误差（`0.1 + 0.2` 显示 `0.3`）。参数行输入端口默认在悬停或聚焦该行时显示，已连接时常显。
 
 ### DOM 节点组件契约
 

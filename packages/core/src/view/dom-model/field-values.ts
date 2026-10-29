@@ -199,7 +199,10 @@ export function resolveDomFieldStep(field: NodeEngineResolvedDomNodeField): numb
   return Number.isFinite(step) && step > 0 ? step : 1
 }
 
-/** Clamps to the field range, then snaps to the step grid anchored at `min` (or 0). */
+/**
+ * Clamps to the field range, then snaps to the step grid anchored at `min` (or 0). A field that
+ * declares no step takes any number: its step buttons and drag still move by 1.
+ */
 export function normalizeDomFieldNumber(
   field: NodeEngineResolvedDomNodeField,
   value: number,
@@ -214,7 +217,11 @@ export function normalizeDomFieldNumber(
     nextValue = Math.min(field.max, nextValue)
   }
 
-  const step = resolveDomFieldStep(field)
+  if (typeof field.step !== 'number' || !Number.isFinite(field.step) || field.step <= 0) {
+    return nextValue
+  }
+
+  const step = field.step
   const base = typeof field.min === 'number' ? field.min : 0
   const decimals = step.toString().split('.')[1]?.length ?? 0
   const aligned = base + Math.round((nextValue - base) / step) * step

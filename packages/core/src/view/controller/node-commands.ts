@@ -54,25 +54,34 @@ export function createNodeCommands(options: {
 }): NodeCommands {
   const store = options.getStore
 
+  /**
+   * The node as the graph keeps it, every field it has a value of and no other, so that the graph
+   * stays one `parseGraph` takes. It keeps ports of its own alone: those of its definition, and of
+   * its parameters, resolve from the definition; the default ports of a node type without a
+   * definition are copied, as nothing else resolves them.
+   */
   function instantiate(node: NodeInput): GraphNode {
     const definition = options.extensions.resolveNodeType(node.type)
     const schema = store().getNodeDefinition(node.type)
-    const id = node.id ?? store().createId('node')
+    const width = node.width ?? schema?.width ?? definition?.width
+    const height = node.height ?? schema?.height ?? definition?.height
+    const ports = node.ports ?? (schema ? undefined : definition?.ports)
+    const data = withParameterDefaults(
+      schema,
+      mergeMetadata(resolveMetadata(schema?.dataDefaults), node.data),
+    )
+    const meta = mergeMetadata(resolveMetadata(schema?.metaDefaults), node.meta)
     const next: GraphNode = {
-      ...node,
-      id,
-      width: node.width ?? schema?.width ?? definition?.width,
-      height: node.height ?? schema?.height ?? definition?.height,
-      ports: options.nodeViews.resolvePorts(
-        { ...node, id, ports: node.ports ?? schema?.ports ?? definition?.ports },
-        schema,
-        definition,
-      ),
-      data: withParameterDefaults(
-        schema,
-        mergeMetadata(resolveMetadata(schema?.dataDefaults), node.data),
-      ),
-      meta: mergeMetadata(resolveMetadata(schema?.metaDefaults), node.meta),
+      id: node.id ?? store().createId('node'),
+      type: node.type,
+      x: node.x,
+      y: node.y,
+      ...(width === undefined ? {} : { width }),
+      ...(height === undefined ? {} : { height }),
+      ...(node.locked === undefined ? {} : { locked: node.locked }),
+      ...(ports === undefined ? {} : { ports: cloneValue(ports) }),
+      ...(data === undefined ? {} : { data }),
+      ...(meta === undefined ? {} : { meta }),
     }
 
     return options.nodeViews.applyDomContentSize(next, definition, schema)

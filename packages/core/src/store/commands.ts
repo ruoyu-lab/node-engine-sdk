@@ -213,13 +213,14 @@ export function connectPortsCommand(options: {
     id: 'edge.connect',
     label: `Connect ${options.source.nodeId}:${options.source.portId} -> ${options.target.nodeId}:${options.target.portId}`,
     execute(draft, api) {
+      // Only the fields it has a value of, so that the graph stays one `parseGraph` takes.
       const edge: GraphEdge = {
         id: options.edgeId ?? api.createId('edge'),
         source: cloneValue(options.source),
         target: cloneValue(options.target),
         kind: resolvePortKind(ensureSourcePort(api, options.source)),
-        type: options.edgeType,
-        data: cloneValue(options.data),
+        ...(options.edgeType === undefined ? {} : { type: options.edgeType }),
+        ...(options.data === undefined ? {} : { data: cloneValue(options.data) }),
       }
 
       draft.edges = [...draft.edges, edge]

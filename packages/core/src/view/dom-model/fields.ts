@@ -40,7 +40,8 @@ export function resolveDomNodeFields(
 
 export function formatDomFieldValue(value: unknown): string {
   if (typeof value === 'number') {
-    return Number.isInteger(value) ? String(value) : value.toFixed(2)
+    // As it is, every digit it has, but the noise of binary fractions (0.1 + 0.2 shows 0.3).
+    return Number.isInteger(value) ? String(value) : String(Number(value.toPrecision(15)))
   }
 
   if (typeof value === 'boolean') {

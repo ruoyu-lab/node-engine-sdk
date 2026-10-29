@@ -112,8 +112,8 @@ export function createNodeViews(options: {
 
     return {
       ...node,
-      width: hasWidth ? node.width : constraints.minWidth,
-      height: hasHeight ? node.height : constraints.minHeight,
+      ...(hasWidth ? {} : { width: constraints.minWidth }),
+      ...(hasHeight ? {} : { height: constraints.minHeight }),
     }
   }
 
