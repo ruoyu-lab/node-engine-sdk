@@ -19,11 +19,11 @@ import {
   resolveDomTimeSegment,
   type DomNodeControls,
   type DomNodeControlsState,
-  type NodeEngineResolvedDomNodeModel,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightResolvedDomNodeModel,
+} from '@node-wright/core/view'
 
 defineProps<{
-  domModel: NodeEngineResolvedDomNodeModel
+  domModel: NodeWrightResolvedDomNodeModel
   controls: DomNodeControls
   state: DomNodeControlsState
 }>()
@@ -38,38 +38,38 @@ function readChecked(event: Event): boolean {
 </script>
 
 <template>
-  <section class="ne-default-dom-node__fields" :style="resolveDomFieldsStyle(domModel)">
+  <section class="nw-default-dom-node__fields" :style="resolveDomFieldsStyle(domModel)">
     <div
       v-for="field in domModel.fields"
       :key="field.key"
-      class="ne-default-dom-node__field"
+      class="nw-default-dom-node__field"
       :class="resolveDomFieldRowClass(field)"
       :style="resolveDomFieldRowStyle(field)"
     >
       <template v-if="field.kind === 'textarea'">
-        <div v-if="field.inputPort" class="ne-default-dom-node__field-port-rail">
+        <div v-if="field.inputPort" class="nw-default-dom-node__field-port-rail">
           <span
-            class="ne-default-dom-node__field-port-hit"
+            class="nw-default-dom-node__field-port-hit"
             @pointerdown="controls.portPointerDown(field.inputPort.id, $event)"
             @pointerenter="controls.portPointerEnter(field.inputPort.id)"
             @pointerleave="controls.portPointerLeave()"
             @pointerup="controls.portPointerUp(field.inputPort.id, $event)"
           >
             <span
-              class="ne-default-dom-node__field-port-dot"
+              class="nw-default-dom-node__field-port-dot"
               :class="resolveDomFieldPortDotClass(field.inputPort)"
               :style="resolveDomPortDotStyle(field.inputPort)"
             />
           </span>
         </div>
 
-        <div class="ne-default-dom-node__field-stack">
-          <span class="ne-default-dom-node__field-label ne-default-dom-node__field-label--stack">
+        <div class="nw-default-dom-node__field-stack">
+          <span class="nw-default-dom-node__field-label nw-default-dom-node__field-label--stack">
             {{ field.label }}
           </span>
 
           <textarea
-            class="ne-default-dom-node__field-textarea ne-default-dom-node__field-textarea--stack"
+            class="nw-default-dom-node__field-textarea nw-default-dom-node__field-textarea--stack"
             :value="resolveDomFieldStringValue(field)"
             :placeholder="field.placeholder"
             :readonly="field.driven"
@@ -82,54 +82,54 @@ function readChecked(event: Event): boolean {
       </template>
 
       <template v-else-if="field.kind === 'image'">
-        <div v-if="field.inputPort" class="ne-default-dom-node__field-port-rail">
+        <div v-if="field.inputPort" class="nw-default-dom-node__field-port-rail">
           <span
-            class="ne-default-dom-node__field-port-hit"
+            class="nw-default-dom-node__field-port-hit"
             @pointerdown="controls.portPointerDown(field.inputPort.id, $event)"
             @pointerenter="controls.portPointerEnter(field.inputPort.id)"
             @pointerleave="controls.portPointerLeave()"
             @pointerup="controls.portPointerUp(field.inputPort.id, $event)"
           >
             <span
-              class="ne-default-dom-node__field-port-dot"
+              class="nw-default-dom-node__field-port-dot"
               :class="resolveDomFieldPortDotClass(field.inputPort)"
               :style="resolveDomPortDotStyle(field.inputPort)"
             />
           </span>
         </div>
 
-        <div class="ne-default-dom-node__field-stack ne-default-dom-node__field-stack--image">
-          <span class="ne-default-dom-node__field-label ne-default-dom-node__field-label--stack">
+        <div class="nw-default-dom-node__field-stack nw-default-dom-node__field-stack--image">
+          <span class="nw-default-dom-node__field-label nw-default-dom-node__field-label--stack">
             {{ field.label }}
           </span>
 
           <div
-            class="ne-default-dom-node__field-image"
-            :class="{ 'ne-default-dom-node__field-image--contain': field.fit === 'contain' }"
+            class="nw-default-dom-node__field-image"
+            :class="{ 'nw-default-dom-node__field-image--contain': field.fit === 'contain' }"
             :style="resolveDomFieldImageAspectStyle(field)"
             @pointerdown="controls.controlPointerDown"
             @click="controls.stopEvent"
           >
             <img
               v-if="resolveDomFieldImageUrl(field)"
-              class="ne-default-dom-node__field-image-img"
+              class="nw-default-dom-node__field-image-img"
               :src="resolveDomFieldImageUrl(field) ?? ''"
               alt=""
               referrerpolicy="no-referrer"
               draggable="false"
             />
-            <div v-else class="ne-default-dom-node__field-image-empty">
+            <div v-else class="nw-default-dom-node__field-image-empty">
               {{ field.emptyHint ?? '暂无图片' }}
             </div>
 
             <div
               v-if="resolveDomFieldImageUrl(field) && (field.downloadable || field.openable)"
-              class="ne-default-dom-node__field-image-actions"
+              class="nw-default-dom-node__field-image-actions"
             >
               <button
                 v-if="field.downloadable"
                 type="button"
-                class="ne-default-dom-node__field-image-action"
+                class="nw-default-dom-node__field-image-action"
                 @pointerdown.stop
                 @click.stop="controls.downloadImage(field)"
               >
@@ -138,7 +138,7 @@ function readChecked(event: Event): boolean {
               <button
                 v-if="field.openable"
                 type="button"
-                class="ne-default-dom-node__field-image-action"
+                class="nw-default-dom-node__field-image-action"
                 @pointerdown.stop
                 @click.stop="controls.openImage(field)"
               >
@@ -151,42 +151,42 @@ function readChecked(event: Event): boolean {
 
       <template v-else>
         <div
-          class="ne-default-dom-node__field-label-wrap"
+          class="nw-default-dom-node__field-label-wrap"
           @pointerdown="controls.fieldPortAreaPointerDown(field, $event)"
         >
           <span
             v-if="field.inputPort"
-            class="ne-default-dom-node__field-port-hit"
+            class="nw-default-dom-node__field-port-hit"
             @pointerdown="controls.portPointerDown(field.inputPort.id, $event)"
             @pointerenter="controls.portPointerEnter(field.inputPort.id)"
             @pointerleave="controls.portPointerLeave()"
             @pointerup="controls.portPointerUp(field.inputPort.id, $event)"
           >
             <span
-              class="ne-default-dom-node__field-port-dot"
+              class="nw-default-dom-node__field-port-dot"
               :class="resolveDomFieldPortDotClass(field.inputPort)"
               :style="resolveDomPortDotStyle(field.inputPort)"
             />
           </span>
-          <span v-else class="ne-default-dom-node__field-port-placeholder" aria-hidden="true" />
-          <span class="ne-default-dom-node__field-label">{{ field.label }}</span>
+          <span v-else class="nw-default-dom-node__field-port-placeholder" aria-hidden="true" />
+          <span class="nw-default-dom-node__field-label">{{ field.label }}</span>
         </div>
 
         <div
-          class="ne-default-dom-node__field-control"
+          class="nw-default-dom-node__field-control"
           :class="resolveDomFieldControlClass(field)"
           @pointerdown="controls.controlPointerDown"
           @click="controls.stopEvent"
         >
           <template v-if="field.kind === 'range'">
-            <div class="ne-default-dom-node__field-range">
-              <span class="ne-default-dom-node__field-range-track" />
+            <div class="nw-default-dom-node__field-range">
+              <span class="nw-default-dom-node__field-range-track" />
               <span
-                class="ne-default-dom-node__field-range-fill"
+                class="nw-default-dom-node__field-range-fill"
                 :style="{ width: `${resolveDomFieldRangeProgress(field)}%` }"
               />
               <input
-                class="ne-default-dom-node__field-range-input"
+                class="nw-default-dom-node__field-range-input"
                 type="range"
                 :value="resolveDomFieldNumberValue(field)"
                 :min="field.min ?? 0"
@@ -198,15 +198,15 @@ function readChecked(event: Event): boolean {
                 @input="controls.rangeInput(field, readValue($event))"
               />
             </div>
-            <span class="ne-default-dom-node__field-range-value">
+            <span class="nw-default-dom-node__field-range-value">
               {{ resolveDomFieldDisplayValue(field) }}
             </span>
           </template>
 
           <template v-else-if="field.kind === 'time'">
-            <div class="ne-default-dom-node__field-time-group">
+            <div class="nw-default-dom-node__field-time-group">
               <input
-                class="ne-default-dom-node__field-time-segment"
+                class="nw-default-dom-node__field-time-segment"
                 type="text"
                 inputmode="numeric"
                 maxlength="2"
@@ -217,9 +217,9 @@ function readChecked(event: Event): boolean {
                 @input="controls.timeSegmentInput(field, 'hours', readValue($event))"
                 @blur="controls.timeSegmentCommit(field)"
               />
-              <span class="ne-default-dom-node__field-time-separator">:</span>
+              <span class="nw-default-dom-node__field-time-separator">:</span>
               <input
-                class="ne-default-dom-node__field-time-segment"
+                class="nw-default-dom-node__field-time-segment"
                 type="text"
                 inputmode="numeric"
                 maxlength="2"
@@ -236,15 +236,15 @@ function readChecked(event: Event): boolean {
           <template v-else-if="field.kind === 'select'">
             <button
               type="button"
-              class="ne-default-dom-node__field-select-trigger"
+              class="nw-default-dom-node__field-select-trigger"
               :disabled="field.driven"
               @pointerdown="controls.controlPointerDown"
               @click="controls.toggleSelect(field, $event)"
             >
-              <span class="ne-default-dom-node__field-select-label">
+              <span class="nw-default-dom-node__field-select-label">
                 {{ resolveDomSelectedOptionLabel(field) }}
               </span>
-              <span class="ne-default-dom-node__field-select-icon">
+              <span class="nw-default-dom-node__field-select-icon">
                 <svg
                   width="12"
                   height="12"
@@ -262,7 +262,7 @@ function readChecked(event: Event): boolean {
 
             <div
               v-if="isDomSelectOpen(state, field)"
-              class="ne-default-dom-node__field-select-menu"
+              class="nw-default-dom-node__field-select-menu"
               @pointerdown="controls.controlPointerDown"
               @click="controls.stopEvent"
             >
@@ -270,9 +270,9 @@ function readChecked(event: Event): boolean {
                 v-for="option in field.options ?? []"
                 :key="`${field.key}-${String(option.value ?? '')}`"
                 type="button"
-                class="ne-default-dom-node__field-select-option"
+                class="nw-default-dom-node__field-select-option"
                 :class="{
-                  'ne-default-dom-node__field-select-option--selected': isDomFieldOptionSelected(
+                  'nw-default-dom-node__field-select-option--selected': isDomFieldOptionSelected(
                     field,
                     option.value,
                   ),
@@ -285,29 +285,29 @@ function readChecked(event: Event): boolean {
           </template>
 
           <template v-else-if="field.kind === 'boolean'">
-            <span class="ne-default-dom-node__field-value ne-default-dom-node__field-value--left">
+            <span class="nw-default-dom-node__field-value nw-default-dom-node__field-value--left">
               {{ resolveDomFieldDisplayValue(field) }}
             </span>
             <label
-              class="ne-default-dom-node__field-switch"
-              :class="{ 'ne-default-dom-node__field-switch--on': field.resolvedValue === true }"
+              class="nw-default-dom-node__field-switch"
+              :class="{ 'nw-default-dom-node__field-switch--on': field.resolvedValue === true }"
               @pointerdown="controls.controlPointerDown"
               @click="controls.stopEvent"
             >
               <input
-                class="ne-default-dom-node__field-switch-input"
+                class="nw-default-dom-node__field-switch-input"
                 type="checkbox"
                 :checked="field.resolvedValue === true"
                 :disabled="field.driven"
                 @change="controls.booleanChange(field, readChecked($event))"
               />
-              <span class="ne-default-dom-node__field-switch-knob" />
+              <span class="nw-default-dom-node__field-switch-knob" />
             </label>
           </template>
 
           <template v-else-if="field.kind === 'text'">
             <input
-              class="ne-default-dom-node__field-input"
+              class="nw-default-dom-node__field-input"
               type="text"
               :value="resolveDomFieldStringValue(field)"
               :placeholder="field.placeholder"
@@ -321,11 +321,11 @@ function readChecked(event: Event): boolean {
           <template v-else-if="field.kind === 'number'">
             <button
               type="button"
-              class="ne-default-dom-node__field-number-step"
+              class="nw-default-dom-node__field-number-step"
               :disabled="field.driven"
               @pointerdown="controls.numberStep(field, -1, $event)"
             >
-              <span class="ne-default-dom-node__field-number-step-icon">
+              <span class="nw-default-dom-node__field-number-step-icon">
                 <svg
                   width="12"
                   height="12"
@@ -341,7 +341,7 @@ function readChecked(event: Event): boolean {
               </span>
             </button>
             <input
-              class="ne-default-dom-node__field-input ne-default-dom-node__field-input--number"
+              class="nw-default-dom-node__field-input nw-default-dom-node__field-input--number"
               type="text"
               inputmode="decimal"
               :value="resolveDomNumberDraft(state, field)"
@@ -354,11 +354,11 @@ function readChecked(event: Event): boolean {
             />
             <button
               type="button"
-              class="ne-default-dom-node__field-number-step"
+              class="nw-default-dom-node__field-number-step"
               :disabled="field.driven"
               @pointerdown="controls.numberStep(field, 1, $event)"
             >
-              <span class="ne-default-dom-node__field-number-step-icon">
+              <span class="nw-default-dom-node__field-number-step-icon">
                 <svg
                   width="12"
                   height="12"
@@ -377,7 +377,7 @@ function readChecked(event: Event): boolean {
 
           <template v-else>
             <input
-              class="ne-default-dom-node__field-input"
+              class="nw-default-dom-node__field-input"
               type="text"
               :value="resolveDomFieldStringValue(field)"
               :placeholder="field.placeholder"

@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import {
   createConnectionRulesDiagnosticProvider,
   createDataflowConnectionRules,
@@ -10,11 +7,11 @@ import {
   type SemanticNodeDefinition,
 } from '../../src/semantics/index'
 
-describe('@node-engine-sdk/core/semantics large graphs', () => {
+describe('@node-wright/core/semantics large graphs', () => {
   it('detects a cycle in a 5,000-node chain without recursive overflow', () => {
     const size = 5_000
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: Array.from({ length: size }, (_, index) => ({
         id: `node-${index}`,
         type: 'data',
@@ -54,7 +51,7 @@ describe('@node-engine-sdk/core/semantics large graphs', () => {
       ],
     }
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: Array.from({ length: size }, (_, index) => ({
         id: `node-${index}`,
         type: definition.type,

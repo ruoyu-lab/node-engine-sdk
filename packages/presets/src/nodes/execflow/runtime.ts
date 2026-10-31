@@ -1,15 +1,15 @@
-import type { GraphPort } from '@node-engine-sdk/core/protocol'
+import type { GraphPort } from '@node-wright/core/protocol'
 import type {
-  NodeEngineRuntimeNodeDefinition,
-  NodeEngineRuntimeNodeHandler,
-} from '@node-engine-sdk/core/runtime'
+  NodeWrightRuntimeNodeDefinition,
+  NodeWrightRuntimeNodeHandler,
+} from '@node-wright/core/runtime'
 import {
   EXEC_THEN_PORT_ID,
   VARIABLE_SCOPE_RUN,
   createVariableReference,
   normalizeVariableScope,
   type VariableReference,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 import {
   EXEC_BRANCH_NODE_TYPE,
   EXEC_DELAY_NODE_TYPE,
@@ -20,7 +20,7 @@ import {
   EXEC_SET_VARIABLE_NODE_TYPE,
 } from './definitions.js'
 
-export const execflowRuntimeHandlers: Record<string, NodeEngineRuntimeNodeHandler> = {
+export const execflowRuntimeHandlers: Record<string, NodeWrightRuntimeNodeHandler> = {
   [EXEC_EVENT_NODE_TYPE]: () => ({ output: EXEC_THEN_PORT_ID }),
   [EXEC_SEQUENCE_NODE_TYPE]: ({ node, definition }) => ({
     outputs: getExecOutputPortIds(node.ports?.length ? node.ports : definition?.ports),
@@ -61,7 +61,7 @@ export const execflowRuntimeHandlers: Record<string, NodeEngineRuntimeNodeHandle
   },
 }
 
-export const execflowRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = Object.entries(
+export const execflowRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = Object.entries(
   execflowRuntimeHandlers,
 ).map(([type, handler]) => ({
   type,

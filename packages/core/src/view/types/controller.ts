@@ -8,50 +8,50 @@ import type {
 } from '../../protocol/index.js'
 
 import type {
-  NodeEngineBehaviors,
-  NodeEngineGridState,
-  NodeEngineColorScheme,
-  NodeEngineInteractionState,
-  NodeEngineNodeStatus,
-  NodeEnginePerformanceOptions,
-  NodeEnginePerformanceSample,
-  NodeEngineRenderContext,
-  NodeEngineStyleDeclaration,
-  NodeEngineTheme,
-  NodeEngineWheelBehavior,
+  NodeWrightBehaviors,
+  NodeWrightGridState,
+  NodeWrightColorScheme,
+  NodeWrightInteractionState,
+  NodeWrightNodeStatus,
+  NodeWrightPerformanceOptions,
+  NodeWrightPerformanceSample,
+  NodeWrightRenderContext,
+  NodeWrightStyleDeclaration,
+  NodeWrightTheme,
+  NodeWrightWheelBehavior,
   SelectionState,
   ViewportState,
 } from './common.js'
-import type { NodeEngineNodeEditorRegistry, NodeEngineNodeEditorState } from './editor.js'
-import type { NodeEngineContextMenuState, NodeEngineEventListener } from './events.js'
+import type { NodeWrightNodeEditorRegistry, NodeWrightNodeEditorState } from './editor.js'
+import type { NodeWrightContextMenuState, NodeWrightEventListener } from './events.js'
 import type {
   EdgeTypeRegistry,
-  NodeEngineAfterImportHook,
-  NodeEngineBeforeImportHook,
-  NodeEngineContextMenuItem,
-  NodeEngineDeserializeHook,
-  NodeEngineEdgeRendererContribution,
-  NodeEngineGroupRendererContribution,
-  NodeEngineHotkey,
-  NodeEnginePlugin,
-  NodeEngineResolvePortValueHook,
-  NodeEngineSerializeHook,
-  NodeEngineToolbarItem,
+  NodeWrightAfterImportHook,
+  NodeWrightBeforeImportHook,
+  NodeWrightContextMenuItem,
+  NodeWrightDeserializeHook,
+  NodeWrightEdgeRendererContribution,
+  NodeWrightGroupRendererContribution,
+  NodeWrightHotkey,
+  NodeWrightPlugin,
+  NodeWrightResolvePortValueHook,
+  NodeWrightSerializeHook,
+  NodeWrightToolbarItem,
   NodeTypeRegistry,
 } from './extensions.js'
 import type {
-  NodeEngineCanvasRenderers,
-  NodeEngineDomNodeClassValue,
-  NodeEngineDomNodeProps,
+  NodeWrightCanvasRenderers,
+  NodeWrightDomNodeClassValue,
+  NodeWrightDomNodeProps,
 } from './render.js'
-import type { NodeEngineApi } from './api.js'
+import type { NodeWrightApi } from './api.js'
 
 /**
  * Everything that configures an editor. Adapters pass the complete, current options object to
  * `controller.update()` whenever any of them change; `initialViewport` and `initialSelection` are
  * only read when the controller is created.
  */
-export interface NodeEngineEditorOptions {
+export interface NodeWrightEditorOptions {
   /** Graph of the editor's own store. Store-owned like the registries below. */
   graph?: GraphSnapshot
   /**
@@ -63,28 +63,28 @@ export interface NodeEngineEditorOptions {
   initialViewport?: Partial<ViewportState>
   initialSelection?: Partial<SelectionState>
   nodeTypes?: NodeTypeRegistry
-  nodeEditors?: NodeEngineNodeEditorRegistry
+  nodeEditors?: NodeWrightNodeEditorRegistry
   edgeTypes?: EdgeTypeRegistry
-  renderers?: Partial<NodeEngineCanvasRenderers>
+  renderers?: Partial<NodeWrightCanvasRenderers>
   nodeDefinitions?: NodeDefinition[]
   edgeDefinitions?: EdgeDefinition[]
   commands?: GraphCommandRegistryEntry[]
-  plugins?: NodeEnginePlugin[]
-  groupRenderers?: NodeEngineGroupRendererContribution[]
-  edgeRenderers?: NodeEngineEdgeRendererContribution[]
-  toolbarItems?: NodeEngineToolbarItem[]
-  contextMenuItems?: NodeEngineContextMenuItem[]
-  hotkeys?: NodeEngineHotkey[]
+  plugins?: NodeWrightPlugin[]
+  groupRenderers?: NodeWrightGroupRendererContribution[]
+  edgeRenderers?: NodeWrightEdgeRendererContribution[]
+  toolbarItems?: NodeWrightToolbarItem[]
+  contextMenuItems?: NodeWrightContextMenuItem[]
+  hotkeys?: NodeWrightHotkey[]
   connectionValidator?: ConnectionValidator
-  theme?: Partial<NodeEngineTheme>
+  theme?: Partial<NodeWrightTheme>
   /**
    * Execution status per node id, e.g. from a runtime run. Shown by the default DOM node and
    * passed to DOM renderers as `status`; nodes without an entry are idle. View state only: it
    * never enters the graph or its history.
    */
-  nodeStatus?: Readonly<Record<string, NodeEngineNodeStatus>>
-  behaviors?: Partial<NodeEngineBehaviors>
-  performance?: Partial<NodeEnginePerformanceOptions>
+  nodeStatus?: Readonly<Record<string, NodeWrightNodeStatus>>
+  behaviors?: Partial<NodeWrightBehaviors>
+  performance?: Partial<NodeWrightPerformanceOptions>
   canvasBackground?: string
   readonly?: boolean
   gridVisible?: boolean
@@ -94,25 +94,25 @@ export interface NodeEngineEditorOptions {
   minZoom?: number
   maxZoom?: number
   connectionPreview?: boolean
-  wheelBehavior?: NodeEngineWheelBehavior
+  wheelBehavior?: NodeWrightWheelBehavior
   wheelInertia?: boolean
   /**
    * Shows a minimap of the graph and the visible area: `true` for the default size, or its size
    * options. Off by default; adapters render `snapshot.minimap` and attach it with
    * `mountMinimap()`.
    */
-  minimap?: boolean | NodeEngineMinimapOptions
-  resolvePortValue?: NodeEngineResolvePortValueHook
-  serializeGraph?: NodeEngineSerializeHook
-  deserializeGraph?: NodeEngineDeserializeHook
-  beforeImport?: NodeEngineBeforeImportHook
-  afterImport?: NodeEngineAfterImportHook
-  /** Receives every editor event (see `NodeEngineEventMap`). */
-  onEvent?: NodeEngineEventListener
+  minimap?: boolean | NodeWrightMinimapOptions
+  resolvePortValue?: NodeWrightResolvePortValueHook
+  serializeGraph?: NodeWrightSerializeHook
+  deserializeGraph?: NodeWrightDeserializeHook
+  beforeImport?: NodeWrightBeforeImportHook
+  afterImport?: NodeWrightAfterImportHook
+  /** Receives every editor event (see `NodeWrightEventMap`). */
+  onEvent?: NodeWrightEventListener
 }
 
 /** Size of the minimap (see the `minimap` editor option). */
-export interface NodeEngineMinimapOptions {
+export interface NodeWrightMinimapOptions {
   /** CSS width in pixels; default `200`. */
   width?: number
   /** CSS height in pixels; default `136`. */
@@ -122,28 +122,28 @@ export interface NodeEngineMinimapOptions {
 }
 
 /** The DOM elements an adapter renders for `snapshot.minimap` and hands to `mountMinimap()`. */
-export interface NodeEngineMinimapHost {
-  /** Focusable minimap container (`ne-minimap`); receives pointer, wheel and keyboard input. */
+export interface NodeWrightMinimapHost {
+  /** Focusable minimap container (`nw-minimap`); receives pointer, wheel and keyboard input. */
   root: HTMLElement
-  /** Canvas (`ne-minimap__canvas`) the controller paints groups and nodes on. */
+  /** Canvas (`nw-minimap__canvas`) the controller paints groups and nodes on. */
   canvas: HTMLCanvasElement
 }
 
 /** Minimap view state; adapters render it while the `minimap` option is on. */
-export interface NodeEngineMinimapState {
-  /** Inline style of the `ne-minimap` container: its CSS `width` and `height`. */
-  style: NodeEngineStyleDeclaration
+export interface NodeWrightMinimapState {
+  /** Inline style of the `nw-minimap` container: its CSS `width` and `height`. */
+  style: NodeWrightStyleDeclaration
   /**
-   * Inline style of `ne-minimap__viewport`, the visible area: a `transform` translation plus
+   * Inline style of `nw-minimap__viewport`, the visible area: a `transform` translation plus
    * `width` and `height`, in minimap pixels. `null` while the editor is not mounted.
    */
-  viewportStyle: NodeEngineStyleDeclaration | null
-  /** True while the user drags in the minimap; adapters add `ne-minimap--dragging`. */
+  viewportStyle: NodeWrightStyleDeclaration | null
+  /** True while the user drags in the minimap; adapters add `nw-minimap--dragging`. */
   dragging: boolean
 }
 
 /** The DOM elements an adapter renders and hands to `controller.mount()`. */
-export interface NodeEngineEditorHost {
+export interface NodeWrightEditorHost {
   /** Focusable root element; receives keyboard and wheel input. */
   root: HTMLElement
   /** Interactive canvas that paints edges, groups and canvas nodes. */
@@ -152,70 +152,70 @@ export interface NodeEngineEditorHost {
   gridCanvas: HTMLCanvasElement
 }
 
-export interface NodeEngineDomNodeEntry {
+export interface NodeWrightDomNodeEntry {
   id: string
   /** Key of the DOM node component the adapter renders for this node. */
   component: string
-  props: NodeEngineDomNodeProps & Record<string, unknown>
-  className?: NodeEngineDomNodeClassValue
-  style: NodeEngineStyleDeclaration
+  props: NodeWrightDomNodeProps & Record<string, unknown>
+  className?: NodeWrightDomNodeClassValue
+  style: NodeWrightStyleDeclaration
 }
 
-export interface NodeEngineAccessibleNode {
+export interface NodeWrightAccessibleNode {
   id: string
   label: string
   selected: boolean
 }
 
-export interface NodeEngineDomLayerState {
+export interface NodeWrightDomLayerState {
   /** True while the viewport is moving; adapters promote the layer to its own compositor layer. */
   composited: boolean
-  style: NodeEngineStyleDeclaration
-  nodes: NodeEngineDomNodeEntry[]
+  style: NodeWrightStyleDeclaration
+  nodes: NodeWrightDomNodeEntry[]
 }
 
-export interface NodeEnginePerformanceOverlayState {
+export interface NodeWrightPerformanceOverlayState {
   visible: boolean
   dismissible: boolean
-  sample: NodeEnginePerformanceSample | null
+  sample: NodeWrightPerformanceSample | null
 }
 
 /**
  * Immutable view state for adapters. `getSnapshot()` returns the same object until something an
  * adapter renders changes, so it can back React's `useSyncExternalStore` or a Vue `shallowRef`.
  */
-export interface NodeEngineViewSnapshot {
+export interface NodeWrightViewSnapshot {
   graph: GraphSnapshot
   selection: SelectionState
   readonly: boolean
   /** Palette of `theme.colorScheme`; adapters render it as the root's `data-color-scheme`. */
-  colorScheme: NodeEngineColorScheme
+  colorScheme: NodeWrightColorScheme
   /** Grid visibility, steps and style; `gridState.visible` drives the grid canvas. */
-  gridState: NodeEngineGridState
-  interaction: NodeEngineInteractionState
-  nodeEditor: NodeEngineNodeEditorState | null
-  contextMenu: NodeEngineContextMenuState | null
-  renderContext: NodeEngineRenderContext
-  rootStyle: NodeEngineStyleDeclaration
+  gridState: NodeWrightGridState
+  interaction: NodeWrightInteractionState
+  nodeEditor: NodeWrightNodeEditorState | null
+  contextMenu: NodeWrightContextMenuState | null
+  renderContext: NodeWrightRenderContext
+  rootStyle: NodeWrightStyleDeclaration
   canvasCursor: string
-  domLayer: NodeEngineDomLayerState
-  accessibleNodes: NodeEngineAccessibleNode[]
-  marqueeStyle: NodeEngineStyleDeclaration | null
-  performance: NodeEnginePerformanceOverlayState
+  domLayer: NodeWrightDomLayerState
+  accessibleNodes: NodeWrightAccessibleNode[]
+  marqueeStyle: NodeWrightStyleDeclaration | null
+  performance: NodeWrightPerformanceOverlayState
   /** Minimap state; `null` while the `minimap` option is off. */
-  minimap: NodeEngineMinimapState | null
+  minimap: NodeWrightMinimapState | null
 }
 
-export interface NodeEngineEditorController {
+export interface NodeWrightEditorController {
   /** Imperative editor API (graph, view, selection, history, clipboard, menus, ...). */
-  readonly api: NodeEngineApi
-  getSnapshot: () => NodeEngineViewSnapshot
+  readonly api: NodeWrightApi
+  getSnapshot: () => NodeWrightViewSnapshot
   /** Notifies after every batch of state changes that may produce a new snapshot. */
   subscribe: (listener: () => void) => () => void
   /** Replaces the complete options object; only changed fields take effect. */
-  update: (options: NodeEngineEditorOptions) => void
+  update: (options: NodeWrightEditorOptions) => void
   /** Attaches input listeners, size observation and canvas painting to the host elements. */
-  mount: (host: NodeEngineEditorHost) => void
+  mount: (host: NodeWrightEditorHost) => void
   /** Detaches from the host elements; the controller can be mounted again. */
   unmount: () => void
   /** Unmounts and releases the controller; it must not be used afterwards. */
@@ -225,7 +225,7 @@ export interface NodeEngineEditorController {
    * `snapshot.minimap`, before or after `mount()`. Returns the function that detaches them again;
    * one minimap is attached at a time and `destroy()` detaches it as well.
    */
-  mountMinimap: (host: NodeEngineMinimapHost) => () => void
+  mountMinimap: (host: NodeWrightMinimapHost) => () => void
   selectAccessibleNode: (nodeId: string) => void
   hidePerformanceOverlay: () => void
 }

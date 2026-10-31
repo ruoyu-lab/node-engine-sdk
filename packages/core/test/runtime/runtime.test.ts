@@ -1,13 +1,10 @@
 import { describe, expect, it } from 'vitest'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
-import {
-  NodeEngineRuntime,
+  NodeWrightRuntime,
   compileGraph,
-  type NodeEngineRuntimeNodeDefinition,
+  type NodeWrightRuntimeNodeDefinition,
 } from '../../src/runtime/index'
 
 const definitions: SemanticNodeDefinition[] = [
@@ -23,7 +20,7 @@ const definitions: SemanticNodeDefinition[] = [
 ]
 
 const graph: GraphSnapshot = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [
     { id: 'start', type: 'event', x: 0, y: 0 },
     { id: 'log', type: 'log', x: 100, y: 0 },
@@ -40,12 +37,12 @@ const graph: GraphSnapshot = {
   meta: {},
 }
 
-const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
   { type: 'event', handler: () => ({ output: 'then' }) },
   { type: 'log', handler: () => ({}) },
 ]
 
-describe('@node-engine-sdk/core/runtime execution plans', () => {
+describe('@node-wright/core/runtime execution plans', () => {
   it('treats entryNodeId strictly as a node id', () => {
     const compiled = compileGraph({
       graph,
@@ -82,7 +79,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       },
     ]
     const cycleGraph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         { id: 'start', type: 'event', x: 0, y: 0 },
         { id: 'a', type: 'cycle', x: 100, y: 0 },
@@ -155,7 +152,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       },
     ]
     const cacheGraph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         { id: 'start', type: 'event', x: 0, y: 0 },
         { id: 'source', type: 'source', x: 0, y: 100 },
@@ -185,7 +182,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       meta: {},
     }
     let sourceEvaluations = 0
-    const cacheRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const cacheRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({ output: 'then' }) },
       {
         type: 'source',
@@ -207,7 +204,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       definitions: cacheDefinitions,
       runtimeDefinitions: cacheRuntimeDefinitions,
     })
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions: cacheDefinitions,
       runtimeDefinitions: cacheRuntimeDefinitions,
     })
@@ -236,7 +233,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       },
     ]
     const effectGraph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         { id: 'effect', type: 'effect-source', x: 0, y: 0 },
         { id: 'sink', type: 'sink', x: 100, y: 0 },
@@ -252,7 +249,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       groups: [],
       meta: {},
     }
-    const effectRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const effectRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       {
         type: 'effect-source',
         cacheable: false,
@@ -272,7 +269,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       definitions: effectDefinitions,
       runtimeDefinitions: effectRuntimeDefinitions,
     })
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions: effectDefinitions,
       runtimeDefinitions: effectRuntimeDefinitions,
     })
@@ -291,7 +288,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       definitions,
       runtimeDefinitions,
     })
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
     })
@@ -342,7 +339,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       },
     ]
     const parameterGraph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         { id: 'start', type: 'event', x: 0, y: 0 },
         { id: 'source', type: 'source', x: 0, y: 100, data: { params: { value: 42 } } },
@@ -365,7 +362,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       groups: [],
       meta: {},
     }
-    const parameterRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const parameterRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({ output: 'then' }) },
       { type: 'source', handler: ({ params }) => ({ values: { value: params.value } }) },
       { type: 'consumer', handler: ({ params }) => ({ values: { out: params.amount } }) },
@@ -376,7 +373,7 @@ describe('@node-engine-sdk/core/runtime execution plans', () => {
       definitions: parameterDefinitions,
       runtimeDefinitions: parameterRuntimeDefinitions,
     })
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions: parameterDefinitions,
       runtimeDefinitions: parameterRuntimeDefinitions,
     })

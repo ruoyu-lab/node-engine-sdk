@@ -1,24 +1,24 @@
 # Core API
 
-`@node-engine-sdk/core` 是 Node Engine SDK 框架无关的底层 SDK：协议、状态、语义、运行时、布局、调试与编辑器控制器都在这里，官方适配层与官方预设都构建在它之上。它不依赖任何 UI 框架，也不依赖其他 `@node-engine-sdk/*` 包；只有 `view` 子路径使用 DOM API。本文按子路径列出公开导出，并完整说明 `store` 子路径；其余子路径的详细用法见各自文档。
+`@node-wright/core` 是 Node Wright 框架无关的底层核心：协议、状态、语义、运行时、布局、调试与编辑器控制器都在这里，官方适配层与官方预设都构建在它之上。它不依赖任何 UI 框架，也不依赖其他 `@node-wright/*` 包；只有 `view` 子路径使用 DOM API。本文按子路径列出公开导出，并完整说明 `store` 子路径；其余子路径的详细用法见各自文档。
 
-| 子路径                                 | 内容                                                                                 | 详细文档                                       |
-| -------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------- |
-| `@node-engine-sdk/core`                | 根入口，等于 `protocol` + `store` 的全部导出                                         | 本文                                           |
-| `@node-engine-sdk/core/protocol`       | 图协议、严格解析、诊断、修复、参数 schema、扩展 manifest、执行计划类型、`GraphIndex` | [protocol-api.md](./protocol-api.md)           |
-| `@node-engine-sdk/core/store`          | `GraphStore`、内置命令、命令辅助函数、事务、历史、插件生命周期                       | 本文                                           |
-| `@node-engine-sdk/core/semantics`      | 端口语义、连线规则、流程插件、值类型、函数/子图/变量引用                             | [semantics-api.md](./semantics-api.md)         |
-| `@node-engine-sdk/core/runtime`        | 执行计划编译、`NodeEngineRuntime`、调度器、变量 API                                  | [runtime-api.md](./runtime-api.md)             |
-| `@node-engine-sdk/core/layout`         | 分层自动布局与位置 patch                                                             | [layout-api.md](./layout-api.md)               |
-| `@node-engine-sdk/core/debug`          | 运行结果的汇总与查询                                                                 | [runtime-debugging.md](./runtime-debugging.md) |
-| `@node-engine-sdk/core/view`           | 编辑器控制器、`NodeEngineApi`、事件与渲染扩展类型、DOM 节点模型                      | [controller-api.md](./controller-api.md)       |
-| `@node-engine-sdk/core/view/style.css` | 编辑器共享样式（Vue/React 适配层已各自打包为 `style.css`）                           | [controller-api.md](./controller-api.md#样式)  |
+| 子路径                             | 内容                                                                                 | 详细文档                                       |
+| ---------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------- |
+| `@node-wright/core`                | 根入口，等于 `protocol` + `store` 的全部导出                                         | 本文                                           |
+| `@node-wright/core/protocol`       | 图协议、严格解析、诊断、修复、参数 schema、扩展 manifest、执行计划类型、`GraphIndex` | [protocol-api.md](./protocol-api.md)           |
+| `@node-wright/core/store`          | `GraphStore`、内置命令、命令辅助函数、事务、历史、插件生命周期                       | 本文                                           |
+| `@node-wright/core/semantics`      | 端口语义、连线规则、流程插件、值类型、函数/子图/变量引用                             | [semantics-api.md](./semantics-api.md)         |
+| `@node-wright/core/runtime`        | 执行计划编译、`NodeWrightRuntime`、调度器、变量 API                                  | [runtime-api.md](./runtime-api.md)             |
+| `@node-wright/core/layout`         | 分层自动布局与位置 patch                                                             | [layout-api.md](./layout-api.md)               |
+| `@node-wright/core/debug`          | 运行结果的汇总与查询                                                                 | [runtime-debugging.md](./runtime-debugging.md) |
+| `@node-wright/core/view`           | 编辑器控制器、`NodeWrightApi`、事件与渲染扩展类型、DOM 节点模型                      | [controller-api.md](./controller-api.md)       |
+| `@node-wright/core/view/style.css` | 编辑器共享样式（Vue/React 适配层已各自打包为 `style.css`）                           | [controller-api.md](./controller-api.md#样式)  |
 
-## `@node-engine-sdk/core/protocol`
+## `@node-wright/core/protocol`
 
 值导出：
 
-- 常量：`NODE_ENGINE_GRAPH_SCHEMA_VERSION`（当前为 `'1.0.0'`，是图数据协议版本，与包版本无关）、`DEFAULT_PORT_KIND`（`'data'`，未声明 `kind` 的端口的 kind）
+- 常量：`NODE_WRIGHT_GRAPH_SCHEMA_VERSION`（当前为 `'1.0.0'`，是图数据协议版本，与包版本无关）、`DEFAULT_PORT_KIND`（`'data'`，未声明 `kind` 的端口的 kind）
 - 解析与校验：`parseGraph`、`validateGraph`、`repairGraph`、`GraphParseError`
 - 诊断结果：`createGraphValidationResult`、`mergeGraphValidationResults`
 - 克隆与比较：`cloneGraph`、`cloneValue`、`snapshotEquals`
@@ -32,21 +32,21 @@
 - 连接：`ConnectionContext`、`ConnectionValidationResult`、`ConnectionValidator`
 - 诊断：`GraphDiagnostic`、`GraphDiagnosticSeverity`、`GraphValidationResult`、`GraphDiagnosticContext`、`GraphDiagnosticProvider`、`GraphRepairResult`、`ValidateGraphOptions`、`RepairGraphOptions`
 - 命令与事件：`GraphCommand`、`GraphCommandDefinition`、`GraphCommandMetadata`、`GraphCommandRegistryEntry`、`GraphCommandDispatchResult`、`GraphCommandApi`、`GraphHistoryEntry`、`GraphChangeOptions`、`GraphStoreEvent`、`GraphStoreEventBase`、`GraphChangedEvent`、`GraphCommandEvent`、`GraphHistoryEvent`、`GraphPluginEvent`、`GraphRegistryEvent`、`GraphStoreListener`
-- Store 与插件契约：`GraphStoreLike`、`GraphStoreOptions`、`GraphPlugin`、`GraphPluginContext`、`NodeEngineExtensionManifest`、`NodeEngineExtensionContributions`
-- 执行计划：`NodeEngineExecutionPlan`、`NodeEngineCompileResult`
+- Store 与插件契约：`GraphStoreLike`、`GraphStoreOptions`、`GraphPlugin`、`GraphPluginContext`、`NodeWrightExtensionManifest`、`NodeWrightExtensionContributions`
+- 执行计划：`NodeWrightExecutionPlan`、`NodeWrightCompileResult`
 
-## `@node-engine-sdk/core/store`
+## `@node-wright/core/store`
 
-导出 `GraphStore`、`createGraphStore`、12 个命令辅助函数（`addNodeCommand`、`updateNodeCommand`、`moveNodesCommand`、`removeNodeCommand`、`addEdgeCommand`、`updateEdgeCommand`、`reconnectEdgeCommand`、`removeEdgeCommand`、`connectPortsCommand`、`addGroupCommand`、`updateGroupCommand`、`removeGroupCommand`）与 `composeValidationResults`。`store` 子路径不再导出协议类型，类型从 `@node-engine-sdk/core/protocol` 或根入口导入。
+导出 `GraphStore`、`createGraphStore`、12 个命令辅助函数（`addNodeCommand`、`updateNodeCommand`、`moveNodesCommand`、`removeNodeCommand`、`addEdgeCommand`、`updateEdgeCommand`、`reconnectEdgeCommand`、`removeEdgeCommand`、`connectPortsCommand`、`addGroupCommand`、`updateGroupCommand`、`removeGroupCommand`）与 `composeValidationResults`。`store` 子路径不再导出协议类型，类型从 `@node-wright/core/protocol` 或根入口导入。
 
 ### 创建
 
 ```ts
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import { createGraphStore } from '@node-engine-sdk/core/store'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import { createGraphStore } from '@node-wright/core/store'
 
 const store = createGraphStore(
-  { schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION, nodes: [], edges: [], groups: [], meta: {} },
+  { schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION, nodes: [], edges: [], groups: [], meta: {} },
   {
     nodeDefinitions: [{ type: 'demo', ports: [{ id: 'out', direction: 'output' }] }],
     historyLimit: 200,
@@ -153,8 +153,8 @@ store.transaction('Layout', () => {
 ### 插件生命周期
 
 ```ts
-import type { GraphPlugin } from '@node-engine-sdk/core/protocol'
-import type { GraphStore } from '@node-engine-sdk/core/store'
+import type { GraphPlugin } from '@node-wright/core/protocol'
+import type { GraphStore } from '@node-wright/core/store'
 
 declare const store: GraphStore
 
@@ -197,7 +197,7 @@ dispose()
 | `plugin:registered`                                 | 插件注册完成                                            |
 | `registry:*-registered` / `registry:*-unregistered` | 命令、节点定义、边定义、诊断 provider 的注册与注销      |
 
-## `@node-engine-sdk/core/semantics`
+## `@node-wright/core/semantics`
 
 - 流程插件：`createDataflowPlugin`、`createExecflowPlugin`、`createHybridFlowPlugin`，以及默认规则数组 `createDataflowConnectionRules`、`createExecflowConnectionRules`、`createHybridFlowConnectionRules`
 - 规则：`createSameNodeRule`、`createDirectionRule`、`createKindRule`、`createDataTypeRule`、`createCapacityRule`、`createCycleRule`、`defineConnectionRule`
@@ -210,22 +210,22 @@ dispose()
 - 常量：`EXEC_IN_PORT_ID`、`EXEC_THEN_PORT_ID`、`EXEC_ERROR_PORT_ID`、`SUBGRAPH_CALL_NODE_TYPE`、`SUBGRAPH_INPUT_NODE_TYPE`、`SUBGRAPH_OUTPUT_NODE_TYPE`、`VARIABLE_SCOPE_RUN`、`VARIABLE_SCOPE_GRAPH`、`VARIABLE_SCOPE_NODE`
 - 主要类型：`SemanticNodeDefinition`、`SemanticEdgeDefinition`、`NodeCapability`、`SemanticConnectionContext`、`ConnectionRule`、`ConnectionRuleDefinition`、`PortSemanticsOptions`、`DataflowPluginOptions`、`ExecflowPluginOptions`、`HybridFlowPluginOptions`、`ValueTypeRef`、`ValueTypeSchema`、`FunctionDefinition`、`SubgraphDefinition`、`VariableReference`
 
-## `@node-engine-sdk/core/runtime`
+## `@node-wright/core/runtime`
 
-- 类：`NodeEngineRuntime`
+- 类：`NodeWrightRuntime`
 - 函数：`compileGraph`、`createSequentialScheduler`、`createConcurrentScheduler`、`createRuntimeVariableSnapshot`、`createRuntimeVariableApi`
-- 主要类型：`NodeEngineRuntimeOptions`、`NodeEngineCompileOptions`、`NodeEngineRuntimeNodeDefinition`、`NodeEngineRuntimeNodeHandler`、`NodeEngineRuntimeNodeContext`、`NodeEngineRuntimeNodeResult`、`NodeEngineRuntimeFunctionDefinition`、`NodeEngineRuntimeSubgraphDefinition`、`NodeEngineRuntimeScheduler`、`NodeEngineRuntimeScheduledTask`、`NodeEngineRunResult`、`NodeEngineRuntimeEvent`、`NodeEngineRuntimeTraceEntry`、`NodeEngineRuntimeCallFrame`、`NodeEngineRuntimeNodeState`、`NodeEngineBreakpoint`、`NodeEngineRuntimeVariableApi`、`NodeEngineRuntimeVariableSnapshot`；并转出 `GraphDiagnostic`、`NodeEngineExecutionPlan`、`NodeEngineCompileResult`
+- 主要类型：`NodeWrightRuntimeOptions`、`NodeWrightCompileOptions`、`NodeWrightRuntimeNodeDefinition`、`NodeWrightRuntimeNodeHandler`、`NodeWrightRuntimeNodeContext`、`NodeWrightRuntimeNodeResult`、`NodeWrightRuntimeFunctionDefinition`、`NodeWrightRuntimeSubgraphDefinition`、`NodeWrightRuntimeScheduler`、`NodeWrightRuntimeScheduledTask`、`NodeWrightRunResult`、`NodeWrightRuntimeEvent`、`NodeWrightRuntimeTraceEntry`、`NodeWrightRuntimeCallFrame`、`NodeWrightRuntimeNodeState`、`NodeWrightBreakpoint`、`NodeWrightRuntimeVariableApi`、`NodeWrightRuntimeVariableSnapshot`；并转出 `GraphDiagnostic`、`NodeWrightExecutionPlan`、`NodeWrightCompileResult`
 
-## `@node-engine-sdk/core/layout`
+## `@node-wright/core/layout`
 
 - 函数：`layoutGraph`、`applyGraphLayout`、`createDagLayout`
 - 类型：`GraphLayoutOptions`、`GraphLayoutDirection`、`GraphLayoutResult`、`GraphNodeLayoutPatch`、`GraphGroupLayoutPatch`、`GraphLayoutBounds`
 
-## `@node-engine-sdk/core/debug`
+## `@node-wright/core/debug`
 
 | 函数                               | 返回                                                                            |
 | ---------------------------------- | ------------------------------------------------------------------------------- |
-| `summarizeRunDebugState(run)`      | `NodeEngineDebugSummary`：状态、节点数、失败/暂停节点、累计耗时、trace 与帧数量 |
+| `summarizeRunDebugState(run)`      | `NodeWrightDebugSummary`：状态、节点数、失败/暂停节点、累计耗时、trace 与帧数量 |
 | `getCurrentDebugNode(run)`         | 正在运行或暂停的节点状态                                                        |
 | `getFailedTraceEntries(run)`       | 失败的 trace 条目                                                               |
 | `getTraceEntriesByKind(run, kind)` | 指定 `node` / `data` / `function` / `subgraph` 的 trace                         |
@@ -233,13 +233,13 @@ dispose()
 | `getFailedCallFrames(run)`         | 失败的调用帧                                                                    |
 | `getTraceForFrame(run, frameId)`   | 某个调用帧内的 trace                                                            |
 
-## `@node-engine-sdk/core/view`
+## `@node-wright/core/view`
 
-- 控制器：`createEditorController`、`NODE_ENGINE_DEFAULT_DOM_COMPONENT`（适配层注册默认 DOM 节点的组件键，值为 `'node-engine.default'`）
+- 控制器：`createEditorController`、`NODE_WRIGHT_DEFAULT_DOM_COMPONENT`（适配层注册默认 DOM 节点的组件键，值为 `'node-wright.default'`）
 - 默认 DOM 节点模型：`resolveDomNodeModel`、`resolveDomNodeLayout`、`resolveDomNodeSizeConstraints`、`resolveDomNodeDefinition`、`resolveDomNodeTitle`、`resolveDomNodeSubtitle`、`resolveDomNodeFields`、`resolveDomPortAnchorPoints`、`applyDomConnectionState`、`applyDomFieldDriveState`、`buildDomNodePortSignature`、`resolveDefaultConnectedPortValue`、`endpointMatches`
 - 默认 DOM 节点交互：`createDomNodeControls`、`DOM_NODE_RESIZE_HANDLES` 以及字段渲染辅助（`resolveDomField*`、`resolveDomPort*`、`resolveDomNumberDraft`、`resolveDomTimeSegment`、`isDomSelectOpen`、`isDomFieldOptionSelected`、`normalizeDomFieldNumber`、`normalizeDomTimeSegment`、`parseDomTimeValue`、`sanitizeDomNumberDraft`、`sanitizeDomTimeSegment`、`measureDomFieldLabel`、`formatDomFieldValue`、`resolveDomNodeHeaderStyle`、`resolveDomFieldsStyle`）
 - 布局与端口颜色：`DEFAULT_DOM_*`、`resolveDomNodePortTop`、`resolveDomNodePortsBottom`、`PORT_DATA_TYPE_COLOR_PALETTE`、`resolveDomNodePortColor`、`resolvePortSemanticColor(port, execColor)`（执行端口取传入的主题执行色）、`normalizePortDataType`、`hashString`
-- 主题与外观：`resolveColorScheme(theme)`、`resolveNodeAccent(node, definition)`；默认节点的 `resolveDomNodeClass`（选中、拖动与执行状态类）、`resolveDomNodeAccentStyle`（`--ne-node-accent`）、`resolveDomNodeStatusClass`（状态角标），以及端口的 `resolveDomPortDotStyle`（`--ne-port-color`）、`resolveDomPortDotClass`、`resolveDomFieldPortDotClass`、`resolveDomPortLabelClass`
-- 类型：`NodeEngineEditorOptions`、`NodeEngineEditorController`、`NodeEngineEditorHost`、`NodeEngineViewSnapshot`、`NodeEngineApi`、`NodeEngineEventMap` 及全部事件 payload、`NodeEngineEventListener`（`onEvent`）与 `NodeEngineEventSink`（发出端）、渲染扩展类型、DOM 节点类型等，见 [controller-api.md](./controller-api.md)
+- 主题与外观：`resolveColorScheme(theme)`、`resolveNodeAccent(node, definition)`；默认节点的 `resolveDomNodeClass`（选中、拖动与执行状态类）、`resolveDomNodeAccentStyle`（`--nw-node-accent`）、`resolveDomNodeStatusClass`（状态角标），以及端口的 `resolveDomPortDotStyle`（`--nw-port-color`）、`resolveDomPortDotClass`、`resolveDomFieldPortDotClass`、`resolveDomPortLabelClass`
+- 类型：`NodeWrightEditorOptions`、`NodeWrightEditorController`、`NodeWrightEditorHost`、`NodeWrightViewSnapshot`、`NodeWrightApi`、`NodeWrightEventMap` 及全部事件 payload、`NodeWrightEventListener`（`onEvent`）与 `NodeWrightEventSink`（发出端）、渲染扩展类型、DOM 节点类型等，见 [controller-api.md](./controller-api.md)
 
 上述 DOM 模型与交互辅助函数是两个适配层渲染默认 DOM 节点所用的同一套实现，编写新的 UI 适配层时直接复用即可；普通应用通常不需要直接调用它们。

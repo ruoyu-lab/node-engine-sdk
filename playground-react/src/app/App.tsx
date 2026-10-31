@@ -1,17 +1,13 @@
-import type { GraphSnapshot, NodeDefinition } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
+import type { GraphSnapshot, NodeDefinition } from '@node-wright/core/protocol'
+import type { NodeWrightRunResult } from '@node-wright/core/runtime'
 import type {
-  NodeEngineConnectionCancelEvent,
-  NodeEngineNodeStatus,
-  NodeEngineResolvePortValueContext,
+  NodeWrightConnectionCancelEvent,
+  NodeWrightNodeStatus,
+  NodeWrightResolvePortValueContext,
   SelectionState,
   ViewportState,
-} from '@node-engine-sdk/core/view'
-import {
-  NodeEngine,
-  type NodeEngineDomComponent,
-  type NodeEngineHandle,
-} from '@node-engine-sdk/react'
+} from '@node-wright/core/view'
+import { NodeWright, type NodeWrightDomComponent, type NodeWrightHandle } from '@node-wright/react'
 import { measureCanvasArea, type CanvasArea } from '@playground/shared/app/canvas-insets'
 import {
   applyDocumentTheme,
@@ -80,13 +76,13 @@ import { EditorToolbar } from '../components/EditorToolbar'
 import { StatusBar } from '../components/StatusBar'
 import { ZoomControls } from '../components/ZoomControls'
 
-const domComponents: Readonly<Record<string, NodeEngineDomComponent>> = {
+const domComponents: Readonly<Record<string, NodeWrightDomComponent>> = {
   [AI_IMAGE_DISPLAY_DOM_COMPONENT]: AiImageDisplayNode,
 }
 
-type EditorRef = RefObject<NodeEngineHandle | null>
+type EditorRef = RefObject<NodeWrightHandle | null>
 
-function requireApi(editor: EditorRef): NodeEngineHandle {
+function requireApi(editor: EditorRef): NodeWrightHandle {
   if (!editor.current) {
     throw new Error('The playground editor is not mounted.')
   }
@@ -99,16 +95,16 @@ function canvasArea(): CanvasArea {
 }
 
 export function App(): ReactElement {
-  const editor = useRef<NodeEngineHandle>(null)
+  const editor = useRef<NodeWrightHandle>(null)
   const [initialLayout] = useState(() => resolveInitialShellLayout(window))
   const [activeScenarioId, setActiveScenarioId] = useState<DemoScenarioId>('ai-image')
   const activeScenario = getDemoScenario(activeScenarioId)
   const [graph, setGraph] = useState<GraphSnapshot>(() => activeScenario.graph())
   const [selection, setSelection] = useState<SelectionState>(EMPTY_SELECTION)
-  const [runtimeResult, setRuntimeResult] = useState<NodeEngineRunResult | null>(null)
+  const [runtimeResult, setRuntimeResult] = useState<NodeWrightRunResult | null>(null)
   const [runtimeEvents, setRuntimeEvents] = useState<DemoRuntimeLogEntry[]>([])
   const [nodeStatus, setNodeStatus] =
-    useState<Readonly<Record<string, NodeEngineNodeStatus>>>(NO_NODE_STATUS)
+    useState<Readonly<Record<string, NodeWrightNodeStatus>>>(NO_NODE_STATUS)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [runtimeRunning, setRuntimeRunning] = useState(false)
   const [connectionCreateMenu, setConnectionCreateMenu] = useState<ConnectionCreateMenu | null>(
@@ -133,7 +129,7 @@ export function App(): ReactElement {
   useLayoutEffect(() => applyDocumentTheme(document, themeId), [themeId])
 
   const resolvePortValue = useCallback(
-    (context: NodeEngineResolvePortValueContext) =>
+    (context: NodeWrightResolvePortValueContext) =>
       resolveDemoPortValue(context, runtimeResult, activeScenario),
     [runtimeResult, activeScenario],
   )
@@ -143,7 +139,7 @@ export function App(): ReactElement {
    * the toolbar reads zoom and history from it. StrictMode's simulated remount mounts a second
    * editor, which is fitted the same way.
    */
-  function onEditorMount(api: NodeEngineHandle): void {
+  function onEditorMount(api: NodeWrightHandle): void {
     fitGraph(api, canvasArea())
     setZoom(api.view.get().zoom)
     setHistory(readHistory(api))
@@ -217,7 +213,7 @@ export function App(): ReactElement {
     setZoom(viewport.zoom)
   }
 
-  function onConnectionCancel(event: NodeEngineConnectionCancelEvent): void {
+  function onConnectionCancel(event: NodeWrightConnectionCancelEvent): void {
     setConnectionCreateMenu(
       openConnectionCreateMenu(
         event,
@@ -262,7 +258,7 @@ export function App(): ReactElement {
 
   return (
     <main className={shellClassName} data-theme={themeId} onPointerDown={closeConnectionCreateMenu}>
-      <NodeEngine
+      <NodeWright
         key={activeScenario.id}
         ref={editor}
         className="app-shell__graph"

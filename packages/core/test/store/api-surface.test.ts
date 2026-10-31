@@ -50,7 +50,7 @@ const graphStoreMethods = [
   'getPort',
 ] as const
 
-describe('@node-engine-sdk/core/store API surface', () => {
+describe('@node-wright/core/store API surface', () => {
   it('exports the store, its factory, and the command factories, and nothing internal', () => {
     expect(Object.keys(store).sort()).toEqual([
       'GraphStore',

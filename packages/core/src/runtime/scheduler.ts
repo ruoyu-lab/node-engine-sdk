@@ -1,7 +1,7 @@
 import type {
-  NodeEngineRuntimeScheduledTask,
-  NodeEngineRuntimeScheduler,
-  NodeEngineRuntimeSchedulerContext,
+  NodeWrightRuntimeScheduledTask,
+  NodeWrightRuntimeScheduler,
+  NodeWrightRuntimeSchedulerContext,
 } from './types.js'
 
 export interface ConcurrentSchedulerOptions {
@@ -10,7 +10,7 @@ export interface ConcurrentSchedulerOptions {
   retries?: number
 }
 
-export function createSequentialScheduler(): NodeEngineRuntimeScheduler {
+export function createSequentialScheduler(): NodeWrightRuntimeScheduler {
   return {
     async schedule(context, tasks) {
       const results = []
@@ -26,7 +26,7 @@ export function createSequentialScheduler(): NodeEngineRuntimeScheduler {
 
 export function createConcurrentScheduler(
   options: ConcurrentSchedulerOptions = {},
-): NodeEngineRuntimeScheduler {
+): NodeWrightRuntimeScheduler {
   const maxConcurrency = Math.max(1, options.maxConcurrency ?? Number.POSITIVE_INFINITY)
 
   return {
@@ -62,8 +62,8 @@ export function createConcurrentScheduler(
 }
 
 async function runTaskWithPolicy<T>(
-  context: NodeEngineRuntimeSchedulerContext,
-  task: NodeEngineRuntimeScheduledTask<T>,
+  context: NodeWrightRuntimeSchedulerContext,
+  task: NodeWrightRuntimeScheduledTask<T>,
   options: ConcurrentSchedulerOptions,
 ): Promise<T> {
   const retries = task.retryable ? Math.max(0, options.retries ?? 0) : 0
@@ -90,8 +90,8 @@ function assertTaskActive(taskId: string, signal: AbortSignal): void {
 }
 
 async function runTaskAttempt<T>(
-  context: NodeEngineRuntimeSchedulerContext,
-  task: NodeEngineRuntimeScheduledTask<T>,
+  context: NodeWrightRuntimeSchedulerContext,
+  task: NodeWrightRuntimeScheduledTask<T>,
   attempt: number,
   timeoutMs: number | undefined,
 ): Promise<T> {

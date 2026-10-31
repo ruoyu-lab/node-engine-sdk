@@ -15,8 +15,8 @@
   --pg-left-occupied: calc(var(--pg-edge) * 2 + var(--pg-sidebar-width));
   --pg-right-occupied: calc(var(--pg-edge) * 2 + var(--pg-panel-width));
   /* The editor's minimap sits in the bottom-right corner, below the run panel. */
-  --ne-minimap-right: var(--pg-edge);
-  --ne-minimap-bottom: var(--pg-edge);
+  --nw-minimap-right: var(--pg-edge);
+  --nw-minimap-bottom: var(--pg-edge);
 
   position: relative;
   width: 100%;
@@ -186,7 +186,7 @@
 }
 
 /* The editor's performance overlay moves above the status chips. */
-.app-shell .ne-performance {
+.app-shell .nw-performance {
   top: auto;
   right: auto;
   bottom: calc(var(--pg-edge) + 42px);
@@ -232,7 +232,7 @@
   }
 
   .app-shell__status,
-  .app-shell .ne-minimap,
+  .app-shell .nw-minimap,
   .app-shell:not(.app-shell--panel-collapsed) .app-shell__zoom-controls {
     display: none;
   }

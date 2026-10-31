@@ -1,21 +1,21 @@
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   type GraphEdge,
   type GraphGroup,
   type GraphNode,
   type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+} from '@node-wright/core/protocol'
 import {
   createDataflowPreset,
   DATA_SOURCE_NODE_TYPE,
-  type NodeEnginePreset,
-} from '@node-engine-sdk/presets'
+  type NodeWrightPreset,
+} from '@node-wright/presets'
 import type {
-  NodeEngineRuntimeFunctionDefinition,
-  NodeEngineRuntimeInitialVariables,
-  NodeEngineRuntimeNodeDefinition,
-  NodeEngineRuntimeSubgraphDefinition,
-} from '@node-engine-sdk/core/runtime'
+  NodeWrightRuntimeFunctionDefinition,
+  NodeWrightRuntimeInitialVariables,
+  NodeWrightRuntimeNodeDefinition,
+  NodeWrightRuntimeSubgraphDefinition,
+} from '@node-wright/core/runtime'
 import {
   AI_IMAGE_ACCENT,
   AI_IMAGE_DISPLAY_NODE_TYPE,
@@ -48,12 +48,12 @@ export interface DemoScenario {
   accent: string
   summary: string
   graph: () => GraphSnapshot
-  preset: NodeEnginePreset
-  runtimeDefinitions?: NodeEngineRuntimeNodeDefinition[]
-  functionDefinitions?: NodeEngineRuntimeFunctionDefinition[]
-  subgraphDefinitions?: NodeEngineRuntimeSubgraphDefinition[]
+  preset: NodeWrightPreset
+  runtimeDefinitions?: NodeWrightRuntimeNodeDefinition[]
+  functionDefinitions?: NodeWrightRuntimeFunctionDefinition[]
+  subgraphDefinitions?: NodeWrightRuntimeSubgraphDefinition[]
   runtimeEventId?: string
-  runtimeInitialVariables?: NodeEngineRuntimeInitialVariables
+  runtimeInitialVariables?: NodeWrightRuntimeInitialVariables
   outputs: DemoScenarioOutput[]
 }
 
@@ -195,7 +195,7 @@ function createAiImageDemoGraph(): GraphSnapshot {
   ]
 
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes,
     edges,
     groups,

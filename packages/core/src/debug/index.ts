@@ -1,12 +1,12 @@
 import type {
-  NodeEngineRuntimeCallFrame,
-  NodeEngineRuntimeNodeState,
-  NodeEngineRuntimeTraceEntry,
-  NodeEngineRunResult,
+  NodeWrightRuntimeCallFrame,
+  NodeWrightRuntimeNodeState,
+  NodeWrightRuntimeTraceEntry,
+  NodeWrightRunResult,
 } from '../runtime/index.js'
 
-export interface NodeEngineDebugSummary {
-  status: NodeEngineRunResult['status']
+export interface NodeWrightDebugSummary {
+  status: NodeWrightRunResult['status']
   totalNodes: number
   failedNodes: string[]
   pausedNodes: string[]
@@ -15,7 +15,7 @@ export interface NodeEngineDebugSummary {
   totalCallFrames: number
 }
 
-export function summarizeRunDebugState(run: NodeEngineRunResult): NodeEngineDebugSummary {
+export function summarizeRunDebugState(run: NodeWrightRunResult): NodeWrightDebugSummary {
   const states = Object.values(run.nodeStates)
 
   return {
@@ -30,39 +30,39 @@ export function summarizeRunDebugState(run: NodeEngineRunResult): NodeEngineDebu
 }
 
 export function getCurrentDebugNode(
-  run: NodeEngineRunResult,
-): NodeEngineRuntimeNodeState | undefined {
+  run: NodeWrightRunResult,
+): NodeWrightRuntimeNodeState | undefined {
   return Object.values(run.nodeStates).find(
     (state) => state.status === 'running' || state.status === 'paused',
   )
 }
 
-export function getFailedTraceEntries(run: NodeEngineRunResult): NodeEngineRuntimeTraceEntry[] {
+export function getFailedTraceEntries(run: NodeWrightRunResult): NodeWrightRuntimeTraceEntry[] {
   return run.trace.filter((entry) => entry.status === 'error')
 }
 
 export function getTraceEntriesByKind(
-  run: NodeEngineRunResult,
-  kind: NonNullable<NodeEngineRuntimeTraceEntry['kind']>,
-): NodeEngineRuntimeTraceEntry[] {
+  run: NodeWrightRunResult,
+  kind: NonNullable<NodeWrightRuntimeTraceEntry['kind']>,
+): NodeWrightRuntimeTraceEntry[] {
   return run.trace.filter((entry) => entry.kind === kind)
 }
 
-export function getActiveCallStack(run: NodeEngineRunResult): NodeEngineRuntimeCallFrame[] {
+export function getActiveCallStack(run: NodeWrightRunResult): NodeWrightRuntimeCallFrame[] {
   return run.callFrames.filter((frame) => frame.status === 'running')
 }
 
-export function getFailedCallFrames(run: NodeEngineRunResult): NodeEngineRuntimeCallFrame[] {
+export function getFailedCallFrames(run: NodeWrightRunResult): NodeWrightRuntimeCallFrame[] {
   return run.callFrames.filter((frame) => frame.status === 'error')
 }
 
 export function getTraceForFrame(
-  run: NodeEngineRunResult,
+  run: NodeWrightRunResult,
   frameId: string,
-): NodeEngineRuntimeTraceEntry[] {
+): NodeWrightRuntimeTraceEntry[] {
   return run.trace.filter((entry) => entry.frameId === frameId)
 }
 
-function sumTraceDuration(trace: NodeEngineRuntimeTraceEntry[]): number {
+function sumTraceDuration(trace: NodeWrightRuntimeTraceEntry[]): number {
   return trace.reduce((total, entry) => total + (entry.durationMs ?? 0), 0)
 }

@@ -11,7 +11,7 @@ import {
 import type { GraphStore } from '../../store/index.js'
 import { DEFAULT_DOM_MIN_HEIGHT, DEFAULT_DOM_MIN_WIDTH } from '../dom-model/layout.js'
 import { snap, type GraphRect } from '../rendering/geometry.js'
-import type { NodeEngineEventSink } from '../types/index.js'
+import type { NodeWrightEventSink } from '../types/index.js'
 import type { EditorExtensions } from './extensions.js'
 import { syncGroupMembership } from './groups.js'
 import type { GridSnapping } from './interactions/drag.js'
@@ -50,7 +50,7 @@ export function createNodeCommands(options: {
   nodeViews: NodeViews
   resizePreview: ResizePreview
   getSnapping: () => GridSnapping
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): NodeCommands {
   const store = options.getStore
 

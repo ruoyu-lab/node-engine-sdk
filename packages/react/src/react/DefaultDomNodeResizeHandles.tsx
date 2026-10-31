@@ -2,7 +2,7 @@ import {
   DOM_NODE_RESIZE_HANDLES,
   type DomNodeControls,
   type DomNodeResizeHandleDescriptor,
-} from '@node-engine-sdk/core/view'
+} from '@node-wright/core/view'
 import type { ReactElement } from 'react'
 import { toClassName } from './class-names.js'
 import { useDomEvents } from './use-dom-events.js'
@@ -29,7 +29,7 @@ function ResizeHandle(props: {
   return (
     <div
       ref={handleRef}
-      className={toClassName(['ne-default-dom-node__resize-corner', item.className])}
+      className={toClassName(['nw-default-dom-node__resize-corner', item.className])}
     />
   )
 }

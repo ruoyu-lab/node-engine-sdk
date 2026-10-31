@@ -1,13 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import { applyGraphLayout, layoutGraph } from '../../src/layout/index'
 
 function makeGraph(partial: Partial<GraphSnapshot>): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],
@@ -16,7 +13,7 @@ function makeGraph(partial: Partial<GraphSnapshot>): GraphSnapshot {
   }
 }
 
-describe('@node-engine-sdk/core/layout layoutGraph', () => {
+describe('@node-wright/core/layout layoutGraph', () => {
   it('ranks a linear chain by edge depth', () => {
     const graph = makeGraph({
       nodes: [
@@ -195,7 +192,7 @@ describe('@node-engine-sdk/core/layout layoutGraph', () => {
   })
 })
 
-describe('@node-engine-sdk/core/layout applyGraphLayout', () => {
+describe('@node-wright/core/layout applyGraphLayout', () => {
   it('writes layout patches back into a graph snapshot without mutating the original', () => {
     const original = makeGraph({
       nodes: [

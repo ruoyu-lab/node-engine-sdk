@@ -1,18 +1,18 @@
 import { cloneValue } from '../../protocol/index.js'
 import { computed, type ReadonlySignal } from '../reactive.js'
 import type {
-  NodeEngineInteractionState,
-  NodeEnginePerformanceMode,
+  NodeWrightInteractionState,
+  NodeWrightPerformanceMode,
   ViewportState,
 } from '../types/index.js'
 import type { InteractionState } from './interaction-state.js'
 
 /** Summary of what the user is doing right now, and the canvas cursor that goes with it. */
 export interface InteractionMode {
-  readonly mode: ReadonlySignal<NodeEnginePerformanceMode>
-  readonly interaction: ReadonlySignal<NodeEngineInteractionState>
+  readonly mode: ReadonlySignal<NodeWrightPerformanceMode>
+  readonly interaction: ReadonlySignal<NodeWrightInteractionState>
   readonly cursor: ReadonlySignal<string>
-  getState: () => NodeEngineInteractionState
+  getState: () => NodeWrightInteractionState
 }
 
 export function createInteractionMode(options: {
@@ -22,7 +22,7 @@ export function createInteractionMode(options: {
 }): InteractionMode {
   const { state } = options
 
-  const mode = computed<NodeEnginePerformanceMode>(() => {
+  const mode = computed<NodeWrightPerformanceMode>(() => {
     const source = state.viewportSource.value
 
     if (state.nodeResize.value || state.groupResize.value || state.drag.value) {
@@ -44,7 +44,7 @@ export function createInteractionMode(options: {
     return state.marquee.value ? 'marquee' : 'idle'
   })
 
-  const interaction = computed<NodeEngineInteractionState>(() => {
+  const interaction = computed<NodeWrightInteractionState>(() => {
     const drag = state.drag.value
     const nodeResize = state.nodeResize.value
     const groupResize = state.groupResize.value

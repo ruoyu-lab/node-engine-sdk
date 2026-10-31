@@ -2,7 +2,7 @@ import { cloneValue, type GraphSnapshot, type XYPosition } from '../../protocol/
 import type { GraphStore } from '../../store/index.js'
 import { signal, type ReadonlySignal } from '../reactive.js'
 import { clamp } from '../rendering/geometry.js'
-import type { NodeEngineEventSink, ViewportState } from '../types/index.js'
+import type { NodeWrightEventSink, ViewportState } from '../types/index.js'
 
 /** Committed viewport (pan offset and zoom); live gesture previews are layered on top of it. */
 export interface ViewportModel {
@@ -15,7 +15,7 @@ export function createViewportModel(options: {
   initial: Partial<ViewportState> | undefined
   getZoomRange: () => { minZoom: number; maxZoom: number }
   getStore: () => GraphStore
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): ViewportModel {
   const viewport = signal(normalizeViewport(options.initial))
 

@@ -1,5 +1,5 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { createEditorController, type NodeEngineMinimapHost } from '@node-engine-sdk/core/view'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { createEditorController, type NodeWrightMinimapHost } from '@node-wright/core/view'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createMinimap, createMinimapScene } from '../../src/view/controller/minimap'
 import { resolveEditorOptions } from '../../src/view/controller/options'
@@ -63,7 +63,7 @@ const SCALE = 0.08
 
 function mountWithMinimap(
   options: Parameters<typeof mountEditor>[0] = {},
-): EditorHarness & { minimap: NodeEngineMinimapHost; unmountMinimap: () => void } {
+): EditorHarness & { minimap: NodeWrightMinimapHost; unmountMinimap: () => void } {
   harness = mountEditor({
     graph: createMinimapGraph(),
     nodeTypes: canvasOnlyNodeTypes,
@@ -77,7 +77,7 @@ function mountWithMinimap(
   return { ...harness, minimap, unmountMinimap: harness.controller.mountMinimap(minimap) }
 }
 
-function createMinimapHost(parent: HTMLElement): NodeEngineMinimapHost {
+function createMinimapHost(parent: HTMLElement): NodeWrightMinimapHost {
   const root = document.createElement('div')
   const canvas = document.createElement('canvas')
 

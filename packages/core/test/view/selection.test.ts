@@ -1,4 +1,4 @@
-import { createGraphStore } from '@node-engine-sdk/core/store'
+import { createGraphStore } from '@node-wright/core/store'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createSelectionModel } from '../../src/view/controller/selection'
 import { canvasOnlyNodeTypes, createGraph, mountEditor, type EditorHarness } from './editor-harness'

@@ -1,15 +1,15 @@
 {
-  "name": "@node-engine-sdk/presets",
+  "name": "@node-wright/presets",
   "version": "0.1.0-beta.3",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ruoyu-lab/node-engine-sdk.git",
+    "url": "git+https://github.com/ruoyu-lab/node-wright.git",
     "directory": "packages/presets"
   },
-  "homepage": "https://github.com/ruoyu-lab/node-engine-sdk#readme",
+  "homepage": "https://github.com/ruoyu-lab/node-wright#readme",
   "bugs": {
-    "url": "https://github.com/ruoyu-lab/node-engine-sdk/issues"
+    "url": "https://github.com/ruoyu-lab/node-wright/issues"
   },
   "type": "module",
   "sideEffects": false,
@@ -55,7 +55,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@node-engine-sdk/core": "0.1.0-beta.3"
+    "@node-wright/core": "0.1.0-beta.3"
   },
-  "description": "Official Node Engine SDK preset nodes: dataflow, execflow, function and subgraph nodes with ready-to-use presets"
+  "description": "Official Node Wright preset nodes: dataflow, execflow, function and subgraph nodes with ready-to-use presets"
 }

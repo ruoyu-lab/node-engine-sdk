@@ -1,9 +1,9 @@
 import type { GraphValue } from '../../protocol/index.js'
 import type {
-  NodeEngineResolvedDomNodeField,
-  NodeEngineResolvedDomNodeModel,
-  NodeEngineResolvedDomNodePort,
-  NodeEngineStyleDeclaration,
+  NodeWrightResolvedDomNodeField,
+  NodeWrightResolvedDomNodeModel,
+  NodeWrightResolvedDomNodePort,
+  NodeWrightStyleDeclaration,
 } from '../types/index.js'
 import { CANVAS_FONT_FAMILY } from '../rendering/color.js'
 
@@ -12,39 +12,39 @@ import { CANVAS_FONT_FAMILY } from '../rendering/color.js'
 export type DomTimeSegment = 'hours' | 'minutes'
 
 const NUMBER_DRAG_PIXELS_PER_STEP = 14
-/** Font of `.ne-default-dom-node__field-label`; the label column is measured with it. */
+/** Font of `.nw-default-dom-node__field-label`; the label column is measured with it. */
 const FIELD_LABEL_FONT = `500 11px ${CANVAS_FONT_FAMILY}`
 const FIELD_INPUT_PORT_WIDTH = 18
 const MIN_FIELD_LABEL_COLUMN_WIDTH = 56
 
-/** Inline style of a port dot: the port's colour as `--ne-port-color`; states are classes. */
+/** Inline style of a port dot: the port's colour as `--nw-port-color`; states are classes. */
 export function resolveDomPortDotStyle(
-  port: NodeEngineResolvedDomNodePort,
-): NodeEngineStyleDeclaration {
-  return { '--ne-port-color': port.color }
+  port: NodeWrightResolvedDomNodePort,
+): NodeWrightStyleDeclaration {
+  return { '--nw-port-color': port.color }
 }
 
-/** State classes of a port column dot (`ne-default-dom-node__port-dot--*`). */
+/** State classes of a port column dot (`nw-default-dom-node__port-dot--*`). */
 export function resolveDomPortDotClass(
-  port: NodeEngineResolvedDomNodePort,
+  port: NodeWrightResolvedDomNodePort,
 ): Record<string, boolean> {
-  return resolvePortStateClass('ne-default-dom-node__port-dot', port)
+  return resolvePortStateClass('nw-default-dom-node__port-dot', port)
 }
 
-/** State classes of a parameter input port dot (`ne-default-dom-node__field-port-dot--*`). */
+/** State classes of a parameter input port dot (`nw-default-dom-node__field-port-dot--*`). */
 export function resolveDomFieldPortDotClass(
-  port: NodeEngineResolvedDomNodePort,
+  port: NodeWrightResolvedDomNodePort,
 ): Record<string, boolean> {
-  return resolvePortStateClass('ne-default-dom-node__field-port-dot', port)
+  return resolvePortStateClass('nw-default-dom-node__field-port-dot', port)
 }
 
-/** State classes of a port label (`ne-default-dom-node__port-label--*`). */
+/** State classes of a port label (`nw-default-dom-node__port-label--*`). */
 export function resolveDomPortLabelClass(
-  port: NodeEngineResolvedDomNodePort,
+  port: NodeWrightResolvedDomNodePort,
 ): Record<string, boolean> {
   return {
-    'ne-default-dom-node__port-label--active': port.active === true,
-    'ne-default-dom-node__port-label--incompatible': port.connectable === false,
+    'nw-default-dom-node__port-label--active': port.active === true,
+    'nw-default-dom-node__port-label--incompatible': port.connectable === false,
   }
 }
 
@@ -54,7 +54,7 @@ export function resolveDomPortLabelClass(
  */
 function resolvePortStateClass(
   block: string,
-  port: NodeEngineResolvedDomNodePort,
+  port: NodeWrightResolvedDomNodePort,
 ): Record<string, boolean> {
   return {
     [`${block}--exec`]: port.port.kind === 'exec',
@@ -66,34 +66,34 @@ function resolvePortStateClass(
 }
 
 export function resolveDomFieldRowClass(
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
 ): Record<string, boolean> {
   return {
-    'ne-default-dom-node__field--textarea': field.kind === 'textarea',
-    'ne-default-dom-node__field--image': field.kind === 'image',
-    'ne-default-dom-node__field--driven': field.driven,
-    'ne-default-dom-node__field--has-input': Boolean(field.inputPort),
+    'nw-default-dom-node__field--textarea': field.kind === 'textarea',
+    'nw-default-dom-node__field--image': field.kind === 'image',
+    'nw-default-dom-node__field--driven': field.driven,
+    'nw-default-dom-node__field--has-input': Boolean(field.inputPort),
   }
 }
 
 export function resolveDomFieldControlClass(
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
 ): Record<string, boolean> {
   return {
-    'ne-default-dom-node__field-control--highlighted': field.highlighted,
-    'ne-default-dom-node__field-control--textarea': field.kind === 'textarea',
-    'ne-default-dom-node__field-control--range': field.kind === 'range',
-    'ne-default-dom-node__field-control--number': field.kind === 'number',
-    'ne-default-dom-node__field-control--time': field.kind === 'time',
-    'ne-default-dom-node__field-control--select': field.kind === 'select',
-    'ne-default-dom-node__field-control--text': field.kind === 'text',
-    'ne-default-dom-node__field-control--boolean': field.kind === 'boolean',
+    'nw-default-dom-node__field-control--highlighted': field.highlighted,
+    'nw-default-dom-node__field-control--textarea': field.kind === 'textarea',
+    'nw-default-dom-node__field-control--range': field.kind === 'range',
+    'nw-default-dom-node__field-control--number': field.kind === 'number',
+    'nw-default-dom-node__field-control--time': field.kind === 'time',
+    'nw-default-dom-node__field-control--select': field.kind === 'select',
+    'nw-default-dom-node__field-control--text': field.kind === 'text',
+    'nw-default-dom-node__field-control--boolean': field.kind === 'boolean',
   }
 }
 
 export function resolveDomFieldRowStyle(
-  field: NodeEngineResolvedDomNodeField,
-): NodeEngineStyleDeclaration {
+  field: NodeWrightResolvedDomNodeField,
+): NodeWrightStyleDeclaration {
   return {
     height: `${field.height}px`,
     minHeight: `${field.height}px`,
@@ -102,9 +102,9 @@ export function resolveDomFieldRowStyle(
 
 /** Positions the field section and sizes its label column to the widest non-textarea label. */
 export function resolveDomFieldsStyle(
-  model: NodeEngineResolvedDomNodeModel,
+  model: NodeWrightResolvedDomNodeModel,
   measureLabel: (label: string) => number = measureDomFieldLabel,
-): NodeEngineStyleDeclaration {
+): NodeWrightStyleDeclaration {
   const inset = Math.max(8, model.layout.portInset - 5)
   const labelColumnWidth = Math.max(
     MIN_FIELD_LABEL_COLUMN_WIDTH,
@@ -119,7 +119,7 @@ export function resolveDomFieldsStyle(
     right: `${inset}px`,
     bottom: `${model.layout.bottomPadding}px`,
     gap: `${model.layout.fieldRowGap}px`,
-    '--ne-field-label-column-width': `${labelColumnWidth}px`,
+    '--nw-field-label-column-width': `${labelColumnWidth}px`,
   }
 }
 
@@ -141,14 +141,14 @@ export function measureDomFieldLabel(label: string): number {
     : label.length * 10
 }
 
-export function resolveDomFieldImageUrl(field: NodeEngineResolvedDomNodeField): string | null {
+export function resolveDomFieldImageUrl(field: NodeWrightResolvedDomNodeField): string | null {
   const value = field.resolvedValue
   return typeof value === 'string' && value.trim().length > 0 ? value : null
 }
 
 export function resolveDomFieldImageAspectStyle(
-  field: NodeEngineResolvedDomNodeField,
-): NodeEngineStyleDeclaration | undefined {
+  field: NodeWrightResolvedDomNodeField,
+): NodeWrightStyleDeclaration | undefined {
   if (field.kind !== 'image' || typeof field.aspectRatio !== 'number' || !(field.aspectRatio > 0)) {
     return undefined
   }
@@ -156,7 +156,7 @@ export function resolveDomFieldImageAspectStyle(
   return { aspectRatio: String(field.aspectRatio) }
 }
 
-export function resolveDomFieldDisplayValue(field: NodeEngineResolvedDomNodeField): string {
+export function resolveDomFieldDisplayValue(field: NodeWrightResolvedDomNodeField): string {
   if (field.kind === 'boolean') {
     return field.resolvedValue === true ? 'ON' : 'OFF'
   }
@@ -164,7 +164,7 @@ export function resolveDomFieldDisplayValue(field: NodeEngineResolvedDomNodeFiel
   return field.resolvedTextValue
 }
 
-export function resolveDomFieldRangeProgress(field: NodeEngineResolvedDomNodeField): number {
+export function resolveDomFieldRangeProgress(field: NodeWrightResolvedDomNodeField): number {
   if (field.kind !== 'range' || typeof field.resolvedValue !== 'number') {
     return 0
   }
@@ -179,7 +179,7 @@ export function resolveDomFieldRangeProgress(field: NodeEngineResolvedDomNodeFie
   return Math.min(Math.max(((field.resolvedValue - min) / (max - min)) * 100, 0), 100)
 }
 
-export function resolveDomFieldStringValue(field: NodeEngineResolvedDomNodeField): string {
+export function resolveDomFieldStringValue(field: NodeWrightResolvedDomNodeField): string {
   return typeof field.resolvedValue === 'string'
     ? field.resolvedValue
     : field.resolvedValue == null
@@ -187,13 +187,13 @@ export function resolveDomFieldStringValue(field: NodeEngineResolvedDomNodeField
       : String(field.resolvedValue)
 }
 
-export function resolveDomFieldNumberValue(field: NodeEngineResolvedDomNodeField): number {
+export function resolveDomFieldNumberValue(field: NodeWrightResolvedDomNodeField): number {
   return typeof field.resolvedValue === 'number'
     ? field.resolvedValue
     : Number(field.resolvedValue ?? 0)
 }
 
-export function resolveDomFieldStep(field: NodeEngineResolvedDomNodeField): number {
+export function resolveDomFieldStep(field: NodeWrightResolvedDomNodeField): number {
   const step = typeof field.step === 'number' ? field.step : 1
 
   return Number.isFinite(step) && step > 0 ? step : 1
@@ -204,7 +204,7 @@ export function resolveDomFieldStep(field: NodeEngineResolvedDomNodeField): numb
  * declares no step takes any number: its step buttons and drag still move by 1.
  */
 export function normalizeDomFieldNumber(
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
   value: number,
 ): number {
   let nextValue = value
@@ -256,7 +256,7 @@ export function sanitizeDomNumberDraft(rawValue: string): string {
 
 /** Value for a number field dragged horizontally by `deltaX` pixels from `startValue`. */
 export function resolveDomNumberDragValue(
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
   startValue: number,
   deltaX: number,
 ): { stepDelta: number; value: number } {
@@ -269,7 +269,7 @@ export function resolveDomNumberDragValue(
 }
 
 export function resolveDomFieldOptionValue(
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
   rawValue: string,
 ): GraphValue {
   const match = field.options?.find((option) => String(option.value ?? '') === rawValue)
@@ -277,13 +277,13 @@ export function resolveDomFieldOptionValue(
 }
 
 export function isDomFieldOptionSelected(
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
   optionValue: GraphValue,
 ): boolean {
   return String(optionValue ?? '') === String(field.resolvedValue ?? '')
 }
 
-export function resolveDomSelectedOptionLabel(field: NodeEngineResolvedDomNodeField): string {
+export function resolveDomSelectedOptionLabel(field: NodeWrightResolvedDomNodeField): string {
   const match = field.options?.find(
     (option) =>
       option.value === field.resolvedValue || isDomFieldOptionSelected(field, option.value),
@@ -293,7 +293,7 @@ export function resolveDomSelectedOptionLabel(field: NodeEngineResolvedDomNodeFi
 }
 
 export function parseDomTimeValue(
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
 ): Record<DomTimeSegment, string> {
   const match = /^(\d{1,2})(?::(\d{1,2}))?$/.exec(resolveDomFieldStringValue(field).trim())
 

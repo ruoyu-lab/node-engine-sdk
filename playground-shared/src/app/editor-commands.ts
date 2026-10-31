@@ -1,21 +1,21 @@
 import type {
-  NodeEngineApi,
-  NodeEngineMinimapOptions,
-  NodeEnginePerformanceOptions,
-  NodeEngineWheelBehavior,
+  NodeWrightApi,
+  NodeWrightMinimapOptions,
+  NodeWrightPerformanceOptions,
+  NodeWrightWheelBehavior,
   SelectionState,
-} from '@node-engine-sdk/core/view'
+} from '@node-wright/core/view'
 import type { DemoScenario } from '../demo/scenarios'
 import type { CanvasArea } from './canvas-insets'
 
 /** Editor options both playground apps pass unchanged; constants keep their identity. */
-export const PLAYGROUND_WHEEL_BEHAVIOR: NodeEngineWheelBehavior = 'mixed'
-export const PLAYGROUND_MINIMAP: Readonly<NodeEngineMinimapOptions> = { width: 200, height: 136 }
+export const PLAYGROUND_WHEEL_BEHAVIOR: NodeWrightWheelBehavior = 'mixed'
+export const PLAYGROUND_MINIMAP: Readonly<NodeWrightMinimapOptions> = { width: 200, height: 136 }
 export const EMPTY_SELECTION: Readonly<SelectionState> = { nodes: [], edges: [] }
 
 /** Performance sampling, with or without the editor's performance overlay. */
 export const PLAYGROUND_PERFORMANCE: Readonly<
-  Record<'sampling' | 'overlay', Readonly<Partial<NodeEnginePerformanceOptions>>>
+  Record<'sampling' | 'overlay', Readonly<Partial<NodeWrightPerformanceOptions>>>
 > = {
   sampling: { enabled: true },
   overlay: { enabled: true, overlay: true, overlayMinWidth: 600 },
@@ -32,7 +32,7 @@ export interface HistoryAvailability {
 
 export const NO_HISTORY: Readonly<HistoryAvailability> = { canUndo: false, canRedo: false }
 
-export function readHistory(api: NodeEngineApi): HistoryAvailability {
+export function readHistory(api: NodeWrightApi): HistoryAvailability {
   return { canUndo: api.history.canUndo(), canRedo: api.history.canRedo() }
 }
 
@@ -42,7 +42,7 @@ export function readHistory(api: NodeEngineApi): HistoryAvailability {
  * middle of the free area's left edge, so the start of the graph stays in view and the rest is a
  * pan away.
  */
-export function fitGraph(api: NodeEngineApi, area: CanvasArea): void {
+export function fitGraph(api: NodeWrightApi, area: CanvasArea): void {
   api.view.fit.graph(area.insets)
 
   const fitted = api.view.get()
@@ -62,11 +62,11 @@ export function fitGraph(api: NodeEngineApi, area: CanvasArea): void {
   })
 }
 
-export function zoomIn(api: NodeEngineApi): void {
+export function zoomIn(api: NodeWrightApi): void {
   api.view.zoom.to(api.view.get().zoom * ZOOM_STEP)
 }
 
-export function zoomOut(api: NodeEngineApi): void {
+export function zoomOut(api: NodeWrightApi): void {
   api.view.zoom.to(api.view.get().zoom / ZOOM_STEP)
 }
 
@@ -76,7 +76,7 @@ export function formatZoom(zoom: number): string {
 
 /** Restores the scenario's initial graph, clearing selection and history, and fits it. */
 export function resetScenarioGraph(
-  api: NodeEngineApi,
+  api: NodeWrightApi,
   scenario: DemoScenario,
   area: CanvasArea,
 ): void {
@@ -87,7 +87,7 @@ export function resetScenarioGraph(
 
 /** Applies the preset layout as one undoable change and fits the result. */
 export function applyScenarioLayout(
-  api: NodeEngineApi,
+  api: NodeWrightApi,
   scenario: DemoScenario,
   area: CanvasArea,
 ): void {

@@ -1,14 +1,14 @@
 {
-  "name": "node-engine-sdk-workspace",
+  "name": "node-wright-workspace",
   "version": "0.1.0-beta.3",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ruoyu-lab/node-engine-sdk.git"
+    "url": "git+https://github.com/ruoyu-lab/node-wright.git"
   },
-  "homepage": "https://github.com/ruoyu-lab/node-engine-sdk#readme",
+  "homepage": "https://github.com/ruoyu-lab/node-wright#readme",
   "bugs": {
-    "url": "https://github.com/ruoyu-lab/node-engine-sdk/issues"
+    "url": "https://github.com/ruoyu-lab/node-wright/issues"
   },
   "private": true,
   "type": "module",
@@ -28,10 +28,10 @@
   ],
   "scripts": {
     "build": "npm run build:packages && npm run build:playground",
-    "build:packages": "npm run build -w @node-engine-sdk/core && npm run build -w @node-engine-sdk/vue && npm run build -w @node-engine-sdk/react && npm run build -w @node-engine-sdk/presets",
+    "build:packages": "npm run build -w @node-wright/core && npm run build -w @node-wright/vue && npm run build -w @node-wright/react && npm run build -w @node-wright/presets",
     "build:playground": "npm run typecheck:playground && vite build playground --config playground/config/vite.config.ts && vite build playground-react --config playground-react/config/vite.config.ts",
-    "typecheck": "npm run build -w @node-engine-sdk/core && npm run build -w @node-engine-sdk/vue && npm run typecheck:packages && npm run typecheck:playground",
-    "typecheck:packages": "npm run typecheck -w @node-engine-sdk/core && npm run typecheck -w @node-engine-sdk/vue && npm run typecheck -w @node-engine-sdk/react && npm run typecheck -w @node-engine-sdk/presets",
+    "typecheck": "npm run build -w @node-wright/core && npm run build -w @node-wright/vue && npm run typecheck:packages && npm run typecheck:playground",
+    "typecheck:packages": "npm run typecheck -w @node-wright/core && npm run typecheck -w @node-wright/vue && npm run typecheck -w @node-wright/react && npm run typecheck -w @node-wright/presets",
     "typecheck:playground": "tsc -p playground-shared/tsconfig.json --noEmit && vue-tsc -p playground/tsconfig.json --noEmit && tsc -p playground-react/tsconfig.json --noEmit",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
@@ -42,7 +42,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "benchmark:graphs": "npm run build -w @node-engine-sdk/core && node scripts/benchmark-graphs.mjs",
+    "benchmark:graphs": "npm run build -w @node-wright/core && node scripts/benchmark-graphs.mjs",
     "test:performance": "npm run benchmark:graphs -- --assert",
     "pack:all": "npm run build:packages && node scripts/pack-all.mjs",
     "test:packed": "node scripts/test-packed.mjs",
@@ -75,5 +75,5 @@
     "vue-eslint-parser": "^10.4.1",
     "vue-tsc": "^2.2.10"
   },
-  "description": "Node Engine SDK: a framework-agnostic node graph SDK with official Vue 3 and React adapters"
+  "description": "Node Wright: a framework-agnostic node graph engine with official Vue 3 and React adapters"
 }

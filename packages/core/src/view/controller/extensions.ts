@@ -1,14 +1,14 @@
 import { computed, type ReadonlySignal } from '../reactive.js'
 import type {
   EdgeTypeRegistry,
-  NodeEngineCanvasRenderers,
-  NodeEngineContextMenuItem,
-  NodeEngineEdgeRendererContribution,
-  NodeEngineGroupRendererContribution,
-  NodeEngineHotkey,
-  NodeEngineNodeEditorRegistry,
-  NodeEnginePlugin,
-  NodeEngineToolbarItem,
+  NodeWrightCanvasRenderers,
+  NodeWrightContextMenuItem,
+  NodeWrightEdgeRendererContribution,
+  NodeWrightGroupRendererContribution,
+  NodeWrightHotkey,
+  NodeWrightNodeEditorRegistry,
+  NodeWrightPlugin,
+  NodeWrightToolbarItem,
   NodeTypeDefinition,
   NodeTypeRegistry,
 } from '../types/index.js'
@@ -21,34 +21,34 @@ import type { ResolvedEditorOptions } from './options.js'
  */
 export interface EditorExtensions {
   readonly nodeTypes: ReadonlySignal<NodeTypeRegistry>
-  readonly nodeEditors: ReadonlySignal<NodeEngineNodeEditorRegistry>
+  readonly nodeEditors: ReadonlySignal<NodeWrightNodeEditorRegistry>
   readonly edgeTypes: ReadonlySignal<EdgeTypeRegistry>
-  readonly renderers: ReadonlySignal<NodeEngineCanvasRenderers>
-  readonly groupRenderers: ReadonlySignal<NodeEngineGroupRendererContribution[]>
-  readonly edgeRenderers: ReadonlySignal<NodeEngineEdgeRendererContribution[]>
-  readonly toolbarItems: ReadonlySignal<NodeEngineToolbarItem[]>
-  readonly contextMenuItems: ReadonlySignal<NodeEngineContextMenuItem[]>
+  readonly renderers: ReadonlySignal<NodeWrightCanvasRenderers>
+  readonly groupRenderers: ReadonlySignal<NodeWrightGroupRendererContribution[]>
+  readonly edgeRenderers: ReadonlySignal<NodeWrightEdgeRendererContribution[]>
+  readonly toolbarItems: ReadonlySignal<NodeWrightToolbarItem[]>
+  readonly contextMenuItems: ReadonlySignal<NodeWrightContextMenuItem[]>
   /** Built-in, plugin and direct hotkeys, highest priority first. */
-  readonly hotkeys: ReadonlySignal<NodeEngineHotkey[]>
+  readonly hotkeys: ReadonlySignal<NodeWrightHotkey[]>
   /** Node type definition with the editor-wide canvas node renderer filled in. */
   resolveNodeType: (type: string) => NodeTypeDefinition | undefined
 }
 
 export function createEditorExtensions(options: {
   options: ReadonlySignal<ResolvedEditorOptions>
-  builtInHotkeys: readonly NodeEngineHotkey[]
+  builtInHotkeys: readonly NodeWrightHotkey[]
 }): EditorExtensions {
   const plugins = computed(() => options.options.value.plugins)
   const contributions = <Value>(
-    select: (plugin: NodeEnginePlugin) => readonly Value[] | undefined,
+    select: (plugin: NodeWrightPlugin) => readonly Value[] | undefined,
   ) => plugins.value.flatMap((plugin) => select(plugin) ?? [])
 
   const nodeTypes = computed<NodeTypeRegistry>(() => ({
     ...mergePluginRecords(plugins.value, (plugin) => plugin.components?.nodeTypes),
     ...options.options.value.nodeTypes,
   }))
-  const renderers = computed<NodeEngineCanvasRenderers>(() => ({
-    ...plugins.value.reduce<NodeEngineCanvasRenderers>(
+  const renderers = computed<NodeWrightCanvasRenderers>(() => ({
+    ...plugins.value.reduce<NodeWrightCanvasRenderers>(
       (merged, plugin) => ({ ...merged, ...plugin.components?.renderers }),
       {},
     ),
@@ -126,7 +126,7 @@ function mergeById<T extends { id: string; order?: number }>(items: T[]): T[] {
   )
 }
 
-function mergeHotkeys(items: NodeEngineHotkey[]): NodeEngineHotkey[] {
+function mergeHotkeys(items: NodeWrightHotkey[]): NodeWrightHotkey[] {
   return [...dedupeById(items).values()].sort(
     (left, right) => (right.priority ?? 0) - (left.priority ?? 0),
   )
@@ -144,8 +144,8 @@ function dedupeById<T extends { id: string }>(items: T[]): Map<string, T> {
 }
 
 function mergePluginRecords<Value>(
-  plugins: readonly NodeEnginePlugin[],
-  select: (plugin: NodeEnginePlugin) => Record<string, Value> | undefined,
+  plugins: readonly NodeWrightPlugin[],
+  select: (plugin: NodeWrightPlugin) => Record<string, Value> | undefined,
 ): Record<string, Value> {
   return plugins.reduce<Record<string, Value>>(
     (registry, plugin) => ({ ...registry, ...select(plugin) }),

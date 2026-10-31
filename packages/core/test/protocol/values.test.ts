@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   cloneGraph,
   snapshotEquals,
   type GraphMetadata,
   type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+} from '@node-wright/core/protocol'
 
 function createGraph(meta: GraphMetadata = {}): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [{ id: 'a', type: 'demo', x: 0, y: 0, data: { tags: ['x', 'y'] } }],
     edges: [],
     groups: [],
@@ -17,7 +17,7 @@ function createGraph(meta: GraphMetadata = {}): GraphSnapshot {
   }
 }
 
-describe('@node-engine-sdk/core/protocol snapshot equality', () => {
+describe('@node-wright/core/protocol snapshot equality', () => {
   it('compares snapshots structurally', () => {
     const graph = createGraph({ nested: { list: [1, { deep: true }] } })
 

@@ -2,39 +2,39 @@ import { GraphIndex } from '../protocol/index.js'
 import type { GraphNode, GraphSnapshot } from '../protocol/index.js'
 import { cloneRuntimeValue } from './snapshot.js'
 import type {
-  NodeEngineRunResult,
-  NodeEngineRuntimeCallFrame,
-  NodeEngineRuntimePortValues,
-  NodeEngineRuntimeRunState,
-  NodeEngineRuntimeSchedulePhase,
-  NodeEngineRuntimeSchedulerContext,
-  NodeEngineRuntimeStepMode,
+  NodeWrightRunResult,
+  NodeWrightRuntimeCallFrame,
+  NodeWrightRuntimePortValues,
+  NodeWrightRuntimeRunState,
+  NodeWrightRuntimeSchedulePhase,
+  NodeWrightRuntimeSchedulerContext,
+  NodeWrightRuntimeStepMode,
 } from './types.js'
 import {
   createRuntimeVariableSnapshot,
-  type NodeEngineRuntimeInitialVariables,
-  type NodeEngineRuntimeVariableSnapshot,
+  type NodeWrightRuntimeInitialVariables,
+  type NodeWrightRuntimeVariableSnapshot,
 } from './variables.js'
 
 /** Why a run paused: a breakpoint, an explicit `pause()`, or a finished step. */
 export type RunPauseMode = 'breakpoint' | 'manual' | 'step'
 
 /** Mutable state of one active run. Callers only ever see copies made by `toRunResult`. */
-export interface RunSession extends NodeEngineRuntimeRunState {
+export interface RunSession extends NodeWrightRuntimeRunState {
   controller: AbortController
   /** Releases the run from its current pause. */
   resume?: () => void
   stepRequested: boolean
-  stepMode?: NodeEngineRuntimeStepMode
+  stepMode?: NodeWrightRuntimeStepMode
   stepTargetDepth?: number
   pauseMode?: RunPauseMode
   steps: number
   visits: Map<string, number>
   graph: GraphSnapshot
   graphIndex: GraphIndex
-  dataEvaluations: Map<string, Promise<NodeEngineRuntimePortValues>>
-  variables: NodeEngineRuntimeVariableSnapshot
-  pausedCallStack: NodeEngineRuntimeCallFrame[]
+  dataEvaluations: Map<string, Promise<NodeWrightRuntimePortValues>>
+  variables: NodeWrightRuntimeVariableSnapshot
+  pausedCallStack: NodeWrightRuntimeCallFrame[]
   cancelEmitted: boolean
 }
 
@@ -45,15 +45,15 @@ export interface RunSession extends NodeEngineRuntimeRunState {
 export interface ExecutionScope {
   graph: GraphSnapshot
   graphIndex: GraphIndex
-  dataEvaluations: Map<string, Promise<NodeEngineRuntimePortValues>>
+  dataEvaluations: Map<string, Promise<NodeWrightRuntimePortValues>>
   signal: AbortSignal
-  callStack: NodeEngineRuntimeCallFrame[]
-  subgraphInputs?: NodeEngineRuntimePortValues
+  callStack: NodeWrightRuntimeCallFrame[]
+  subgraphInputs?: NodeWrightRuntimePortValues
 }
 
 export function createRunSession(
   graph: GraphSnapshot,
-  initialVariables: NodeEngineRuntimeInitialVariables | undefined,
+  initialVariables: NodeWrightRuntimeInitialVariables | undefined,
 ): RunSession {
   return {
     runId: createRuntimeId('run'),
@@ -89,9 +89,9 @@ export function createRootScope(run: RunSession): ExecutionScope {
 export function createSchedulerContext(
   run: RunSession,
   scope: ExecutionScope,
-  phase: NodeEngineRuntimeSchedulePhase,
+  phase: NodeWrightRuntimeSchedulePhase,
   node: GraphNode,
-): NodeEngineRuntimeSchedulerContext {
+): NodeWrightRuntimeSchedulerContext {
   return {
     runId: run.runId,
     graph: scope.graph,
@@ -102,7 +102,7 @@ export function createSchedulerContext(
 }
 
 /** A detached copy of the public part of a run. */
-export function toRunResult(run: RunSession): NodeEngineRunResult {
+export function toRunResult(run: RunSession): NodeWrightRunResult {
   return {
     runId: run.runId,
     status: run.status,

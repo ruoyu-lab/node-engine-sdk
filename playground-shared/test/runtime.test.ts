@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
 import { AI_IMAGE_DISPLAY_NODE_TYPE, summarizeAiImageResult } from '../src/business/ai-image'
 import { resolveDemoPortValue } from '../src/app/port-values'
 import { applyRunResultToGraph } from '../src/app/run-result'
@@ -110,7 +110,7 @@ interface PrimitiveRunExpectation {
 const primitiveRuns: PrimitiveRunExpectation[] = [
   {
     id: 'dataflow',
-    outputs: [['预览', '["node-engine-sdk","42"]']],
+    outputs: [['预览', '["node-wright","42"]']],
     trace: [
       'data:preview | df-preview / 成功',
       'data:source | df-name / 成功',
@@ -146,7 +146,7 @@ const primitiveRuns: PrimitiveRunExpectation[] = [
   },
   {
     id: 'function',
-    outputs: [['预览', '你好，Node Engine SDK！（19 字）']],
+    outputs: [['预览', '你好，Node Wright！（15 字）']],
     trace: [
       'data:preview | fn-preview / 成功',
       'data:source | fn-name / 成功',
@@ -160,7 +160,7 @@ const primitiveRuns: PrimitiveRunExpectation[] = [
   },
   {
     id: 'subgraph',
-    outputs: [['预览', '["《Node Engine SDK》","《子图指南》"]']],
+    outputs: [['预览', '["《Node Wright》","《子图指南》"]']],
     trace: [
       'data:preview | sub-preview / 成功',
       'data:source | sub-main / 成功',

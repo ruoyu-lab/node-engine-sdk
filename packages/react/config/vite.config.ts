@@ -13,7 +13,7 @@ export default defineConfig({
     emptyOutDir: false,
     lib: {
       entry: resolve(packageRoot, 'config/bundle-entry.ts'),
-      name: 'NodeEngineReact',
+      name: 'NodeWrightReact',
       cssFileName: 'style',
       fileName: 'index',
       formats: ['es'],
@@ -22,7 +22,7 @@ export default defineConfig({
       // React and core modules stay external; the shared core stylesheet is bundled into `style.css`.
       external: (id) =>
         /^react(?:-dom)?(?:\/|$)/u.test(id) ||
-        (/^@node-engine-sdk\/core(?:\/|$)/u.test(id) && !id.endsWith('.css')),
+        (/^@node-wright\/core(?:\/|$)/u.test(id) && !id.endsWith('.css')),
     },
   },
 })

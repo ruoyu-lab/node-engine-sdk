@@ -3,37 +3,37 @@ import type { GraphNode } from '../protocol/index.js'
 import { createRuntimeId, type RunSession } from './run-session.js'
 import { cloneRuntimeValue } from './snapshot.js'
 import type {
-  NodeEngineRuntimeCallFrame,
-  NodeEngineRuntimeNodeState,
-  NodeEngineRuntimeOptions,
-  NodeEngineRuntimePortValues,
-  NodeEngineRuntimeTraceEntry,
+  NodeWrightRuntimeCallFrame,
+  NodeWrightRuntimeNodeState,
+  NodeWrightRuntimeOptions,
+  NodeWrightRuntimePortValues,
+  NodeWrightRuntimeTraceEntry,
 } from './types.js'
 
-type RecordedStatus = NodeEngineRuntimeNodeState['status']
+type RecordedStatus = NodeWrightRuntimeNodeState['status']
 
 /** A node, function, or subgraph invocation that owns a call frame and a trace entry. */
 export interface RecordedCall {
-  frame: NodeEngineRuntimeCallFrame
-  trace: NodeEngineRuntimeTraceEntry
+  frame: NodeWrightRuntimeCallFrame
+  trace: NodeWrightRuntimeTraceEntry
   /** The caller's call stack with `frame` on top. */
-  callStack: NodeEngineRuntimeCallFrame[]
+  callStack: NodeWrightRuntimeCallFrame[]
 }
 
 export interface NodeOutcome {
   status: RecordedStatus
   startedAt: number
-  inputValues?: NodeEngineRuntimePortValues
-  values?: NodeEngineRuntimePortValues
+  inputValues?: NodeWrightRuntimePortValues
+  values?: NodeWrightRuntimePortValues
   outputSummary?: unknown
   error?: unknown
 }
 
 export interface DataEvaluationOutcome {
   status: RecordedStatus
-  inputValues?: NodeEngineRuntimePortValues
-  values?: NodeEngineRuntimePortValues
-  callStack: NodeEngineRuntimeCallFrame[]
+  inputValues?: NodeWrightRuntimePortValues
+  values?: NodeWrightRuntimePortValues
+  callStack: NodeWrightRuntimeCallFrame[]
   error?: unknown
 }
 
@@ -43,13 +43,13 @@ export interface DataEvaluationOutcome {
  */
 export class RunRecorder {
   constructor(
-    private readonly options: Pick<NodeEngineRuntimeOptions, 'debug' | 'summarizeValue'>,
+    private readonly options: Pick<NodeWrightRuntimeOptions, 'debug' | 'summarizeValue'>,
   ) {}
 
   startNode(
     run: RunSession,
     node: GraphNode,
-    callStack: NodeEngineRuntimeCallFrame[],
+    callStack: NodeWrightRuntimeCallFrame[],
   ): RecordedCall {
     const frame = this.openFrame(run, callStack, {
       kind: 'node',
@@ -57,7 +57,7 @@ export class RunRecorder {
       nodeId: node.id,
     })
     const frameStack = [...callStack, frame]
-    const trace: NodeEngineRuntimeTraceEntry = {
+    const trace: NodeWrightRuntimeTraceEntry = {
       id: createRuntimeId('trace'),
       kind: 'node',
       frameId: frame.id,
@@ -83,7 +83,7 @@ export class RunRecorder {
   }
 
   /** Records the input values a running node received. */
-  recordNodeInputs(trace: NodeEngineRuntimeTraceEntry, values: NodeEngineRuntimePortValues): void {
+  recordNodeInputs(trace: NodeWrightRuntimeTraceEntry, values: NodeWrightRuntimePortValues): void {
     trace.inputSummary = this.summarize(values)
 
     if (this.shouldCaptureInputs()) {
@@ -163,8 +163,8 @@ export class RunRecorder {
   /** Opens the frame and trace entry of a function or subgraph call. */
   startCall(
     run: RunSession,
-    callStack: NodeEngineRuntimeCallFrame[],
-    call: { kind: 'function' | 'subgraph'; id: string; inputValues: NodeEngineRuntimePortValues },
+    callStack: NodeWrightRuntimeCallFrame[],
+    call: { kind: 'function' | 'subgraph'; id: string; inputValues: NodeWrightRuntimePortValues },
   ): RecordedCall {
     const frame = this.openFrame(run, callStack, {
       kind: call.kind,
@@ -173,7 +173,7 @@ export class RunRecorder {
       subgraphId: call.kind === 'subgraph' ? call.id : undefined,
     })
     const frameStack = [...callStack, frame]
-    const trace: NodeEngineRuntimeTraceEntry = {
+    const trace: NodeWrightRuntimeTraceEntry = {
       id: createRuntimeId('trace'),
       kind: call.kind,
       frameId: frame.id,
@@ -196,7 +196,7 @@ export class RunRecorder {
   finishCall(
     call: RecordedCall,
     status: RecordedStatus,
-    outputValues?: NodeEngineRuntimePortValues,
+    outputValues?: NodeWrightRuntimePortValues,
     error?: unknown,
   ): void {
     const { trace } = call
@@ -214,13 +214,13 @@ export class RunRecorder {
 
   private openFrame(
     run: RunSession,
-    callStack: NodeEngineRuntimeCallFrame[],
+    callStack: NodeWrightRuntimeCallFrame[],
     frame: Pick<
-      NodeEngineRuntimeCallFrame,
+      NodeWrightRuntimeCallFrame,
       'kind' | 'name' | 'nodeId' | 'functionId' | 'subgraphId'
     >,
-  ): NodeEngineRuntimeCallFrame {
-    const opened: NodeEngineRuntimeCallFrame = {
+  ): NodeWrightRuntimeCallFrame {
+    const opened: NodeWrightRuntimeCallFrame = {
       id: createRuntimeId('frame'),
       kind: frame.kind,
       name: frame.name,
@@ -238,7 +238,7 @@ export class RunRecorder {
     return opened
   }
 
-  private closeFrame(frame: NodeEngineRuntimeCallFrame, status: RecordedStatus): void {
+  private closeFrame(frame: NodeWrightRuntimeCallFrame, status: RecordedStatus): void {
     const endedAt = Date.now()
 
     frame.status = status
@@ -247,20 +247,20 @@ export class RunRecorder {
   }
 
   private captureInputs(
-    values: NodeEngineRuntimePortValues | undefined,
-  ): NodeEngineRuntimePortValues | undefined {
+    values: NodeWrightRuntimePortValues | undefined,
+  ): NodeWrightRuntimePortValues | undefined {
     return this.shouldCaptureInputs() ? cloneValue(values ?? {}) : undefined
   }
 
   private captureOutputs(
-    values: NodeEngineRuntimePortValues | undefined,
-  ): NodeEngineRuntimePortValues | undefined {
+    values: NodeWrightRuntimePortValues | undefined,
+  ): NodeWrightRuntimePortValues | undefined {
     return this.shouldCaptureOutputs() ? cloneValue(values ?? {}) : undefined
   }
 
   private captureCallStack(
-    callStack: NodeEngineRuntimeCallFrame[],
-  ): NodeEngineRuntimeCallFrame[] | undefined {
+    callStack: NodeWrightRuntimeCallFrame[],
+  ): NodeWrightRuntimeCallFrame[] | undefined {
     return this.options.debug?.captureCallStack !== false ? cloneRuntimeValue(callStack) : undefined
   }
 

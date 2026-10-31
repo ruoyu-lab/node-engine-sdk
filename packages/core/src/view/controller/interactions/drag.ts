@@ -2,9 +2,9 @@ import type { GraphGroup, GraphNode, XYPosition } from '../../../protocol/index.
 import type { ReadonlySignal, Signal } from '../../reactive.js'
 import { snap } from '../../rendering/geometry.js'
 import type {
-  NodeEngineEventSink,
-  NodeEngineGroupDragEvent,
-  NodeEngineNodeDragEvent,
+  NodeWrightEventSink,
+  NodeWrightGroupDragEvent,
+  NodeWrightNodeDragEvent,
 } from '../../types/index.js'
 import type { DragState } from '../interaction-state.js'
 
@@ -76,13 +76,13 @@ export interface DragGesture {
 export function createDragGesture(options: {
   drag: Signal<DragState | null>
   getSnapping: () => GridSnapping
-  emit: NodeEngineEventSink
-  buildNodeDragEvent: (nodeIds: string[], delta: XYPosition) => NodeEngineNodeDragEvent
+  emit: NodeWrightEventSink
+  buildNodeDragEvent: (nodeIds: string[], delta: XYPosition) => NodeWrightNodeDragEvent
   buildGroupDragEvent: (
     groupIds: string[],
     nodeIds: string[],
     delta: XYPosition,
-  ) => NodeEngineGroupDragEvent
+  ) => NodeWrightGroupDragEvent
   moveNodesFromOrigins: (origins: Record<string, XYPosition>, delta: XYPosition) => void
   moveGroups: (groupIds: string[], delta: XYPosition, moveNodes: boolean) => void
 }): DragGesture {

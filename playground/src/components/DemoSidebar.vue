@@ -31,7 +31,7 @@ defineEmits<{
         </svg>
       </span>
       <div class="demo-sidebar__brand">
-        <strong>Node Engine SDK</strong>
+        <strong>Node Wright</strong>
         <span>Playground</span>
       </div>
       <button

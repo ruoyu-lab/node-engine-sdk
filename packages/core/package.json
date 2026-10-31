@@ -1,15 +1,15 @@
 {
-  "name": "@node-engine-sdk/core",
+  "name": "@node-wright/core",
   "version": "0.1.0-beta.3",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ruoyu-lab/node-engine-sdk.git",
+    "url": "git+https://github.com/ruoyu-lab/node-wright.git",
     "directory": "packages/core"
   },
-  "homepage": "https://github.com/ruoyu-lab/node-engine-sdk#readme",
+  "homepage": "https://github.com/ruoyu-lab/node-wright#readme",
   "bugs": {
-    "url": "https://github.com/ruoyu-lab/node-engine-sdk/issues"
+    "url": "https://github.com/ruoyu-lab/node-wright/issues"
   },
   "type": "module",
   "sideEffects": [
@@ -69,5 +69,5 @@
     "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/view/style.css dist/view/style.css",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "description": "Node Engine SDK core: framework-agnostic graph protocol, store, semantics, runtime, layout, debugging and editor controller"
+  "description": "Node Wright core: framework-agnostic graph protocol, store, semantics, runtime, layout, debugging and editor controller"
 }

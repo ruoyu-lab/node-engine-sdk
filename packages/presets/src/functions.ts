@@ -3,9 +3,9 @@ import {
   functionCallNodeDefinitions,
   functionCallRuntimeDefinitions,
 } from './nodes/function/index.js'
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 import { PRESET_NODE_ACCENTS } from './accents.js'
-import type { FunctionPresetOptions, NodeEnginePreset } from './types.js'
+import type { FunctionPresetOptions, NodeWrightPreset } from './types.js'
 import { createPresetLayout } from './layout.js'
 
 export {
@@ -29,7 +29,7 @@ export const functionNodeTypes: NodeTypeRegistry = {
   },
 }
 
-export function createFunctionPreset(options: FunctionPresetOptions = {}): NodeEnginePreset {
+export function createFunctionPreset(options: FunctionPresetOptions = {}): NodeWrightPreset {
   const includeDefaultNodes = options.includeDefaultNodes !== false
 
   return {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { resolveNodePorts, type NodeDefinition } from '@node-engine-sdk/core/protocol'
-import { resolveDomNodeFields, type NodeEngineDomFieldDefinition } from '@node-engine-sdk/core/view'
+import { resolveNodePorts, type NodeDefinition } from '@node-wright/core/protocol'
+import { resolveDomNodeFields, type NodeWrightDomFieldDefinition } from '@node-wright/core/view'
 
 const node = { id: 'node', type: 'demo', x: 0, y: 0 }
 
@@ -103,7 +103,7 @@ describe('DOM node parameter fields', () => {
       key: 'operation',
       label: 'Operation',
       options: [{ label: 'Other', value: 'other' }],
-    } as NodeEngineDomFieldDefinition
+    } as NodeWrightDomFieldDefinition
     const [field] = resolveDomNodeFields(
       {
         node: { ...node, data: { params: { operation: 'pass' } } },

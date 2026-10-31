@@ -37,7 +37,7 @@ export function createDataflowConnectionRules(
 
 export function createDataflowPlugin(options: DataflowPluginOptions = {}): GraphPlugin {
   return createConnectionRulesPlugin(createDataflowConnectionRules(options), {
-    name: 'node-engine:dataflow',
+    name: 'node-wright:dataflow',
     validateRequiredInputs: true,
   })
 }

@@ -1,10 +1,10 @@
-import type { NodeEngineTheme } from '@node-engine-sdk/core/view'
+import type { NodeWrightTheme } from '@node-wright/core/view'
 
 export type CanvasThemeId = 'dark' | 'light'
 
 export interface CanvasThemeOption {
   id: CanvasThemeId
-  theme: Partial<NodeEngineTheme>
+  theme: Partial<NodeWrightTheme>
 }
 
 /**

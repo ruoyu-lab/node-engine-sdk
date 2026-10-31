@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { GraphNode, GraphSnapshot, NodeDefinition } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
+import type { GraphNode, GraphSnapshot, NodeDefinition } from '@node-wright/core/protocol'
+import type { NodeWrightRunResult } from '@node-wright/core/runtime'
 import type { DemoRuntimeLogEntry } from '@playground/shared/demo/runtime'
 import {
   countRunOutputs,
@@ -20,7 +20,7 @@ const props = defineProps<{
   graph: GraphSnapshot
   selectedNode: GraphNode | null
   selectedDefinition: NodeDefinition | null
-  result: NodeEngineRunResult | null
+  result: NodeWrightRunResult | null
   events: DemoRuntimeLogEntry[]
   error: string | null
   running: boolean

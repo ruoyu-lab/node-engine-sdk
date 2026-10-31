@@ -14,7 +14,7 @@ import {
 
 /** The editor's pan offset, read from the transform of its DOM node layer. */
 async function readPan(page: Page): Promise<{ x: number; y: number }> {
-  const transform = await page.locator('.ne-dom-node-layer').evaluate((layer) => {
+  const transform = await page.locator('.nw-dom-node-layer').evaluate((layer) => {
     return (layer as HTMLElement).style.transform
   })
   const match = /translate3?d?\(([-\d.]+)px, ([-\d.]+)px/u.exec(transform)
@@ -33,15 +33,15 @@ test.describe('minimap', () => {
 
   test('shows the graph and the visible area and pans the canvas from it', async ({ page }) => {
     const failures = captureBrowserFailures(page)
-    const minimap = page.locator('.ne-minimap')
+    const minimap = page.locator('.nw-minimap')
 
     await page.goto('/')
     await expect(domNode(page, '提示词')).toBeVisible()
     await expect(minimap).toBeVisible()
-    await expect(minimap.locator('canvas.ne-minimap__canvas')).toBeAttached()
+    await expect(minimap.locator('canvas.nw-minimap__canvas')).toBeAttached()
 
     const frame = await box(minimap)
-    const visibleArea = await box(minimap.locator('.ne-minimap__viewport'))
+    const visibleArea = await box(minimap.locator('.nw-minimap__viewport'))
 
     expect(visibleArea.width).toBeGreaterThan(0)
     expect(visibleArea.width).toBeLessThanOrEqual(frame.width + 1)
@@ -52,7 +52,7 @@ test.describe('minimap', () => {
     }
 
     await expect
-      .poll(async () => (await box(minimap.locator('.ne-minimap__viewport'))).width)
+      .poll(async () => (await box(minimap.locator('.nw-minimap__viewport'))).width)
       .toBeLessThan(visibleArea.width * 0.8)
 
     // A click centres the canvas on the clicked point.
@@ -63,7 +63,7 @@ test.describe('minimap', () => {
 
     // Dragging keeps panning while the pointer moves.
     const clicked = await readPan(page)
-    const area = await box(minimap.locator('.ne-minimap__viewport'))
+    const area = await box(minimap.locator('.nw-minimap__viewport'))
 
     await page.mouse.move(area.x + area.width / 2, area.y + area.height / 2)
     await page.mouse.down()
@@ -149,7 +149,7 @@ test.describe('phone layout', () => {
       expect(bounds.height).toBeGreaterThanOrEqual(32)
     }
 
-    await expect(page.locator('.ne-minimap')).toBeHidden()
+    await expect(page.locator('.nw-minimap')).toBeHidden()
     await expect(zoomControls(page)).toBeVisible()
 
     // The drawer starts as a header at the bottom of the screen.

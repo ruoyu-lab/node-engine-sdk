@@ -13,7 +13,7 @@ import { createServer } from 'vite'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const assetsDir = join(root, 'docs', 'assets')
-const workDir = await mkdtemp(join(tmpdir(), 'node-engine-readme-assets-'))
+const workDir = await mkdtemp(join(tmpdir(), 'node-wright-readme-assets-'))
 
 /** Playwright screenshots have no pointer, so the GIF draws one that follows the real input. */
 const cursorScript = `(() => {
@@ -152,7 +152,7 @@ async function openPlayground(browser, appUrl, imageService, viewport, theme) {
   })
   await imageService.install(page)
   await page.goto(appUrl)
-  await page.locator('.ne-default-dom-node').first().waitFor()
+  await page.locator('.nw-default-dom-node').first().waitFor()
 
   return { page, failures }
 }
@@ -207,7 +207,7 @@ async function captureConnectAndRunGif(browser, appUrl, imageService, file) {
   await page.mouse.click((source.x + target.x) / 2, (source.y + target.y) / 2, { button: 'right' })
   await page.locator('.runtime-panel__stats').getByText('2 条连线').waitFor()
 
-  const header = await center(preview.locator('.ne-default-dom-node__header'))
+  const header = await center(preview.locator('.nw-default-dom-node__header'))
   const aside = { x: -40, y: 110 }
 
   await page.mouse.move(header.x, header.y)
@@ -243,7 +243,7 @@ async function captureConnectAndRunGif(browser, appUrl, imageService, file) {
   await frames.hold(10)
 
   // 1. Drag the preview node back next to the generator.
-  const asideHeader = await center(preview.locator('.ne-default-dom-node__header'))
+  const asideHeader = await center(preview.locator('.nw-default-dom-node__header'))
 
   await glide(asideHeader, 12)
   await page.mouse.down()
@@ -287,7 +287,7 @@ async function captureConnectAndRunGif(browser, appUrl, imageService, file) {
   await click(await center(zoomIn), 2)
   await frames.hold(8)
 
-  const visibleArea = await center(page.locator('.ne-minimap__viewport'))
+  const visibleArea = await center(page.locator('.nw-minimap__viewport'))
 
   await glide(visibleArea, 14)
   await page.mouse.down()
@@ -392,17 +392,17 @@ function appButton(page, name) {
 }
 
 function domNode(page, title) {
-  return page.locator('.ne-default-dom-node', {
-    has: page.locator('.ne-default-dom-node__title', { hasText: title }),
+  return page.locator('.nw-default-dom-node', {
+    has: page.locator('.nw-default-dom-node__title', { hasText: title }),
   })
 }
 
 function outputPort(node) {
-  return node.locator('.ne-default-dom-node__port--right .ne-default-dom-node__port-dot')
+  return node.locator('.nw-default-dom-node__port--right .nw-default-dom-node__port-dot')
 }
 
 function inputPort(node) {
-  return node.locator('.ne-default-dom-node__port--left .ne-default-dom-node__port-dot')
+  return node.locator('.nw-default-dom-node__port--left .nw-default-dom-node__port-dot')
 }
 
 async function box(locator) {

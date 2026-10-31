@@ -4,8 +4,8 @@ import {
   resolveDomPortDotStyle,
   resolveDomPortLabelClass,
   type DomNodeControls,
-  type NodeEngineResolvedDomNodePort,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightResolvedDomNodePort,
+} from '@node-wright/core/view'
 import type { ReactElement, RefCallback } from 'react'
 import { toClassName } from './class-names.js'
 import { useDomEvents } from './use-dom-events.js'
@@ -24,7 +24,7 @@ export function usePortEvents<Target extends HTMLElement>(
 }
 
 export function DefaultDomNodePort(props: {
-  port: NodeEngineResolvedDomNodePort
+  port: NodeWrightResolvedDomNodePort
   side: 'left' | 'right'
   controls: DomNodeControls
 }): ReactElement {
@@ -33,7 +33,7 @@ export function DefaultDomNodePort(props: {
   const dot = (
     <span
       ref={dotRef}
-      className={toClassName(['ne-default-dom-node__port-dot', resolveDomPortDotClass(port)])}
+      className={toClassName(['nw-default-dom-node__port-dot', resolveDomPortDotClass(port)])}
       style={resolveDomPortDotStyle(port)}
     />
   )
@@ -41,17 +41,17 @@ export function DefaultDomNodePort(props: {
   return (
     <div
       className={toClassName([
-        'ne-default-dom-node__port',
+        'nw-default-dom-node__port',
         {
-          'ne-default-dom-node__port--left': side === 'left',
-          'ne-default-dom-node__port--right': side === 'right',
+          'nw-default-dom-node__port--left': side === 'left',
+          'nw-default-dom-node__port--right': side === 'right',
         },
       ])}
       style={{ top: `${port.top}px` }}
     >
       {side === 'left' ? dot : null}
       <span
-        className={toClassName(['ne-default-dom-node__port-label', resolveDomPortLabelClass(port)])}
+        className={toClassName(['nw-default-dom-node__port-label', resolveDomPortLabelClass(port)])}
       >
         {port.label}
       </span>
@@ -62,16 +62,16 @@ export function DefaultDomNodePort(props: {
 
 /** Hit area and dot of a parameter field's input port. */
 export function DefaultDomNodeFieldPort(props: {
-  port: NodeEngineResolvedDomNodePort
+  port: NodeWrightResolvedDomNodePort
   controls: DomNodeControls
 }): ReactElement {
   const hitRef = usePortEvents<HTMLSpanElement>(props.controls, props.port.id)
 
   return (
-    <span ref={hitRef} className="ne-default-dom-node__field-port-hit">
+    <span ref={hitRef} className="nw-default-dom-node__field-port-hit">
       <span
         className={toClassName([
-          'ne-default-dom-node__field-port-dot',
+          'nw-default-dom-node__field-port-dot',
           resolveDomFieldPortDotClass(props.port),
         ])}
         style={resolveDomPortDotStyle(props.port)}

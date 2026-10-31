@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  createRuntimeVariableSnapshot,
-  type NodeEngineRunResult,
-} from '@node-engine-sdk/core/runtime'
+import { createRuntimeVariableSnapshot, type NodeWrightRunResult } from '@node-wright/core/runtime'
 import {
   getActiveCallStack,
   getCurrentDebugNode,
@@ -13,7 +10,7 @@ import {
   summarizeRunDebugState,
 } from '../../src/debug/index'
 
-const run: NodeEngineRunResult = {
+const run: NodeWrightRunResult = {
   runId: 'run-1',
   status: 'error',
   trace: [
@@ -69,7 +66,7 @@ const run: NodeEngineRunResult = {
   listenerErrors: [],
 }
 
-describe('@node-engine-sdk/core/debug', () => {
+describe('@node-wright/core/debug', () => {
   it('summarizes node, trace, frame, and duration state', () => {
     expect(summarizeRunDebugState(run)).toEqual({
       status: 'error',

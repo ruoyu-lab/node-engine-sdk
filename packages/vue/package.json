@@ -1,15 +1,15 @@
 {
-  "name": "@node-engine-sdk/vue",
+  "name": "@node-wright/vue",
   "version": "0.1.0-beta.3",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ruoyu-lab/node-engine-sdk.git",
+    "url": "git+https://github.com/ruoyu-lab/node-wright.git",
     "directory": "packages/vue"
   },
-  "homepage": "https://github.com/ruoyu-lab/node-engine-sdk#readme",
+  "homepage": "https://github.com/ruoyu-lab/node-wright#readme",
   "bugs": {
-    "url": "https://github.com/ruoyu-lab/node-engine-sdk/issues"
+    "url": "https://github.com/ruoyu-lab/node-wright/issues"
   },
   "type": "module",
   "engines": {
@@ -42,10 +42,10 @@
     "typecheck": "vue-tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@node-engine-sdk/core": "0.1.0-beta.3"
+    "@node-wright/core": "0.1.0-beta.3"
   },
   "peerDependencies": {
     "vue": "^3.5.13"
   },
-  "description": "Official Vue 3 adapter for Node Engine SDK: the node graph editor component"
+  "description": "Official Vue 3 adapter for Node Wright: the node graph editor component"
 }

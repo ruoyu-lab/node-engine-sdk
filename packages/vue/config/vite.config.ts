@@ -13,7 +13,7 @@ export default defineConfig({
     emptyOutDir: false,
     lib: {
       entry: resolve(packageRoot, 'config/bundle-entry.ts'),
-      name: 'NodeEngineVue',
+      name: 'NodeWrightVue',
       cssFileName: 'style',
       fileName: 'index',
       formats: ['es'],
@@ -21,7 +21,7 @@ export default defineConfig({
     rollupOptions: {
       // Core modules stay external; the shared core stylesheet is bundled into `style.css`.
       external: (id) =>
-        id === 'vue' || (/^@node-engine-sdk\/core(?:\/|$)/u.test(id) && !id.endsWith('.css')),
+        id === 'vue' || (/^@node-wright\/core(?:\/|$)/u.test(id) && !id.endsWith('.css')),
     },
   },
 })

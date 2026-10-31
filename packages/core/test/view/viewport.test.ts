@@ -1,5 +1,5 @@
-import { createGraphStore } from '@node-engine-sdk/core/store'
-import { createEditorController } from '@node-engine-sdk/core/view'
+import { createGraphStore } from '@node-wright/core/store'
+import { createEditorController } from '@node-wright/core/view'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createViewportModel } from '../../src/view/controller/viewport'
 import { canvasOnlyNodeTypes, createGraph, mountEditor, type EditorHarness } from './editor-harness'

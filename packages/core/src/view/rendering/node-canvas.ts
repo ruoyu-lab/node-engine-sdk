@@ -1,10 +1,10 @@
 import type { GraphEndpoint, GraphNode, NodeDefinition, XYPosition } from '../../protocol/index.js'
 import type {
-  NodeEngineBounds,
-  NodeEngineCanvasNodeRenderContext,
-  NodeEngineCanvasNodeTheme,
-  NodeEnginePortAnchor,
-  NodeEngineRenderContext,
+  NodeWrightBounds,
+  NodeWrightCanvasNodeRenderContext,
+  NodeWrightCanvasNodeTheme,
+  NodeWrightPortAnchor,
+  NodeWrightRenderContext,
   NodeTypeDefinition,
 } from '../types/index.js'
 import { drawDefaultCanvasNode, resolvePortRadius } from './node-painter.js'
@@ -12,11 +12,11 @@ import { drawDefaultCanvasNode, resolvePortRadius } from './node-painter.js'
 /** One node prepared for canvas painting and hit testing. */
 export interface CanvasNodeEntry {
   node: GraphNode
-  bounds: NodeEngineBounds
+  bounds: NodeWrightBounds
   schema?: NodeDefinition
   definition?: NodeTypeDefinition
-  inputs: NodeEnginePortAnchor[]
-  outputs: NodeEnginePortAnchor[]
+  inputs: NodeWrightPortAnchor[]
+  outputs: NodeWrightPortAnchor[]
   selected: boolean
   dragging: boolean
 }
@@ -29,14 +29,14 @@ export function drawCanvasNodes(
   options: {
     zoom: number
     readonly: boolean
-    theme: NodeEngineCanvasNodeTheme
+    theme: NodeWrightCanvasNodeTheme
     connectionSource?: GraphEndpoint
     connectionTarget?: GraphEndpoint
-    context: NodeEngineRenderContext
+    context: NodeWrightRenderContext
   },
 ): void {
   for (const entry of nodes) {
-    const renderContext: NodeEngineCanvasNodeRenderContext = {
+    const renderContext: NodeWrightCanvasNodeRenderContext = {
       ctx,
       node: entry.node,
       schema: entry.schema,
@@ -65,7 +65,7 @@ export function drawCanvasNodes(
   }
 }
 
-export function isPointInNodeBounds(point: XYPosition, bounds: NodeEngineBounds): boolean {
+export function isPointInNodeBounds(point: XYPosition, bounds: NodeWrightBounds): boolean {
   return (
     point.x >= bounds.x &&
     point.x <= bounds.x + bounds.width &&
@@ -76,7 +76,7 @@ export function isPointInNodeBounds(point: XYPosition, bounds: NodeEngineBounds)
 
 export function isPointNearPort(
   point: XYPosition,
-  port: Pick<NodeEnginePortAnchor, 'x' | 'y' | 'radius'>,
+  port: Pick<NodeWrightPortAnchor, 'x' | 'y' | 'radius'>,
   zoom: number,
 ): boolean {
   const radius = Math.max(resolvePortRadius(port.radius), PORT_HIT_PADDING / zoom)

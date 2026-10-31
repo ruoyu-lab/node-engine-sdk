@@ -1,8 +1,8 @@
 import type {
-  NodeEngineDomNodeClassValue,
-  NodeEngineDomNodeRenderContext,
-  NodeEngineDomNodeRenderer,
-  NodeEngineStyleDeclaration,
+  NodeWrightDomNodeClassValue,
+  NodeWrightDomNodeRenderContext,
+  NodeWrightDomNodeRenderer,
+  NodeWrightStyleDeclaration,
   NodeTypeDefinition,
 } from '../types/index.js'
 
@@ -12,8 +12,8 @@ import type {
  */
 export function resolveDomNodeRenderer(
   definition: NodeTypeDefinition | undefined,
-  context: NodeEngineDomNodeRenderContext,
-): NodeEngineDomNodeRenderer | null {
+  context: NodeWrightDomNodeRenderContext,
+): NodeWrightDomNodeRenderer | null {
   const renderer = definition?.dom
 
   if (renderer === false) {
@@ -28,35 +28,35 @@ export function resolveDomNodeRenderer(
 }
 
 export function resolveDomNodeRenderMode(
-  renderer: NodeEngineDomNodeRenderer,
+  renderer: NodeWrightDomNodeRenderer,
 ): 'replace' | 'overlay' {
   return renderer.mode ?? 'replace'
 }
 
 export function resolveDomNodeClassName(
-  value: NodeEngineDomNodeRenderer['className'],
-  context: NodeEngineDomNodeRenderContext,
-): NodeEngineDomNodeClassValue | undefined {
+  value: NodeWrightDomNodeRenderer['className'],
+  context: NodeWrightDomNodeRenderContext,
+): NodeWrightDomNodeClassValue | undefined {
   return typeof value === 'function' ? value(context) : value
 }
 
 export function resolveDomNodePointerEvents(
-  value: NodeEngineDomNodeRenderer['pointerEvents'],
-  context: NodeEngineDomNodeRenderContext,
+  value: NodeWrightDomNodeRenderer['pointerEvents'],
+  context: NodeWrightDomNodeRenderContext,
 ): 'none' | 'auto' {
   return (typeof value === 'function' ? value(context) : value) ?? 'none'
 }
 
 export function resolveDomNodeStyle(
-  value: NodeEngineDomNodeRenderer['style'],
-  context: NodeEngineDomNodeRenderContext,
-): NodeEngineStyleDeclaration {
+  value: NodeWrightDomNodeRenderer['style'],
+  context: NodeWrightDomNodeRenderContext,
+): NodeWrightStyleDeclaration {
   return (typeof value === 'function' ? value(context) : value) ?? {}
 }
 
 export function resolveDomNodeRecord(
-  value: NodeEngineDomNodeRenderer['services'] | NodeEngineDomNodeRenderer['actions'],
-  context: NodeEngineDomNodeRenderContext,
+  value: NodeWrightDomNodeRenderer['services'] | NodeWrightDomNodeRenderer['actions'],
+  context: NodeWrightDomNodeRenderContext,
 ): Record<string, unknown> {
   return (typeof value === 'function' ? value(context) : value) ?? {}
 }

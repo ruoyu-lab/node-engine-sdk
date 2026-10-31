@@ -2,10 +2,10 @@ import { cloneValue } from '../../protocol/index.js'
 import type { GraphStore } from '../../store/index.js'
 import { batch, type ReadonlySignal, type Signal } from '../reactive.js'
 import type {
-  NodeEngineApi,
-  NodeEngineEventSink,
-  NodeEngineGridState,
-  NodeEnginePerformanceSample,
+  NodeWrightApi,
+  NodeWrightEventSink,
+  NodeWrightGridState,
+  NodeWrightPerformanceSample,
 } from '../types/index.js'
 import type { ClipboardModel } from './clipboard.js'
 import type { EditorCoordinates } from './coordinates.js'
@@ -41,14 +41,14 @@ export function createEditorApi(options: {
   contextMenu: ContextMenuModel
   interaction: InteractionMode
   gridVisible: Signal<boolean>
-  gridState: ReadonlySignal<NodeEngineGridState>
-  performanceSample: ReadonlySignal<NodeEnginePerformanceSample | null>
-  emit: NodeEngineEventSink
-}): NodeEngineApi {
+  gridState: ReadonlySignal<NodeWrightGridState>
+  performanceSample: ReadonlySignal<NodeWrightPerformanceSample | null>
+  emit: NodeWrightEventSink
+}): NodeWrightApi {
   const store = options.getStore
   const { selection, contextMenu } = options
 
-  const api: NodeEngineApi = {
+  const api: NodeWrightApi = {
     runtime: {
       ids: { create: (prefix) => store().createId(prefix) },
       store: { get: store },

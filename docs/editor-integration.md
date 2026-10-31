@@ -1,11 +1,11 @@
 # 编辑器集成
 
-`NodeEngine` 不强制任何外部面板。节点库、属性检查器、运行面板、调试面板都由应用组合；SDK 提供的是可复用的编辑器原语：编辑器选项、插件、`NodeEngineApi`、事件和扩展点。本文的扩展定义都是框架无关的 TypeScript，Vue 与 React 共用，只有渲染部分（overlay 插槽或 `renderOverlay`）按框架编写。
+`NodeWright` 不强制任何外部面板。节点库、属性检查器、运行面板、调试面板都由应用组合；Node Wright 提供的是可复用的编辑器原语：编辑器选项、插件、`NodeWrightApi`、事件和扩展点。本文的扩展定义都是框架无关的 TypeScript，Vue 与 React 共用，只有渲染部分（overlay 插槽或 `renderOverlay`）按框架编写。
 
 ## 基础结构
 
 ```vue
-<NodeEngine
+<NodeWright
   ref="editor"
   v-model:graph="graph"
   :node-definitions="preset.nodeDefinitions"
@@ -18,11 +18,11 @@
   <template #overlay="{ api, contextMenuState, nodeEditorState }">
     <!-- 工具栏、右键菜单、节点编辑器 -->
   </template>
-</NodeEngine>
+</NodeWright>
 ```
 
 ```tsx
-<NodeEngine
+<NodeWright
   ref={editor}
   graph={graph}
   onGraphChange={setGraph}
@@ -39,14 +39,14 @@
 ## 视口与选区
 
 ```ts
-import type { NodeEngineApi } from '@node-engine-sdk/core/view'
+import type { NodeWrightApi } from '@node-wright/core/view'
 
-export function focusNode(api: NodeEngineApi, nodeId: string): void {
+export function focusNode(api: NodeWrightApi, nodeId: string): void {
   api.selection.nodes([nodeId])
   api.view.center.node(nodeId)
 }
 
-export function fitAll(api: NodeEngineApi): void {
+export function fitAll(api: NodeWrightApi): void {
   api.view.fit.graph(72)
 }
 ```
@@ -56,14 +56,14 @@ export function fitAll(api: NodeEngineApi): void {
 ## 工具栏、右键菜单与快捷键
 
 ```ts
-import { applyGraphLayout, layoutGraph } from '@node-engine-sdk/core/layout'
+import { applyGraphLayout, layoutGraph } from '@node-wright/core/layout'
 import type {
-  NodeEngineContextMenuItem,
-  NodeEngineHotkey,
-  NodeEngineToolbarItem,
-} from '@node-engine-sdk/core/view'
+  NodeWrightContextMenuItem,
+  NodeWrightHotkey,
+  NodeWrightToolbarItem,
+} from '@node-wright/core/view'
 
-export const toolbarItems: NodeEngineToolbarItem[] = [
+export const toolbarItems: NodeWrightToolbarItem[] = [
   {
     id: 'layout.auto',
     label: '自动布局',
@@ -86,7 +86,7 @@ export const toolbarItems: NodeEngineToolbarItem[] = [
   },
 ]
 
-export const contextMenuItems: NodeEngineContextMenuItem[] = [
+export const contextMenuItems: NodeWrightContextMenuItem[] = [
   {
     id: 'node.center',
     label: '居中节点',
@@ -107,7 +107,7 @@ export const contextMenuItems: NodeEngineContextMenuItem[] = [
   },
 ]
 
-export const hotkeys: NodeEngineHotkey[] = [
+export const hotkeys: NodeWrightHotkey[] = [
   {
     id: 'view.fit-selection',
     key: 'f',
@@ -130,9 +130,9 @@ preset 自带布局策略，最简单的写法是 `api.graph.apply(preset.layout
 分组属于图数据（`GraphGroup.nodeIds` 是成员唯一来源），分组的拖动手柄、最小尺寸、是否带动成员等属于编辑器行为：
 
 ```ts
-import type { NodeEngineBehaviors } from '@node-engine-sdk/core/view'
+import type { NodeWrightBehaviors } from '@node-wright/core/view'
 
-export const behaviors: Partial<NodeEngineBehaviors> = {
+export const behaviors: Partial<NodeWrightBehaviors> = {
   group: {
     dragHandle: 'header',
     moveNodesOnDrag: true,
@@ -150,7 +150,7 @@ export const behaviors: Partial<NodeEngineBehaviors> = {
 默认 DOM 节点把 `NodeDefinition.parameters` 渲染为字段。参数默认是本地值；打开 `input` 后字段可以被上游连线驱动：
 
 ```ts
-import type { NodeDefinition } from '@node-engine-sdk/core/protocol'
+import type { NodeDefinition } from '@node-wright/core/protocol'
 
 export const sendNode: NodeDefinition = {
   type: 'task:send',
@@ -162,10 +162,10 @@ export const sendNode: NodeDefinition = {
 被驱动的字段显示上游值并禁用本地编辑。上游值默认按 [`resolvePortValue` 默认规则](./controller-api.md#resolveportvalue) 从上游节点的参数中读取；需要显示运行结果时可以提供自己的解析器：
 
 ```ts
-import type { NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
-import type { NodeEngineResolvePortValueHook } from '@node-engine-sdk/core/view'
+import type { NodeWrightRunResult } from '@node-wright/core/runtime'
+import type { NodeWrightResolvePortValueHook } from '@node-wright/core/view'
 
-export function createResultResolver(result: NodeEngineRunResult): NodeEngineResolvePortValueHook {
+export function createResultResolver(result: NodeWrightRunResult): NodeWrightResolvePortValueHook {
   return ({ endpoint, node }) =>
     result.nodeStates[endpoint.nodeId]?.outputValues?.[endpoint.portId] ??
     (node?.data?.params as Record<string, unknown> | undefined)?.[endpoint.portId]
@@ -179,10 +179,10 @@ export function createResultResolver(result: NodeEngineRunResult): NodeEngineRes
 从端口拖出但没有落到有效端口时，控制器发出 `connection-cancel`。`source` 是拖拽起点端口，`targetDirection` 是需要的另一端方向：
 
 ```ts
-import type { NodeEngineApi, NodeEngineConnectionCancelEvent } from '@node-engine-sdk/core/view'
-import { DATA_PREVIEW_NODE_TYPE, DATA_SOURCE_NODE_TYPE } from '@node-engine-sdk/presets'
+import type { NodeWrightApi, NodeWrightConnectionCancelEvent } from '@node-wright/core/view'
+import { DATA_PREVIEW_NODE_TYPE, DATA_SOURCE_NODE_TYPE } from '@node-wright/presets'
 
-export function createNodeAtDrop(api: NodeEngineApi, event: NodeEngineConnectionCancelEvent): void {
+export function createNodeAtDrop(api: NodeWrightApi, event: NodeWrightConnectionCancelEvent): void {
   if (event.dragDistance < 18) {
     return
   }
@@ -229,4 +229,4 @@ export function createNodeAtDrop(api: NodeEngineApi, event: NodeEngineConnection
 
 - 节点库面板、属性检查器布局、调试器外观、子图导航外观。
 - 工作流保存、发布、权限与多人协作。
-- 节点搜索等产品能力（SDK 当前不提供，也不保留占位 API）。
+- 节点搜索等产品能力（Node Wright 当前不提供，也不保留占位 API）。

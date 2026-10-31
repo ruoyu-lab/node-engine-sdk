@@ -1,8 +1,5 @@
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import type { NodeEngineContextMenuItem, NodeEngineToolbarItem } from '@node-engine-sdk/core/view'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightContextMenuItem, NodeWrightToolbarItem } from '@node-wright/core/view'
 import {
   act,
   createRef,
@@ -16,17 +13,17 @@ import { hydrateRoot, type Root } from 'react-dom/client'
 import { renderToString } from 'react-dom/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
-  NodeEngine,
-  useNodeEngineApi,
-  type NodeEngineHandle,
-  type NodeEngineOverlayRenderProps,
-  type NodeEngineProps,
+  NodeWright,
+  useNodeWrightApi,
+  type NodeWrightHandle,
+  type NodeWrightOverlayRenderProps,
+  type NodeWrightProps,
 } from '../src/index'
 import { render, type Rendered } from './harness'
 
 function createGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'prompt', type: 'prompt', x: 0, y: 0, data: { params: { text: 'hello' } } },
       { id: 'canvas-only', type: 'sketch', x: 400, y: 0 },
@@ -56,12 +53,12 @@ afterEach(async () => {
 })
 
 function Editor(
-  props: Partial<NodeEngineProps> & { editorRef?: RefObject<NodeEngineHandle | null> },
+  props: Partial<NodeWrightProps> & { editorRef?: RefObject<NodeWrightHandle | null> },
 ): ReactElement {
   const { editorRef, ...rest } = props
 
   return (
-    <NodeEngine
+    <NodeWright
       ref={editorRef}
       graph={createGraph()}
       nodeDefinitions={nodeDefinitions}
@@ -71,12 +68,12 @@ function Editor(
   )
 }
 
-describe('React NodeEngine', () => {
+describe('React NodeWright', () => {
   it('exposes the API to the parent in its first layout effect and effect', async () => {
     const seen: string[] = []
 
     function Parent(): ReactElement {
-      const editor = useRef<NodeEngineHandle>(null)
+      const editor = useRef<NodeWrightHandle>(null)
 
       useLayoutEffect(() => {
         seen.push(`layout:${editor.current?.nodes.get('prompt')?.id}`)
@@ -94,7 +91,7 @@ describe('React NodeEngine', () => {
   })
 
   it('forwards every editor event to its camelCase callback prop', async () => {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
     const onViewportChange = vi.fn()
     const onNodeParamChange = vi.fn()
     const onImported = vi.fn()
@@ -127,11 +124,11 @@ describe('React NodeEngine', () => {
   })
 
   it('renders background and overlay render props from the snapshot', async () => {
-    const editor = createRef<NodeEngineHandle>()
-    const overlays: NodeEngineOverlayRenderProps[] = []
+    const editor = createRef<NodeWrightHandle>()
+    const overlays: NodeWrightOverlayRenderProps[] = []
 
     function SelectionBadge(): ReactElement {
-      const api = useNodeEngineApi()
+      const api = useNodeWrightApi()
 
       return <output className="selection-badge">{api.selection.get().nodes.join(',')}</output>
     }
@@ -169,35 +166,35 @@ describe('React NodeEngine', () => {
     expect(overlays.at(-1)?.selection.nodes).toEqual(['prompt'])
     expect(rendered.host.querySelector('.selection-badge')?.textContent).toBe('prompt')
 
-    const layers = [...rendered.host.querySelector('.ne-root')!.children].map(
+    const layers = [...rendered.host.querySelector('.nw-root')!.children].map(
       (element) => element.className,
     )
 
     expect(layers).toEqual([
-      'ne-grid-surface',
-      'ne-canvas-surface',
+      'nw-grid-surface',
+      'nw-canvas-surface',
       'background-toggle',
-      'ne-dom-node-layer',
-      'ne-accessible-nodes',
+      'nw-dom-node-layer',
+      'nw-accessible-nodes',
       'selection-badge',
     ])
   })
 
-  it('rejects useNodeEngineApi outside a NodeEngine', async () => {
+  it('rejects useNodeWrightApi outside a NodeWright', async () => {
     function Orphan(): ReactElement {
-      useNodeEngineApi()
+      useNodeWrightApi()
       return <span />
     }
 
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
-    await expect(render(<Orphan />)).rejects.toThrow(/inside NodeEngine render props/u)
+    await expect(render(<Orphan />)).rejects.toThrow(/inside NodeWright render props/u)
   })
 
   it('resolves toolbar and context menu items for overlays', async () => {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
     const run = vi.fn()
-    const toolbarItems: NodeEngineToolbarItem[] = [{ id: 'fit', label: 'Fit', run }]
-    const contextMenuItems: NodeEngineContextMenuItem[] = [{ id: 'delete', label: 'Delete', run }]
+    const toolbarItems: NodeWrightToolbarItem[] = [{ id: 'fit', label: 'Fit', run }]
+    const contextMenuItems: NodeWrightContextMenuItem[] = [{ id: 'delete', label: 'Delete', run }]
 
     rendered = await render(
       <Editor
@@ -241,7 +238,7 @@ describe('React NodeEngine', () => {
     rendered = await render(<Editor hotkeys={[{ id: 'save', key: 's', ctrl: true, run }]} />)
     await rendered.act(() => {
       rendered!.host
-        .querySelector('.ne-root')!
+        .querySelector('.nw-root')!
         .dispatchEvent(new KeyboardEvent('keydown', { key: 's', ctrlKey: true, bubbles: true }))
     })
 
@@ -258,15 +255,15 @@ describe('React NodeEngine', () => {
       />,
     )
 
-    const root = rendered.host.querySelector<HTMLElement>('.ne-root')!
+    const root = rendered.host.querySelector<HTMLElement>('.nw-root')!
 
-    expect(root.className).toBe('ne-root app-graph')
+    expect(root.className).toBe('nw-root app-graph')
     expect(root.style.height).toBe('320px')
     expect(root.getAttribute('style')).toContain('rgb(1, 2, 3)')
   })
 
   it('selects canvas-only nodes from their accessible fallback and applies renderer classes', async () => {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
 
     rendered = await render(
       <Editor
@@ -275,10 +272,10 @@ describe('React NodeEngine', () => {
       />,
     )
 
-    const button = rendered.host.querySelector<HTMLButtonElement>('.ne-accessible-node')!
+    const button = rendered.host.querySelector<HTMLButtonElement>('.nw-accessible-node')!
 
-    expect(rendered.host.querySelector('.ne-dom-node')?.className).toBe(
-      'ne-dom-node task task--wide',
+    expect(rendered.host.querySelector('.nw-dom-node')?.className).toBe(
+      'nw-dom-node task task--wide',
     )
     expect(button.getAttribute('aria-pressed')).toBe('false')
 
@@ -289,7 +286,7 @@ describe('React NodeEngine', () => {
   })
 
   it('shows a dismissible performance overlay', async () => {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
 
     vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(800)
     vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(600)
@@ -302,19 +299,19 @@ describe('React NodeEngine', () => {
 
     await vi.waitFor(async () => {
       await rendered!.act(() => undefined)
-      expect(rendered!.host.querySelector('.ne-performance')).toBeTruthy()
+      expect(rendered!.host.querySelector('.nw-performance')).toBeTruthy()
     })
-    expect(rendered.host.querySelector('.ne-performance')?.textContent).toContain('fps')
+    expect(rendered.host.querySelector('.nw-performance')?.textContent).toContain('fps')
 
     await rendered.act(() =>
-      rendered!.host.querySelector<HTMLButtonElement>('.ne-performance__close')!.click(),
+      rendered!.host.querySelector<HTMLButtonElement>('.nw-performance__close')!.click(),
     )
 
-    expect(rendered.host.querySelector('.ne-performance')).toBeNull()
+    expect(rendered.host.querySelector('.nw-performance')).toBeNull()
   })
 
   it('hydrates server markup without mismatches and then mounts the editor', async () => {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
     const host = document.createElement('div')
     const onRecoverableError = vi.fn()
     let root: Root | null = null
@@ -322,8 +319,8 @@ describe('React NodeEngine', () => {
     host.innerHTML = renderToString(<Editor ariaLabel="Hydrated" />)
     document.body.append(host)
 
-    expect(host.querySelector('.ne-root')?.getAttribute('aria-label')).toBe('Hydrated')
-    expect(host.querySelector('.ne-default-dom-node')).toBeNull()
+    expect(host.querySelector('.nw-root')?.getAttribute('aria-label')).toBe('Hydrated')
+    expect(host.querySelector('.nw-default-dom-node')).toBeNull()
 
     await act(async () => {
       root = hydrateRoot(host, <Editor editorRef={editor} ariaLabel="Hydrated" />, {
@@ -332,7 +329,7 @@ describe('React NodeEngine', () => {
     })
 
     expect(onRecoverableError).not.toHaveBeenCalled()
-    expect(host.querySelectorAll('.ne-default-dom-node')).toHaveLength(1)
+    expect(host.querySelectorAll('.nw-default-dom-node')).toHaveLength(1)
     expect(editor.current?.nodes.get('prompt')?.id).toBe('prompt')
 
     await act(async () => root!.unmount())

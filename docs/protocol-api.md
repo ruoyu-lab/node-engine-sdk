@@ -1,10 +1,10 @@
-# Protocol API（`@node-engine-sdk/core/protocol`）
+# Protocol API（`@node-wright/core/protocol`）
 
-`@node-engine-sdk/core/protocol` 是所有模块共享的协议源。它不持有状态、不渲染 UI、不执行节点，只定义图格式、严格解析、诊断、节点参数 schema、扩展 manifest 与执行计划类型，以及共享的 `GraphIndex` 查找索引。
+`@node-wright/core/protocol` 是所有模块共享的协议源。它不持有状态、不渲染 UI、不执行节点，只定义图格式、严格解析、诊断、节点参数 schema、扩展 manifest 与执行计划类型，以及共享的 `GraphIndex` 查找索引。
 
 ## 边界
 
-- core 的 `store`、`semantics`、`layout`、`runtime`、`view` 模块，`@node-engine-sdk/presets`、两个 UI 适配层以及业务代码都可以直接依赖它；它不依赖任何其他模块。
+- core 的 `store`、`semantics`、`layout`、`runtime`、`view` 模块，`@node-wright/presets`、两个 UI 适配层以及业务代码都可以直接依赖它；它不依赖任何其他模块。
 - 只描述“图是什么、如何严格解析、如何检查、如何声明扩展”的能力放在 protocol。
 - 会改变状态、触发交互、执行节点或访问业务服务的能力不放在 protocol。
 
@@ -13,13 +13,10 @@
 `GraphSnapshot` 是唯一持久化图格式：
 
 ```ts
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 
 const graph: GraphSnapshot = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [],
   edges: [],
   groups: [],
@@ -29,11 +26,11 @@ const graph: GraphSnapshot = {
 
 | 字段            | 说明                                                                                                                                         |
 | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `schemaVersion` | 图数据协议版本，当前唯一值为 `NODE_ENGINE_GRAPH_SCHEMA_VERSION`（`'1.0.0'`）。它描述图结构，与 npm 包版本无关                                |
+| `schemaVersion` | 图数据协议版本，当前唯一值为 `NODE_WRIGHT_GRAPH_SCHEMA_VERSION`（`'1.0.0'`）。它描述图结构，与 npm 包版本无关                                |
 | `nodes`         | `GraphNode[]`：`id`、`type`、`x`、`y`，可选 `width`、`height`、`locked`、`ports`（实例端口，优先于定义端口）、`data`、`meta`                 |
 | `edges`         | `GraphEdge[]`：`id`、`source`、`target`（`{ nodeId, portId }`）、`kind`（必填，如 `'data'`、`'exec'`），可选 `type`、`label`、`data`、`meta` |
 | `groups`        | `GraphGroup[]`：`id`、`x`、`y`、`width`、`height`，可选 `label`、`color`、`nodeIds`（成员的唯一来源）、`data`、`meta`                        |
-| `meta`          | 图级元数据，SDK 不解释                                                                                                                       |
+| `meta`          | 图级元数据，Node Wright 不解释                                                                                                               |
 
 `GraphPort` 字段：`id`、`direction`（`'input'` / `'output'`），可选 `name`、`label`、`kind`、`side`、`capacity`（数字或 `'many'`）、`required`、`dataType`、`accepts`、`data`、`meta`。具体的端口校验策略由 [semantics](./semantics-api.md) 提供。
 
@@ -59,7 +56,7 @@ import {
   parseGraph,
   repairGraph,
   type NodeDefinition,
-} from '@node-engine-sdk/core/protocol'
+} from '@node-wright/core/protocol'
 
 const nodeDefinitions: NodeDefinition[] = [
   { type: 'demo', ports: [{ id: 'out', direction: 'output', kind: 'data' }] },
@@ -128,7 +125,7 @@ interface GraphDiagnostic {
 ### 自定义诊断
 
 ```ts
-import type { GraphDiagnosticProvider } from '@node-engine-sdk/core/protocol'
+import type { GraphDiagnosticProvider } from '@node-wright/core/protocol'
 
 export const archivedTypeProvider: GraphDiagnosticProvider = ({ graph }) =>
   graph.nodes
@@ -149,7 +146,7 @@ provider 可以通过 `parseGraph` / `validateGraph` 的 `providers`、Store 的
 `NodeDefinition` 描述节点协议，不描述产品 UI：
 
 ```ts
-import type { NodeDefinition } from '@node-engine-sdk/core/protocol'
+import type { NodeDefinition } from '@node-wright/core/protocol'
 
 export const promptNode: NodeDefinition = {
   type: 'prompt:text',
@@ -197,7 +194,7 @@ export const promptNode: NodeDefinition = {
 | `required`     | 必填声明，业务可以用诊断 provider 扩展为规则                                                                                                        |
 | `options`      | 选项（`select`）                                                                                                                                    |
 | `input`        | 参数输入端口策略：`true` 使用端口 id `field:${key}`；`{ portId, label, kind, dataType, accepts, ... }` 自定义；`false` 覆盖节点级 `parameterInputs` |
-| `dataPath`     | 声明非默认的数据路径，SDK 不强制解释                                                                                                                |
+| `dataPath`     | 声明非默认的数据路径，Node Wright 不强制解释                                                                                                        |
 | `ui`           | UI 提示（例如 `placeholder`、`description`），只放提示，不放业务逻辑                                                                                |
 
 只有显式打开输入策略的参数会生成协议级参数输入端口（`data.parameter: true`、`data.parameterKey`）；`validateGraph()`、编辑器与 runtime 都通过 `resolveNodePorts()` 识别它们。参数端口的 `dataType` 默认由参数 `kind` 推导：`string` / `code` / `file` → `string`，`number` → `number`，`boolean` → `boolean`，`select` / `json` → `any`。相关工具函数：`resolveNodePorts`、`resolvePortKind`、`getNodeParameterDefinitions`、`resolveNodeParameterInput`、`resolveNodeParameterInputPortId`、`resolveNodeParameterInputPorts`、`mergeParameterInputPorts`。
@@ -216,14 +213,10 @@ export const promptNode: NodeDefinition = {
 
 ## 扩展 manifest
 
-`NodeEngineExtensionManifest` 描述一个扩展贡献什么；`GraphPlugin` 在其上增加 `setup(context)`：
+`NodeWrightExtensionManifest` 描述一个扩展贡献什么；`GraphPlugin` 在其上增加 `setup(context)`：
 
 ```ts
-import type {
-  ConnectionValidator,
-  GraphPlugin,
-  NodeDefinition,
-} from '@node-engine-sdk/core/protocol'
+import type { ConnectionValidator, GraphPlugin, NodeDefinition } from '@node-wright/core/protocol'
 
 const ticketNode: NodeDefinition = { type: 'ticket:create', ports: [] }
 const noSelfLoop: ConnectionValidator = ({ source, target }) =>
@@ -240,28 +233,28 @@ export const ticketPlugin: GraphPlugin = {
 }
 ```
 
-`contributes` 支持 `diagnostics`、`nodeDefinitions`、`edgeDefinitions`、`commands`。`setup` 的 `context`（`GraphPluginContext`）提供 `store`（`GraphStoreLike`）、`addConnectionValidator`、`createId`、`registerCommand`、`registerNodeDefinition`、`registerEdgeDefinition`、`registerDiagnosticProvider`，可以返回清理函数。编辑器插件 `NodeEnginePlugin` 另有 `components` 字段，见 [controller-api.md](./controller-api.md#插件-components)。
+`contributes` 支持 `diagnostics`、`nodeDefinitions`、`edgeDefinitions`、`commands`。`setup` 的 `context`（`GraphPluginContext`）提供 `store`（`GraphStoreLike`）、`addConnectionValidator`、`createId`、`registerCommand`、`registerNodeDefinition`、`registerEdgeDefinition`、`registerDiagnosticProvider`，可以返回清理函数。编辑器插件 `NodeWrightPlugin` 另有 `components` 字段，见 [controller-api.md](./controller-api.md#插件-components)。
 
 ## 执行计划
 
 ```ts
-interface NodeEngineExecutionPlan {
+interface NodeWrightExecutionPlan {
   id: string
-  schemaVersion: typeof NODE_ENGINE_GRAPH_SCHEMA_VERSION
+  schemaVersion: typeof NODE_WRIGHT_GRAPH_SCHEMA_VERSION
   graph: GraphSnapshot
   entryNodeId: string
   nodeOrder: string[]
   diagnostics: GraphDiagnostic[]
 }
 
-interface NodeEngineCompileResult {
+interface NodeWrightCompileResult {
   valid: boolean
   diagnostics: GraphDiagnostic[]
-  plan?: NodeEngineExecutionPlan
+  plan?: NodeWrightExecutionPlan
 }
 ```
 
-protocol 只定义形状；生成计划（入口解析、handler 检查、数据环检测）由 [`@node-engine-sdk/core/runtime`](./runtime-api.md#编译执行计划) 的 `compileGraph()` 或 `runtime.compile()` 完成。
+protocol 只定义形状；生成计划（入口解析、handler 检查、数据环检测）由 [`@node-wright/core/runtime`](./runtime-api.md#编译执行计划) 的 `compileGraph()` 或 `runtime.compile()` 完成。
 
 ## 其他工具
 

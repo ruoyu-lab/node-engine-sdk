@@ -1,13 +1,13 @@
 import { createGraphStore, type GraphStore } from '../../store/index.js'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   snapshotEquals,
   type GraphEdge,
   type GraphSnapshot,
   type GraphStoreEvent,
 } from '../../protocol/index.js'
 import { signal, type ReadonlySignal } from '../reactive.js'
-import type { NodeEngineEventSink } from '../types/index.js'
+import type { NodeWrightEventSink } from '../types/index.js'
 import type { ResolvedEditorOptions } from './options.js'
 
 /**
@@ -41,7 +41,7 @@ interface StoreBindingHooks {
 
 export function createStoreBinding(options: {
   initial: ResolvedEditorOptions
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): StoreBinding {
   const hooks: StoreBindingHooks = { beforeReplace: [], bind: [], snapshot: [], graphChanged: [] }
   let ownsStore = !options.initial.store
@@ -175,7 +175,7 @@ export function createStoreBinding(options: {
 
 function createEmptyGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],

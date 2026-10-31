@@ -3,7 +3,7 @@
  * execution plans.
  */
 
-export const NODE_ENGINE_GRAPH_SCHEMA_VERSION = '1.0.0'
+export const NODE_WRIGHT_GRAPH_SCHEMA_VERSION = '1.0.0'
 
 export type GraphPrimitive = string | number | boolean | null
 export type GraphValue = GraphPrimitive | GraphValue[] | { [key: string]: GraphValue }
@@ -102,7 +102,7 @@ export type GraphGroupPatch = Partial<
 >
 
 export interface GraphSnapshot {
-  schemaVersion: typeof NODE_ENGINE_GRAPH_SCHEMA_VERSION
+  schemaVersion: typeof NODE_WRIGHT_GRAPH_SCHEMA_VERSION
   nodes: GraphNode[]
   edges: GraphEdge[]
   groups: GraphGroup[]
@@ -224,19 +224,19 @@ export interface GraphRepairResult {
   validation: GraphValidationResult
 }
 
-export interface NodeEngineExecutionPlan {
+export interface NodeWrightExecutionPlan {
   id: string
-  schemaVersion: typeof NODE_ENGINE_GRAPH_SCHEMA_VERSION
+  schemaVersion: typeof NODE_WRIGHT_GRAPH_SCHEMA_VERSION
   graph: GraphSnapshot
   entryNodeId: string
   nodeOrder: string[]
   diagnostics: GraphDiagnostic[]
 }
 
-export interface NodeEngineCompileResult {
+export interface NodeWrightCompileResult {
   valid: boolean
   diagnostics: GraphDiagnostic[]
-  plan?: NodeEngineExecutionPlan
+  plan?: NodeWrightExecutionPlan
 }
 
 export interface ValidateGraphOptions {

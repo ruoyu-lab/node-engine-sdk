@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title-dark">
-  <title id="title-dark">Node Engine SDK（节点引擎 SDK）：框架无关的底层节点图 SDK，配套官方 Vue 3 与 React 适配层</title>
+  <title id="title-dark">Node Wright：框架无关的底层节点图引擎，配套官方 Vue 3 与 React 适配层</title>
   <defs>
     <pattern id="dots-dark" width="24" height="24" patternUnits="userSpaceOnUse">
       <circle cx="12" cy="12" r="1.3" fill="#2a2d34"/>
@@ -15,9 +15,9 @@
   <rect x="0.5" y="0.5" width="1279" height="359" rx="20" fill="#111214" stroke="#24262c"/>
   <rect x="1" y="1" width="1278" height="358" rx="20" fill="url(#dots-dark)" mask="url(#grid-mask-dark)"/>
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif">
-    <text x="76" y="142" fill="#ecedf0" font-size="64" font-weight="700" letter-spacing="-1.4">Node Engine SDK</text>
-    <text x="80" y="192" fill="#8b93ff" font-size="28" font-weight="600" letter-spacing="4">节点引擎 SDK</text>
-    <text x="80" y="244" fill="#a3a7b1" font-size="19">框架无关的底层节点图 SDK，配套官方 Vue 3 与 React 适配层</text>
+    <text x="76" y="142" fill="#ecedf0" font-size="64" font-weight="700" letter-spacing="-1.4">Node Wright</text>
+    <text x="80" y="192" fill="#8b93ff" font-size="28" font-weight="600" letter-spacing="2">@node-wright</text>
+    <text x="80" y="244" fill="#a3a7b1" font-size="19">框架无关的底层节点图引擎，配套官方 Vue 3 与 React 适配层</text>
   </g>
   <text x="80" y="290" fill="#737884" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="15">protocol · store · semantics · runtime · layout · debug · view</text>
   <g>

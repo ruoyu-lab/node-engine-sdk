@@ -1,18 +1,18 @@
 import type {
-  NodeEngineBehaviors,
-  NodeEngineCanvasEdgeTheme,
-  NodeEngineCanvasGroupTheme,
-  NodeEngineCanvasNodeTheme,
-  NodeEngineColorScheme,
-  NodeEngineEdgeRightClickAction,
-  NodeEngineGridState,
-  NodeEngineMarqueeGesture,
-  NodeEngineNodeEditorActivateOn,
-  NodeEngineNodeEditorInset,
-  NodeEnginePerformanceOptions,
-  NodeEngineSelectionMode,
-  NodeEngineStyleDeclaration,
-  NodeEngineTheme,
+  NodeWrightBehaviors,
+  NodeWrightCanvasEdgeTheme,
+  NodeWrightCanvasGroupTheme,
+  NodeWrightCanvasNodeTheme,
+  NodeWrightColorScheme,
+  NodeWrightEdgeRightClickAction,
+  NodeWrightGridState,
+  NodeWrightMarqueeGesture,
+  NodeWrightNodeEditorActivateOn,
+  NodeWrightNodeEditorInset,
+  NodeWrightPerformanceOptions,
+  NodeWrightSelectionMode,
+  NodeWrightStyleDeclaration,
+  NodeWrightTheme,
   ViewportState,
 } from '../types/index.js'
 import type { GraphCanvasTheme } from '../rendering/graph-canvas.js'
@@ -22,11 +22,11 @@ import { withAlpha } from '../rendering/color.js'
 
 /**
  * Every colour of one built-in palette. `theme.colorScheme` picks the palette and every other
- * `NodeEngineTheme` key overrides one entry. The DOM side of the editor (default node, minimap,
+ * `NodeWrightTheme` key overrides one entry. The DOM side of the editor (default node, minimap,
  * marquee) reads the matching CSS custom properties from `style.css`, selected by the root's
  * `data-color-scheme` attribute.
  */
-interface NodeEnginePalette {
+interface NodeWrightPalette {
   background: string
   grid: string
   gridMajor: string
@@ -58,7 +58,7 @@ interface NodeEnginePalette {
   portConnectedDot: string
 }
 
-const DARK_PALETTE: Readonly<NodeEnginePalette> = {
+const DARK_PALETTE: Readonly<NodeWrightPalette> = {
   background: '#111214',
   grid: '#1f2126',
   gridMajor: '#2b2e35',
@@ -90,7 +90,7 @@ const DARK_PALETTE: Readonly<NodeEnginePalette> = {
   portConnectedDot: '#ffffff',
 }
 
-const LIGHT_PALETTE: Readonly<NodeEnginePalette> = {
+const LIGHT_PALETTE: Readonly<NodeWrightPalette> = {
   background: '#f5f6f8',
   grid: '#dcdfe5',
   gridMajor: '#c9cdd5',
@@ -123,22 +123,22 @@ const LIGHT_PALETTE: Readonly<NodeEnginePalette> = {
 }
 
 export function resolveColorScheme(
-  theme: Partial<NodeEngineTheme> | undefined,
-): NodeEngineColorScheme {
+  theme: Partial<NodeWrightTheme> | undefined,
+): NodeWrightColorScheme {
   return theme?.colorScheme === 'light' ? 'light' : 'dark'
 }
 
-function resolvePalette(theme: Partial<NodeEngineTheme> | undefined): Readonly<NodeEnginePalette> {
+function resolvePalette(theme: Partial<NodeWrightTheme> | undefined): Readonly<NodeWrightPalette> {
   return resolveColorScheme(theme) === 'light' ? LIGHT_PALETTE : DARK_PALETTE
 }
 
-export interface ResolvedNodeEngineBehaviors {
+export interface ResolvedNodeWrightBehaviors {
   marquee: {
-    gestures: NodeEngineMarqueeGesture[]
-    selectionMode: NodeEngineSelectionMode
+    gestures: NodeWrightMarqueeGesture[]
+    selectionMode: NodeWrightSelectionMode
   }
   edge: {
-    rightClickAction: NodeEngineEdgeRightClickAction
+    rightClickAction: NodeWrightEdgeRightClickAction
   }
   group: {
     dragHandle: 'header' | 'body'
@@ -159,13 +159,13 @@ export interface ResolvedNodeEngineBehaviors {
   }
   editor: {
     enabled: boolean
-    defaultActivateOn: NodeEngineNodeEditorActivateOn
-    defaultInset: NodeEngineNodeEditorInset
+    defaultActivateOn: NodeWrightNodeEditorActivateOn
+    defaultInset: NodeWrightNodeEditorInset
     defaultMaxFields: number
   }
 }
 
-export interface ResolvedNodeEnginePerformanceOptions {
+export interface ResolvedNodeWrightPerformanceOptions {
   enabled: boolean
   overlay: boolean
   overlayMinWidth: number
@@ -174,13 +174,13 @@ export interface ResolvedNodeEnginePerformanceOptions {
   cullPadding: number
 }
 
-export interface ResolvedNodeEngineGridColors {
+export interface ResolvedNodeWrightGridColors {
   minor: string
   major: string
 }
 
 export function resolveGraphCanvasTheme(
-  theme: Partial<NodeEngineTheme> | undefined,
+  theme: Partial<NodeWrightTheme> | undefined,
 ): GraphCanvasTheme {
   const palette = resolvePalette(theme)
 
@@ -199,8 +199,8 @@ export function resolveGraphCanvasTheme(
 }
 
 export function resolveCanvasNodeTheme(
-  theme: Partial<NodeEngineTheme> | undefined,
-): NodeEngineCanvasNodeTheme {
+  theme: Partial<NodeWrightTheme> | undefined,
+): NodeWrightCanvasNodeTheme {
   const palette = resolvePalette(theme)
 
   return {
@@ -222,7 +222,7 @@ export function resolveCanvasNodeTheme(
   }
 }
 
-export function resolveCanvasEdgeTheme(theme: GraphCanvasTheme): NodeEngineCanvasEdgeTheme {
+export function resolveCanvasEdgeTheme(theme: GraphCanvasTheme): NodeWrightCanvasEdgeTheme {
   return {
     stroke: theme.edgeColor,
     activeStroke: theme.edgeActiveColor,
@@ -233,7 +233,7 @@ export function resolveCanvasEdgeTheme(theme: GraphCanvasTheme): NodeEngineCanva
   }
 }
 
-export function resolveCanvasGroupTheme(theme: GraphCanvasTheme): NodeEngineCanvasGroupTheme {
+export function resolveCanvasGroupTheme(theme: GraphCanvasTheme): NodeWrightCanvasGroupTheme {
   return {
     background: theme.groupBackground,
     border: theme.groupBorderColor,
@@ -242,8 +242,8 @@ export function resolveCanvasGroupTheme(theme: GraphCanvasTheme): NodeEngineCanv
 }
 
 export function resolveBehaviorOptions(
-  behaviors: Partial<NodeEngineBehaviors> | undefined,
-): ResolvedNodeEngineBehaviors {
+  behaviors: Partial<NodeWrightBehaviors> | undefined,
+): ResolvedNodeWrightBehaviors {
   return {
     marquee: {
       gestures: behaviors?.marquee?.gestures ?? ['space-left', 'middle'],
@@ -284,8 +284,8 @@ export function resolveBehaviorOptions(
 }
 
 export function resolvePerformanceOptions(
-  performance: Partial<NodeEnginePerformanceOptions> | undefined,
-): ResolvedNodeEnginePerformanceOptions {
+  performance: Partial<NodeWrightPerformanceOptions> | undefined,
+): ResolvedNodeWrightPerformanceOptions {
   return {
     enabled: Boolean(performance?.enabled),
     overlay: Boolean(performance?.overlay),
@@ -298,8 +298,8 @@ export function resolvePerformanceOptions(
 
 export function resolveGridColors(options: {
   gridColor: string
-  theme: Partial<NodeEngineTheme> | undefined
-}): ResolvedNodeEngineGridColors {
+  theme: Partial<NodeWrightTheme> | undefined
+}): ResolvedNodeWrightGridColors {
   const palette = resolvePalette(options.theme)
   const customMinor = options.gridColor || options.theme?.gridColor
 
@@ -315,8 +315,8 @@ export function resolveGridState(options: {
   viewport: ViewportState
   gridVisible: boolean
   gridSize: number
-  behavior: ResolvedNodeEngineBehaviors['grid']
-}): NodeEngineGridState {
+  behavior: ResolvedNodeWrightBehaviors['grid']
+}): NodeWrightGridState {
   const zoom = options.viewport.zoom
   const baseStep = Math.max(options.gridSize, 1)
   let step = baseStep
@@ -348,18 +348,18 @@ export function resolveGridState(options: {
 
 export function resolveRootStyle(options: {
   canvasBackground: string
-  theme: Partial<NodeEngineTheme> | undefined
-}): NodeEngineStyleDeclaration {
+  theme: Partial<NodeWrightTheme> | undefined
+}): NodeWrightStyleDeclaration {
   const palette = resolvePalette(options.theme)
 
   return {
-    '--ne-background': options.canvasBackground || options.theme?.background || palette.background,
-    '--ne-marquee': options.theme?.marqueeColor || palette.marquee,
-    '--ne-marquee-border': options.theme?.marqueeBorderColor || palette.marqueeBorder,
+    '--nw-background': options.canvasBackground || options.theme?.background || palette.background,
+    '--nw-marquee': options.theme?.marqueeColor || palette.marquee,
+    '--nw-marquee-border': options.theme?.marqueeBorderColor || palette.marqueeBorder,
   }
 }
 
 /** Hex minor grid colours derive a translucent major colour; other syntaxes use the palette's. */
-function resolveDefaultMajorGridColor(minor: string, palette: NodeEnginePalette): string {
+function resolveDefaultMajorGridColor(minor: string, palette: NodeWrightPalette): string {
   return /^#(?:[\da-f]{3}|[\da-f]{6})$/iu.test(minor) ? withAlpha(minor, 0.12) : palette.gridMajor
 }

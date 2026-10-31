@@ -1,5 +1,5 @@
 import type { Signal, ReadonlySignal } from '../reactive.js'
-import type { NodeEngineHotkey, NodeEngineRenderContext } from '../types/index.js'
+import type { NodeWrightHotkey, NodeWrightRenderContext } from '../types/index.js'
 import { hasSelection } from './selection.js'
 
 const HOTKEY_REMOVE_SELECTION_DELETE_ID = 'builtin.selection.remove.delete'
@@ -21,7 +21,7 @@ export function normalizeKey(key: string): string {
 }
 
 export function hotkeyMatches(
-  hotkey: NodeEngineHotkey,
+  hotkey: NodeWrightHotkey,
   event: Pick<KeyboardEvent, 'ctrlKey' | 'metaKey' | 'shiftKey' | 'altKey'>,
   normalizedKey: string,
 ): boolean {
@@ -35,26 +35,26 @@ export function hotkeyMatches(
 }
 
 /** Undo/redo, copy/paste and delete, below every contributed hotkey in priority. */
-export function createBuiltInHotkeys(hasClipboardContent: () => boolean): NodeEngineHotkey[] {
-  const canUndo = ({ readonly, history }: NodeEngineRenderContext) => !readonly && history.canUndo
-  const canRedo = ({ readonly, history }: NodeEngineRenderContext) => !readonly && history.canRedo
-  const undo = ({ api }: NodeEngineRenderContext) => {
+export function createBuiltInHotkeys(hasClipboardContent: () => boolean): NodeWrightHotkey[] {
+  const canUndo = ({ readonly, history }: NodeWrightRenderContext) => !readonly && history.canUndo
+  const canRedo = ({ readonly, history }: NodeWrightRenderContext) => !readonly && history.canRedo
+  const undo = ({ api }: NodeWrightRenderContext) => {
     api.history.undo()
   }
-  const redo = ({ api }: NodeEngineRenderContext) => {
+  const redo = ({ api }: NodeWrightRenderContext) => {
     api.history.redo()
   }
-  const canCopy = ({ selection }: NodeEngineRenderContext) => hasSelection(selection)
-  const copy = ({ api }: NodeEngineRenderContext) => {
+  const canCopy = ({ selection }: NodeWrightRenderContext) => hasSelection(selection)
+  const copy = ({ api }: NodeWrightRenderContext) => {
     api.clipboard.copy()
   }
-  const canPaste = ({ readonly }: NodeEngineRenderContext) => !readonly && hasClipboardContent()
-  const paste = ({ api }: NodeEngineRenderContext) => {
+  const canPaste = ({ readonly }: NodeWrightRenderContext) => !readonly && hasClipboardContent()
+  const paste = ({ api }: NodeWrightRenderContext) => {
     api.clipboard.paste()
   }
-  const canRemove = ({ readonly, selection }: NodeEngineRenderContext) =>
+  const canRemove = ({ readonly, selection }: NodeWrightRenderContext) =>
     !readonly && hasSelection(selection)
-  const remove = ({ api }: NodeEngineRenderContext) => {
+  const remove = ({ api }: NodeWrightRenderContext) => {
     api.selection.remove()
   }
 
@@ -162,8 +162,8 @@ export interface KeyboardController {
 
 export function createKeyboardController(options: {
   spacePressed: Signal<boolean>
-  hotkeys: ReadonlySignal<NodeEngineHotkey[]>
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
+  hotkeys: ReadonlySignal<NodeWrightHotkey[]>
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
 }): KeyboardController {
   function isEditingText(target: EventTarget | null): boolean {
     const element = target as HTMLElement | null

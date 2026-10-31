@@ -3,11 +3,11 @@ import {
   layoutGraph,
   type GraphLayoutOptions,
   type GraphLayoutResult,
-} from '@node-engine-sdk/core/layout'
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import type { NodeEnginePresetLayout } from './types.js'
+} from '@node-wright/core/layout'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightPresetLayout } from './types.js'
 
-export function createPresetLayout(options: GraphLayoutOptions): NodeEnginePresetLayout {
+export function createPresetLayout(options: GraphLayoutOptions): NodeWrightPresetLayout {
   const resolvedOptions = Object.freeze({ ...options })
 
   return {

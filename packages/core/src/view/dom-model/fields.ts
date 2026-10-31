@@ -1,11 +1,11 @@
 import type { GraphMetadata, NodeParameterDefinition } from '../../protocol/index.js'
 import { resolveNodeParameterInputPortId } from '../../protocol/index.js'
 import type {
-  NodeEngineDomFieldDefinition,
-  NodeEngineDomNodeDefinition,
-  NodeEngineDomNodeFieldSource,
-  NodeEngineDomNodeRenderContext,
-  NodeEngineResolvedDomNodeField,
+  NodeWrightDomFieldDefinition,
+  NodeWrightDomNodeDefinition,
+  NodeWrightDomNodeFieldSource,
+  NodeWrightDomNodeRenderContext,
+  NodeWrightResolvedDomNodeField,
 } from '../types/index.js'
 import { asRecord } from './definition.js'
 import {
@@ -19,9 +19,9 @@ import {
  * display hints for the parameter with the same key; raw node data never creates fields.
  */
 export function resolveDomNodeFields(
-  context: Pick<NodeEngineDomNodeRenderContext, 'node' | 'schema'>,
-  domDefinition: NodeEngineDomNodeDefinition,
-): NodeEngineResolvedDomNodeField[] {
+  context: Pick<NodeWrightDomNodeRenderContext, 'node' | 'schema'>,
+  domDefinition: NodeWrightDomNodeDefinition,
+): NodeWrightResolvedDomNodeField[] {
   const hints = new Map((domDefinition.fields ?? []).map((hint) => [hint.key, hint]))
   const fieldSource = domDefinition.fieldSource ?? 'auto'
 
@@ -63,9 +63,9 @@ export function formatDomFieldValue(value: unknown): string {
 function resolveParameterField(
   value: unknown,
   parameter: NodeParameterDefinition,
-  hint: NodeEngineDomFieldDefinition | undefined,
+  hint: NodeWrightDomFieldDefinition | undefined,
   inputPortId: string | undefined,
-): NodeEngineResolvedDomNodeField {
+): NodeWrightResolvedDomNodeField {
   const placeholder = hint?.placeholder ?? readParameterUiString(parameter, 'placeholder')
   const textValue = value === undefined ? (placeholder ?? '') : formatDomFieldValue(value)
 
@@ -101,7 +101,7 @@ function resolveParameterField(
 function lookupDomFieldValue(
   source: GraphMetadata | undefined,
   key: string,
-  fieldSource: NodeEngineDomNodeFieldSource,
+  fieldSource: NodeWrightDomNodeFieldSource,
 ): unknown {
   const record = asRecord(source)
 

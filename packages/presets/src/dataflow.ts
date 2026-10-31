@@ -6,10 +6,10 @@ import {
   dataflowNodeDefinitions,
   dataflowRuntimeDefinitions,
 } from './nodes/dataflow/index.js'
-import { createDataflowPlugin } from '@node-engine-sdk/core/semantics'
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import { createDataflowPlugin } from '@node-wright/core/semantics'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 import { PRESET_NODE_ACCENTS } from './accents.js'
-import type { DataflowPresetOptions, NodeEnginePreset } from './types.js'
+import type { DataflowPresetOptions, NodeWrightPreset } from './types.js'
 import { createPresetLayout } from './layout.js'
 
 export {
@@ -65,7 +65,7 @@ export const dataflowNodeTypes: NodeTypeRegistry = {
   },
 }
 
-export function createDataflowPreset(options: DataflowPresetOptions = {}): NodeEnginePreset {
+export function createDataflowPreset(options: DataflowPresetOptions = {}): NodeWrightPreset {
   const includeDefaultNodes = options.includeDefaultNodes !== false
 
   return {

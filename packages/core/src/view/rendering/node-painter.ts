@@ -1,5 +1,5 @@
 import type { GraphEndpoint } from '../../protocol/index.js'
-import type { NodeEngineCanvasNodeRenderContext } from '../types/index.js'
+import type { NodeWrightCanvasNodeRenderContext } from '../types/index.js'
 import { resolveNodeAccent } from '../dom-model/definition.js'
 import { adjustColor, CANVAS_FONT_FAMILY, withAlpha } from './color.js'
 
@@ -33,7 +33,7 @@ interface DefaultNodeVisuals {
 /**
  * Paints the built-in node card; detail is reduced as the zoom level drops.
  */
-export function drawDefaultCanvasNode(context: NodeEngineCanvasNodeRenderContext): void {
+export function drawDefaultCanvasNode(context: NodeWrightCanvasNodeRenderContext): void {
   const { ctx, node, zoom } = context
 
   const visuals: DefaultNodeVisuals = {
@@ -247,7 +247,7 @@ export function drawDefaultCanvasNode(context: NodeEngineCanvasNodeRenderContext
 }
 
 function drawUltraCompactCanvasNode(
-  context: NodeEngineCanvasNodeRenderContext,
+  context: NodeWrightCanvasNodeRenderContext,
   visuals: DefaultNodeVisuals,
 ): void {
   const { ctx, bounds, selected, theme, zoom } = context
@@ -277,7 +277,7 @@ function drawUltraCompactCanvasNode(
 }
 
 function drawCompactCanvasNode(
-  context: NodeEngineCanvasNodeRenderContext,
+  context: NodeWrightCanvasNodeRenderContext,
   visuals: DefaultNodeVisuals,
 ): void {
   const { ctx, bounds, selected, theme } = context
@@ -307,7 +307,7 @@ function drawCompactCanvasNode(
 }
 
 function drawReducedCanvasNode(
-  context: NodeEngineCanvasNodeRenderContext,
+  context: NodeWrightCanvasNodeRenderContext,
   visuals: DefaultNodeVisuals,
 ): void {
   const { ctx, bounds, selected, theme, zoom } = context
@@ -360,7 +360,7 @@ function drawReducedCanvasNode(
   drawMinimalPorts(context, visuals.accent)
 }
 
-function drawMinimalPorts(context: NodeEngineCanvasNodeRenderContext, accent: string): void {
+function drawMinimalPorts(context: NodeWrightCanvasNodeRenderContext, accent: string): void {
   const { ctx, inputs, outputs, theme, connectionSource, connectionTarget } = context
 
   for (const port of [...inputs, ...outputs]) {

@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   findEdge,
   findGroup,
   findNode,
   findPort,
   type GraphSnapshot,
   type NodeDefinition,
-} from '@node-engine-sdk/core/protocol'
+} from '@node-wright/core/protocol'
 
 const graph: GraphSnapshot = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [
     { id: 'own', type: 'demo', x: 0, y: 0, ports: [{ id: 'out', direction: 'output' }] },
     { id: 'defined', type: 'demo', x: 100, y: 0 },
@@ -35,7 +35,7 @@ const definitions: NodeDefinition[] = [
   },
 ]
 
-describe('@node-engine-sdk/core/protocol lookups', () => {
+describe('@node-wright/core/protocol lookups', () => {
   it('finds nodes, edges, and groups of a snapshot by id', () => {
     expect(findNode(graph, 'own')).toBe(graph.nodes[0])
     expect(findEdge(graph, 'edge')).toBe(graph.edges[0])

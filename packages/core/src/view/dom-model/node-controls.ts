@@ -1,12 +1,12 @@
 import type { GraphEndpoint, GraphValue } from '../../protocol/index.js'
 import type {
-  NodeEngineDomNodeApi,
-  NodeEngineDomNodeRenderContext,
-  NodeEngineDomNodeResizeHandle,
-  NodeEngineNodeStatus,
-  NodeEngineResolvedDomNodeField,
-  NodeEngineResolvedDomNodeModel,
-  NodeEngineStyleDeclaration,
+  NodeWrightDomNodeApi,
+  NodeWrightDomNodeRenderContext,
+  NodeWrightDomNodeResizeHandle,
+  NodeWrightNodeStatus,
+  NodeWrightResolvedDomNodeField,
+  NodeWrightResolvedDomNodeModel,
+  NodeWrightStyleDeclaration,
 } from '../types/index.js'
 import {
   normalizeDomFieldNumber,
@@ -30,8 +30,8 @@ import {
  */
 
 export interface DomNodeControlsSource {
-  api: NodeEngineDomNodeApi
-  model: NodeEngineResolvedDomNodeModel
+  api: NodeWrightDomNodeApi
+  model: NodeWrightResolvedDomNodeModel
   selected: boolean
   connectionSource?: GraphEndpoint
 }
@@ -43,24 +43,24 @@ export interface DomNodeControlsState {
 }
 
 export interface DomNodeResizeHandleDescriptor {
-  handle: NodeEngineDomNodeResizeHandle
+  handle: NodeWrightDomNodeResizeHandle
   className: string
 }
 
 export const DOM_NODE_RESIZE_HANDLES: readonly DomNodeResizeHandleDescriptor[] = [
-  { handle: 'nw', className: 'ne-default-dom-node__resize-corner--nw' },
-  { handle: 'ne', className: 'ne-default-dom-node__resize-corner--ne' },
-  { handle: 'sw', className: 'ne-default-dom-node__resize-corner--sw' },
-  { handle: 'se', className: 'ne-default-dom-node__resize-corner--se' },
+  { handle: 'nw', className: 'nw-default-dom-node__resize-corner--nw' },
+  { handle: 'ne', className: 'nw-default-dom-node__resize-corner--ne' },
+  { handle: 'sw', className: 'nw-default-dom-node__resize-corner--sw' },
+  { handle: 'se', className: 'nw-default-dom-node__resize-corner--se' },
 ]
 
 const FIELD_UPDATE_SOURCE = 'dom.default-node.field'
 const SELECT_MENU_SELECTOR =
-  '.ne-default-dom-node__field-select-trigger, .ne-default-dom-node__field-select-menu'
+  '.nw-default-dom-node__field-select-trigger, .nw-default-dom-node__field-select-menu'
 
 export function resolveDomNumberDraft(
   state: DomNodeControlsState,
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
 ): string {
   const draft = field.driven ? undefined : state.numberDrafts[field.key]
 
@@ -74,7 +74,7 @@ export function resolveDomNumberDraft(
 
 export function resolveDomTimeSegment(
   state: DomNodeControlsState,
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
   segment: DomTimeSegment,
 ): string {
   const draft = field.driven ? undefined : state.timeDrafts[timeDraftKey(field, segment)]
@@ -84,45 +84,45 @@ export function resolveDomTimeSegment(
 
 export function isDomSelectOpen(
   state: DomNodeControlsState,
-  field: NodeEngineResolvedDomNodeField,
+  field: NodeWrightResolvedDomNodeField,
 ): boolean {
   return state.openSelectKey === field.key
 }
 
 export function resolveDomNodeHeaderStyle(
-  model: NodeEngineResolvedDomNodeModel,
-): NodeEngineStyleDeclaration {
+  model: NodeWrightResolvedDomNodeModel,
+): NodeWrightStyleDeclaration {
   return { height: `${model.layout.headerHeight}px` }
 }
 
-/** Inline style of the default node: its accent colour as `--ne-node-accent`, when it has one. */
+/** Inline style of the default node: its accent colour as `--nw-node-accent`, when it has one. */
 export function resolveDomNodeAccentStyle(
-  model: NodeEngineResolvedDomNodeModel,
-): NodeEngineStyleDeclaration {
-  return model.accent ? { '--ne-node-accent': model.accent } : {}
+  model: NodeWrightResolvedDomNodeModel,
+): NodeWrightStyleDeclaration {
+  return model.accent ? { '--nw-node-accent': model.accent } : {}
 }
 
 /** Selection, drag and execution status classes of the default node's root element. */
 export function resolveDomNodeClass(
-  context: Pick<NodeEngineDomNodeRenderContext, 'selected' | 'dragging' | 'status'>,
+  context: Pick<NodeWrightDomNodeRenderContext, 'selected' | 'dragging' | 'status'>,
 ): Record<string, boolean> {
   const status = context.status && context.status !== 'idle' ? context.status : null
 
   return {
-    'ne-default-dom-node--selected': context.selected,
-    'ne-default-dom-node--dragging': context.dragging,
-    [`ne-default-dom-node--${status ?? 'idle'}`]: status !== null,
+    'nw-default-dom-node--selected': context.selected,
+    'nw-default-dom-node--dragging': context.dragging,
+    [`nw-default-dom-node--${status ?? 'idle'}`]: status !== null,
   }
 }
 
 /** The status badge of the default node's header, or `null` for an idle node. */
 export function resolveDomNodeStatusClass(
-  status: NodeEngineNodeStatus | undefined,
+  status: NodeWrightNodeStatus | undefined,
 ): Record<string, boolean> | null {
   return status && status !== 'idle'
     ? {
-        'ne-default-dom-node__status': true,
-        [`ne-default-dom-node__status--${status}`]: true,
+        'nw-default-dom-node__status': true,
+        [`nw-default-dom-node__status--${status}`]: true,
       }
     : null
 }
@@ -142,35 +142,35 @@ export interface DomNodeControls {
   mount: (view: Window) => void
   destroy: () => void
   nodePointerDown: (event: PointerEvent) => void
-  resizePointerDown: (handle: NodeEngineDomNodeResizeHandle, event: PointerEvent) => void
+  resizePointerDown: (handle: NodeWrightDomNodeResizeHandle, event: PointerEvent) => void
   portPointerDown: (portId: string, event: PointerEvent) => void
   portPointerEnter: (portId: string) => void
   portPointerLeave: () => void
   portPointerUp: (portId: string, event: PointerEvent) => void
-  fieldPortAreaPointerDown: (field: NodeEngineResolvedDomNodeField, event: PointerEvent) => void
+  fieldPortAreaPointerDown: (field: NodeWrightResolvedDomNodeField, event: PointerEvent) => void
   controlPointerDown: (event: Event) => void
   stopEvent: (event: Event) => void
-  textInput: (field: NodeEngineResolvedDomNodeField, value: string) => void
-  numberDraftInput: (field: NodeEngineResolvedDomNodeField, rawValue: string) => void
-  numberDraftCommit: (field: NodeEngineResolvedDomNodeField, rawValue: string) => void
+  textInput: (field: NodeWrightResolvedDomNodeField, value: string) => void
+  numberDraftInput: (field: NodeWrightResolvedDomNodeField, rawValue: string) => void
+  numberDraftCommit: (field: NodeWrightResolvedDomNodeField, rawValue: string) => void
   numberStep: (
-    field: NodeEngineResolvedDomNodeField,
+    field: NodeWrightResolvedDomNodeField,
     direction: -1 | 1,
     event: PointerEvent,
   ) => void
-  numberPointerDown: (field: NodeEngineResolvedDomNodeField, event: PointerEvent) => void
-  rangeInput: (field: NodeEngineResolvedDomNodeField, rawValue: string) => void
+  numberPointerDown: (field: NodeWrightResolvedDomNodeField, event: PointerEvent) => void
+  rangeInput: (field: NodeWrightResolvedDomNodeField, rawValue: string) => void
   timeSegmentInput: (
-    field: NodeEngineResolvedDomNodeField,
+    field: NodeWrightResolvedDomNodeField,
     segment: DomTimeSegment,
     rawValue: string,
   ) => void
-  timeSegmentCommit: (field: NodeEngineResolvedDomNodeField) => void
-  toggleSelect: (field: NodeEngineResolvedDomNodeField, event: Event) => void
-  selectOption: (field: NodeEngineResolvedDomNodeField, optionValue: string, event: Event) => void
-  booleanChange: (field: NodeEngineResolvedDomNodeField, checked: boolean) => void
-  downloadImage: (field: NodeEngineResolvedDomNodeField) => void
-  openImage: (field: NodeEngineResolvedDomNodeField) => void
+  timeSegmentCommit: (field: NodeWrightResolvedDomNodeField) => void
+  toggleSelect: (field: NodeWrightResolvedDomNodeField, event: Event) => void
+  selectOption: (field: NodeWrightResolvedDomNodeField, optionValue: string, event: Event) => void
+  booleanChange: (field: NodeWrightResolvedDomNodeField, checked: boolean) => void
+  downloadImage: (field: NodeWrightResolvedDomNodeField) => void
+  openImage: (field: NodeWrightResolvedDomNodeField) => void
 }
 
 export function createDomNodeControls(getSource: () => DomNodeControlsSource): DomNodeControls {
@@ -204,7 +204,7 @@ export function createDomNodeControls(getSource: () => DomNodeControlsSource): D
     }
   }
 
-  function updateValue(field: NodeEngineResolvedDomNodeField, value: GraphValue): void {
+  function updateValue(field: NodeWrightResolvedDomNodeField, value: GraphValue): void {
     if (!field.driven) {
       getSource().api.params.update(field.key, value, { source: FIELD_UPDATE_SOURCE })
     }
@@ -477,7 +477,7 @@ export function createDomNodeControls(getSource: () => DomNodeControlsSource): D
   }
 }
 
-function timeDraftKey(field: NodeEngineResolvedDomNodeField, segment: DomTimeSegment): string {
+function timeDraftKey(field: NodeWrightResolvedDomNodeField, segment: DomTimeSegment): string {
   return `${field.key}:${segment}`
 }
 

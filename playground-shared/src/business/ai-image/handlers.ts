@@ -1,4 +1,4 @@
-import type { NodeEngineRuntimeNodeDefinition } from '@node-engine-sdk/core/runtime'
+import type { NodeWrightRuntimeNodeDefinition } from '@node-wright/core/runtime'
 import {
   AI_IMAGE_DISPLAY_NODE_TYPE,
   AI_IMAGE_GENERATE_NODE_TYPE,
@@ -36,7 +36,7 @@ function buildPollinationsUrl(input: {
   return `https://image.pollinations.ai/prompt/${encodeURIComponent(input.prompt)}?${params.toString()}`
 }
 
-export const aiImageRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+export const aiImageRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
   {
     type: AI_PROMPT_NODE_TYPE,
     handler: ({ node, params }) => {

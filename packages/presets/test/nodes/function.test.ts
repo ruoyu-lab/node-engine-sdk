@@ -1,16 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   parseGraph,
   type GraphMetadata,
   type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+} from '@node-wright/core/protocol'
 import {
-  NodeEngineRuntime,
+  NodeWrightRuntime,
   compileGraph,
-  type NodeEngineRuntimeFunctionDefinition,
-  type NodeEngineRuntimeFunctionHandler,
-} from '@node-engine-sdk/core/runtime'
+  type NodeWrightRuntimeFunctionDefinition,
+  type NodeWrightRuntimeFunctionHandler,
+} from '@node-wright/core/runtime'
 import {
   DATA_SOURCE_NODE_TYPE,
   dataflowNodeDefinitions,
@@ -24,7 +24,7 @@ import {
   functionCallRuntimeDefinitions,
 } from '../../src/nodes/function/index'
 
-const answer: NodeEngineRuntimeFunctionDefinition = {
+const answer: NodeWrightRuntimeFunctionDefinition = {
   id: 'answer',
   outputs: [{ id: 'result' }],
   handler: () => ({ values: { result: 42 } }),
@@ -33,7 +33,7 @@ const answer: NodeEngineRuntimeFunctionDefinition = {
 /** Runs one call node whose `data` is given, with `answer` registered. */
 async function runCallNode(data: GraphMetadata) {
   const graph: GraphSnapshot = {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       {
         id: 'call',
@@ -48,7 +48,7 @@ async function runCallNode(data: GraphMetadata) {
     groups: [],
     meta: {},
   }
-  const runtime = new NodeEngineRuntime({
+  const runtime = new NodeWrightRuntime({
     graph,
     definitions: functionCallNodeDefinitions,
     runtimeDefinitions: functionCallRuntimeDefinitions,
@@ -58,10 +58,10 @@ async function runCallNode(data: GraphMetadata) {
   return runtime.run(runtime.compile('call').plan!)
 }
 
-describe('@node-engine-sdk/presets/nodes/function', () => {
+describe('@node-wright/presets/nodes/function', () => {
   it('calls a registered runtime function by node parameter', async () => {
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         {
           id: 'call',
@@ -87,7 +87,7 @@ describe('@node-engine-sdk/presets/nodes/function', () => {
       definitions: functionCallNodeDefinitions,
       runtimeDefinitions: functionCallRuntimeDefinitions,
     })
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions: functionCallNodeDefinitions,
       runtimeDefinitions: functionCallRuntimeDefinitions,
       functionDefinitions,
@@ -121,17 +121,17 @@ describe('@node-engine-sdk/presets/nodes/function', () => {
   })
 
   it('passes a connected input named functionId to the function instead of selecting by it', async () => {
-    const handler = vi.fn<NodeEngineRuntimeFunctionHandler>(({ values }) => ({
+    const handler = vi.fn<NodeWrightRuntimeFunctionHandler>(({ values }) => ({
       values: { result: values.functionId },
     }))
-    const echo: NodeEngineRuntimeFunctionDefinition = {
+    const echo: NodeWrightRuntimeFunctionDefinition = {
       id: 'echo',
       inputs: [{ id: 'functionId' }],
       outputs: [{ id: 'result' }],
       handler,
     }
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         {
           id: 'source',
@@ -160,7 +160,7 @@ describe('@node-engine-sdk/presets/nodes/function', () => {
       groups: [],
       meta: {},
     }
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       graph,
       definitions: [...dataflowNodeDefinitions, ...functionCallNodeDefinitions],
       runtimeDefinitions: [...dataflowRuntimeDefinitions, ...functionCallRuntimeDefinitions],
@@ -211,7 +211,7 @@ describe('@node-engine-sdk/presets/nodes/function', () => {
       { includeExecPorts: true },
     )
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [{ id: 'call', type: FUNCTION_CALL_NODE_TYPE, x: 0, y: 0, ports }],
       edges: [],
       groups: [],

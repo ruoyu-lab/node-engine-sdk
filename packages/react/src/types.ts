@@ -1,17 +1,17 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
 import type {
-  NodeEngineApi,
-  NodeEngineContextMenuState,
-  NodeEngineDomNodeProps,
-  NodeEngineEditorOptions,
-  NodeEngineEventMap,
-  NodeEngineEventName,
-  NodeEngineGridState,
-  NodeEngineInteractionState,
-  NodeEngineNodeEditorState,
-  NodeEngineRenderContext,
+  NodeWrightApi,
+  NodeWrightContextMenuState,
+  NodeWrightDomNodeProps,
+  NodeWrightEditorOptions,
+  NodeWrightEventMap,
+  NodeWrightEventName,
+  NodeWrightGridState,
+  NodeWrightInteractionState,
+  NodeWrightNodeEditorState,
+  NodeWrightRenderContext,
   SelectionState,
-} from '@node-engine-sdk/core/view'
+} from '@node-wright/core/view'
 import type { ComponentType, CSSProperties, ReactNode } from 'react'
 
 type PascalCase<Name extends string> = Name extends `${infer Head}-${infer Tail}`
@@ -19,62 +19,62 @@ type PascalCase<Name extends string> = Name extends `${infer Head}-${infer Tail}
   : Capitalize<Name>
 
 /** React callback prop of an editor event: `graph-change` → `onGraphChange`. */
-export type NodeEngineEventHandlerName<Name extends NodeEngineEventName> = `on${PascalCase<Name>}`
+export type NodeWrightEventHandlerName<Name extends NodeWrightEventName> = `on${PascalCase<Name>}`
 
 /**
- * Every editor event (`NodeEngineEventMap`) as an optional callback prop. `graph` together with
+ * Every editor event (`NodeWrightEventMap`) as an optional callback prop. `graph` together with
  * `onGraphChange` is the React counterpart of Vue's `v-model:graph`.
  */
-export type NodeEngineEventHandlers = {
-  [Name in NodeEngineEventName as NodeEngineEventHandlerName<Name>]?: (
-    ...args: NodeEngineEventMap[Name]
+export type NodeWrightEventHandlers = {
+  [Name in NodeWrightEventName as NodeWrightEventHandlerName<Name>]?: (
+    ...args: NodeWrightEventMap[Name]
   ) => void
 }
 
-/** Value of the `NodeEngine` ref: the imperative editor API. */
-export type NodeEngineHandle = NodeEngineApi
+/** Value of the `NodeWright` ref: the imperative editor API. */
+export type NodeWrightHandle = NodeWrightApi
 
 /** A DOM node component, registered in `domComponents` under the key a DOM renderer names. */
-export type NodeEngineDomComponent = ComponentType<NodeEngineDomNodeProps>
+export type NodeWrightDomComponent = ComponentType<NodeWrightDomNodeProps>
 
 /** Arguments of `renderBackground`; the props of the Vue `background` slot. */
-export interface NodeEngineBackgroundRenderProps {
-  api: NodeEngineApi
+export interface NodeWrightBackgroundRenderProps {
+  api: NodeWrightApi
   graph: GraphSnapshot
   readonly: boolean
-  gridState: NodeEngineGridState
-  interactionState: NodeEngineInteractionState
-  nodeEditorState: NodeEngineNodeEditorState | null
+  gridState: NodeWrightGridState
+  interactionState: NodeWrightInteractionState
+  nodeEditorState: NodeWrightNodeEditorState | null
   toggleGrid: () => void
-  renderContext: NodeEngineRenderContext
+  renderContext: NodeWrightRenderContext
 }
 
 /** Arguments of `renderOverlay`; the props of the Vue `overlay` slot. */
-export interface NodeEngineOverlayRenderProps {
-  api: NodeEngineApi
+export interface NodeWrightOverlayRenderProps {
+  api: NodeWrightApi
   graph: GraphSnapshot
   selection: SelectionState
-  gridState: NodeEngineGridState
-  interactionState: NodeEngineInteractionState
-  nodeEditorState: NodeEngineNodeEditorState | null
-  contextMenuState: NodeEngineContextMenuState | null
+  gridState: NodeWrightGridState
+  interactionState: NodeWrightInteractionState
+  nodeEditorState: NodeWrightNodeEditorState | null
+  contextMenuState: NodeWrightContextMenuState | null
 }
 
 /**
- * Props of the React `NodeEngine` component: the editor options, every editor event as a
+ * Props of the React `NodeWright` component: the editor options, every editor event as a
  * callback prop, and the React-only rendering concerns. Option objects and arrays are compared
  * by identity, so pass stable references (module constants, state or `useMemo`); a new registry
  * array (`nodeDefinitions`, `plugins`, ...) rebuilds the internal store and its history.
  */
-export interface NodeEngineProps
-  extends Omit<NodeEngineEditorOptions, 'onEvent'>, NodeEngineEventHandlers {
+export interface NodeWrightProps
+  extends Omit<NodeWrightEditorOptions, 'onEvent'>, NodeWrightEventHandlers {
   ariaLabel?: string
   className?: string
   style?: CSSProperties
   /** DOM node components by the `component` key of their DOM renderers. */
-  domComponents?: Readonly<Record<string, NodeEngineDomComponent>>
+  domComponents?: Readonly<Record<string, NodeWrightDomComponent>>
   /** Rendered between the canvases and the DOM node layer. */
-  renderBackground?: (props: NodeEngineBackgroundRenderProps) => ReactNode
+  renderBackground?: (props: NodeWrightBackgroundRenderProps) => ReactNode
   /** Rendered above every editor layer, e.g. toolbars, context menus and node editors. */
-  renderOverlay?: (props: NodeEngineOverlayRenderProps) => ReactNode
+  renderOverlay?: (props: NodeWrightOverlayRenderProps) => ReactNode
 }

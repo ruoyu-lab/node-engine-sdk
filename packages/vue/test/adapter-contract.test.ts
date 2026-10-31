@@ -1,5 +1,5 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineApi, NodeEngineDomNodeProps } from '@node-engine-sdk/core/view'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightApi, NodeWrightDomNodeProps } from '@node-wright/core/view'
 import { createApp, defineComponent, h, nextTick, shallowRef } from 'vue'
 import {
   contractNodeDefinitions,
@@ -8,12 +8,12 @@ import {
   type AdapterContractProps,
   type AdapterDriver,
 } from '../../core/test/view/adapter-contract'
-import { NodeEngine } from '../src/index'
+import { NodeWright } from '../src/index'
 
 const ContractNode = defineComponent({
   props: { node: { type: Object, required: true } },
   setup: (props) => () =>
-    h('span', { class: 'contract-node' }, (props.node as NodeEngineDomNodeProps['node']).id),
+    h('span', { class: 'contract-node' }, (props.node as NodeWrightDomNodeProps['node']).id),
 })
 
 async function rendered(): Promise<void> {
@@ -24,7 +24,7 @@ async function rendered(): Promise<void> {
 const vueDriver: AdapterDriver = {
   async mount(initial) {
     const props = shallowRef<AdapterContractProps>(initial)
-    const api = shallowRef<NodeEngineApi | null>(null)
+    const api = shallowRef<NodeWrightApi | null>(null)
     const events = new Map<AdapterContractEvent, unknown[][]>()
     const record =
       (name: AdapterContractEvent) =>
@@ -33,7 +33,7 @@ const vueDriver: AdapterDriver = {
       }
     const Host = defineComponent({
       setup: () => () =>
-        h(NodeEngine, {
+        h(NodeWright, {
           ref: api,
           ...props.value,
           nodeDefinitions: contractNodeDefinitions,
@@ -63,7 +63,7 @@ const vueDriver: AdapterDriver = {
       host,
       api: () => {
         if (!api.value) {
-          throw new Error('The Vue NodeEngine ref is empty.')
+          throw new Error('The Vue NodeWright ref is empty.')
         }
 
         return api.value

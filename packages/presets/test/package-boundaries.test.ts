@@ -5,10 +5,10 @@ import { describe, expect, it } from 'vitest'
 const repositoryRoot = process.cwd()
 const workspaceVersion = '0.1.0-beta.3'
 const optionalCoreModules = [
-  '@node-engine-sdk/core/semantics',
-  '@node-engine-sdk/core/runtime',
-  '@node-engine-sdk/core/layout',
-  '@node-engine-sdk/core/debug',
+  '@node-wright/core/semantics',
+  '@node-wright/core/runtime',
+  '@node-wright/core/layout',
+  '@node-wright/core/debug',
 ]
 const expectedExports: Record<string, string[]> = {
   core: [
@@ -38,7 +38,7 @@ const uiAdapters = ['react', 'vue']
 /** The Vue and React apps and the framework-neutral code they share. */
 const playgroundDirectories = ['playground', 'playground-react', 'playground-shared']
 const internalImportPattern =
-  /(?:\bfrom\s+|\bimport\s+)['"](@node-engine-sdk\/[^/'"]+)((?:\/[^'"]+)?)['"]/gu
+  /(?:\bfrom\s+|\bimport\s+)['"](@node-wright\/[^/'"]+)((?:\/[^'"]+)?)['"]/gu
 
 describe('package boundaries', () => {
   it('publishes exactly the core, presets, react, and vue workspace packages', () => {
@@ -56,7 +56,7 @@ describe('package boundaries', () => {
       expect(manifest.version, `${packageName} version`).toBe(workspaceVersion)
 
       for (const [dependency, version] of Object.entries(manifest.dependencies ?? {})) {
-        if (dependency.startsWith('@node-engine-sdk/')) {
+        if (dependency.startsWith('@node-wright/')) {
           expect(version, `${packageName} dependency ${dependency}`).toBe(workspaceVersion)
         }
       }
@@ -77,7 +77,7 @@ describe('package boundaries', () => {
       const declaredPackages = Object.keys({
         ...manifest.dependencies,
         ...manifest.peerDependencies,
-      }).filter((dependency) => dependency.startsWith('@node-engine-sdk/'))
+      }).filter((dependency) => dependency.startsWith('@node-wright/'))
 
       expect([...declaredPackages].sort(), `${packageName} internal dependencies`).toEqual(
         [...importedPackages].sort(),
@@ -171,7 +171,7 @@ describe('package boundaries', () => {
   it('keeps the UI adapters on the framework-neutral editor controller and Core free of internal package imports', () => {
     const coreSource = readSourceFiles(join(repositoryRoot, 'packages', 'core', 'src')).join('\n')
 
-    expect(coreSource).not.toMatch(/['"]@node-engine-sdk\//u)
+    expect(coreSource).not.toMatch(/['"]@node-wright\//u)
 
     for (const adapter of uiAdapters) {
       const adapterSource = readSourceFiles(join(repositoryRoot, 'packages', adapter, 'src')).join(
@@ -182,8 +182,8 @@ describe('package boundaries', () => {
       )
 
       expect([...adapterImports].sort(), `${adapter} imports`).toEqual([
-        '@node-engine-sdk/core/protocol',
-        '@node-engine-sdk/core/view',
+        '@node-wright/core/protocol',
+        '@node-wright/core/view',
       ])
 
       for (const optionalModule of optionalCoreModules) {
@@ -196,7 +196,7 @@ describe('package boundaries', () => {
     const reactSource = readSourceFiles(join(repositoryRoot, 'packages', 'react', 'src')).join('\n')
     const vueSource = readSourceFiles(join(repositoryRoot, 'packages', 'vue', 'src')).join('\n')
 
-    expect(reactSource).not.toMatch(/['"](?:vue|@vue\/[^'"]+|@node-engine-sdk\/vue)['"]/u)
+    expect(reactSource).not.toMatch(/['"](?:vue|@vue\/[^'"]+|@node-wright\/vue)['"]/u)
     expect(vueSource).not.toMatch(/['"](?:react|react-dom)(?:\/[^'"]*)?['"]/u)
   })
 
@@ -217,9 +217,9 @@ describe('package boundaries', () => {
     const presetsSource = readSourceFiles(join(presetsRoot, 'src')).join('\n')
 
     expect(Object.keys({ ...manifest.dependencies, ...manifest.peerDependencies })).toEqual([
-      '@node-engine-sdk/core',
+      '@node-wright/core',
     ])
-    expect(presetsSource).not.toMatch(/['"](?:vue|react|@node-engine-sdk\/vue)(?:\/[^'"]*)?['"]/u)
+    expect(presetsSource).not.toMatch(/['"](?:vue|react|@node-wright\/vue)(?:\/[^'"]*)?['"]/u)
   })
 
   it('keeps standard node systems free of Vue and presets free of Runtime startup', () => {
@@ -229,9 +229,7 @@ describe('package boundaries', () => {
       const source = readFileSync(file, 'utf8')
       const location = relative(repositoryRoot, file)
 
-      expect(source, `${location} imports Vue`).not.toMatch(
-        /['"](?:vue|@node-engine-sdk\/vue)['"]/u,
-      )
+      expect(source, `${location} imports Vue`).not.toMatch(/['"](?:vue|@node-wright\/vue)['"]/u)
 
       for (const match of source.matchAll(/\bfrom\s+['"](\.\.?\/[^'"]+)['"]/gu)) {
         expect(
@@ -245,7 +243,7 @@ describe('package boundaries', () => {
       '\n',
     )
 
-    expect(presetsSource).not.toMatch(/new\s+NodeEngineRuntime\b/u)
+    expect(presetsSource).not.toMatch(/new\s+NodeWrightRuntime\b/u)
   })
 
   it('makes the playground consume standard nodes through presets only', () => {
@@ -253,7 +251,7 @@ describe('package boundaries', () => {
       .flatMap((directory) => readSourceFiles(join(repositoryRoot, directory, 'src')))
       .join('\n')
 
-    expect(playgroundSource).not.toMatch(/from ['"]@node-engine-sdk\/presets\/nodes\//u)
+    expect(playgroundSource).not.toMatch(/from ['"]@node-wright\/presets\/nodes\//u)
   })
 
   it('keeps the shared playground code framework-neutral and its business code single-sourced', () => {
@@ -262,14 +260,14 @@ describe('package boundaries', () => {
     )
 
     expect(sharedSource).not.toMatch(
-      /['"](?:vue|react|react-dom|@node-engine-sdk\/(?:vue|react))(?:\/[^'"]*)?['"]/u,
+      /['"](?:vue|react|react-dom|@node-wright\/(?:vue|react))(?:\/[^'"]*)?['"]/u,
     )
 
     for (const app of ['playground', 'playground-react']) {
       const appSource = readSourceFiles(join(repositoryRoot, app, 'src')).join('\n')
 
       expect(appSource, `${app} implements business nodes or runtime`).not.toMatch(
-        /['"]ai:(?:prompt|image-generate|image-display)['"]|\bfetch\s*\(|new\s+NodeEngineRuntime\b/u,
+        /['"]ai:(?:prompt|image-generate|image-display)['"]|\bfetch\s*\(|new\s+NodeWrightRuntime\b/u,
       )
     }
   })

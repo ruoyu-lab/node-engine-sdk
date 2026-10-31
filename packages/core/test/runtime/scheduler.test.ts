@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { createConcurrentScheduler, createSequentialScheduler } from '../../src/runtime/index'
 import type {
-  NodeEngineRuntimeScheduledTask,
-  NodeEngineRuntimeSchedulerContext,
-  NodeEngineRuntimeTaskAttempt,
+  NodeWrightRuntimeScheduledTask,
+  NodeWrightRuntimeSchedulerContext,
+  NodeWrightRuntimeTaskAttempt,
 } from '../../src/runtime/index'
 
-function makeContext(): NodeEngineRuntimeSchedulerContext {
+function makeContext(): NodeWrightRuntimeSchedulerContext {
   return {
     runId: 'test-run',
     graph: { schemaVersion: '1.0.0', nodes: [], edges: [], groups: [], meta: {} },
@@ -17,9 +17,9 @@ function makeContext(): NodeEngineRuntimeSchedulerContext {
 
 function task<T>(
   id: string,
-  run: (attempt: NodeEngineRuntimeTaskAttempt) => Promise<T>,
+  run: (attempt: NodeWrightRuntimeTaskAttempt) => Promise<T>,
   retryable = false,
-): NodeEngineRuntimeScheduledTask<T> {
+): NodeWrightRuntimeScheduledTask<T> {
   return { id, retryable, run }
 }
 
@@ -138,7 +138,7 @@ describe('createConcurrentScheduler', () => {
 
   it('aborts active work when the context signal is aborted', async () => {
     const controller = new AbortController()
-    const ctx: NodeEngineRuntimeSchedulerContext = { ...makeContext(), signal: controller.signal }
+    const ctx: NodeWrightRuntimeSchedulerContext = { ...makeContext(), signal: controller.signal }
     const scheduler = createConcurrentScheduler({ retries: 5 })
     let attemptWasAborted = false
 

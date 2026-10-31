@@ -18,18 +18,18 @@ import type { RunRecorder } from './recorder.js'
 import { assertRunnable, type ExecutionScope, type RunSession } from './run-session.js'
 import { cloneRuntimeValue, deepFreeze } from './snapshot.js'
 import type {
-  NodeEngineRuntimeCallFrame,
-  NodeEngineRuntimeFunctionResult,
-  NodeEngineRuntimeNodeContext,
-  NodeEngineRuntimePortValues,
-  NodeEngineRuntimeSubgraphDefinition,
-  NodeEngineRuntimeSubgraphResult,
+  NodeWrightRuntimeCallFrame,
+  NodeWrightRuntimeFunctionResult,
+  NodeWrightRuntimeNodeContext,
+  NodeWrightRuntimePortValues,
+  NodeWrightRuntimeSubgraphDefinition,
+  NodeWrightRuntimeSubgraphResult,
 } from './types.js'
 import { createRuntimeVariableApi } from './variables.js'
 
 /** The part of a handler context that node and function handlers share. */
 export type HandlerServices = Pick<
-  NodeEngineRuntimeNodeContext,
+  NodeWrightRuntimeNodeContext,
   | 'variables'
   | 'variable'
   | 'getVariable'
@@ -51,7 +51,7 @@ export interface RuntimeCallsDependencies {
     run: RunSession,
     scope: ExecutionScope,
     node: GraphNode,
-  ) => Promise<NodeEngineRuntimePortValues>
+  ) => Promise<NodeWrightRuntimePortValues>
 }
 
 type CallTarget =
@@ -86,8 +86,8 @@ export class RuntimeCalls {
     run: RunSession,
     scope: ExecutionScope,
     reference: FunctionReferenceInput,
-    values: NodeEngineRuntimePortValues = {},
-  ): Promise<NodeEngineRuntimeFunctionResult> {
+    values: NodeWrightRuntimePortValues = {},
+  ): Promise<NodeWrightRuntimeFunctionResult> {
     const { definitions } = this.dependencies
     const resolved = createFunctionReference(reference)
     const definition = definitions.getFunction(resolved.id)
@@ -130,8 +130,8 @@ export class RuntimeCalls {
     run: RunSession,
     scope: ExecutionScope,
     reference: SubgraphReferenceInput,
-    values: NodeEngineRuntimePortValues = {},
-  ): Promise<NodeEngineRuntimeSubgraphResult> {
+    values: NodeWrightRuntimePortValues = {},
+  ): Promise<NodeWrightRuntimeSubgraphResult> {
     const resolved = createSubgraphReference(reference)
     const definition = this.dependencies.definitions.getSubgraph(resolved.id)
 
@@ -186,10 +186,10 @@ export class RuntimeCalls {
   private async runInFrame<T>(
     run: RunSession,
     scope: ExecutionScope,
-    call: { target: CallTarget; id: string; inputValues: NodeEngineRuntimePortValues },
+    call: { target: CallTarget; id: string; inputValues: NodeWrightRuntimePortValues },
     body: (
-      callStack: NodeEngineRuntimeCallFrame[],
-    ) => Promise<{ result: T; outputValues: NodeEngineRuntimePortValues }>,
+      callStack: NodeWrightRuntimeCallFrame[],
+    ) => Promise<{ result: T; outputValues: NodeWrightRuntimePortValues }>,
   ): Promise<T> {
     const { recorder, events } = this.dependencies
     const { kind, ...definition } = call.target
@@ -222,7 +222,7 @@ export class RuntimeCalls {
 
 function resolveSubgraphOutputNode(
   graph: GraphSnapshot,
-  definition: NodeEngineRuntimeSubgraphDefinition,
+  definition: NodeWrightRuntimeSubgraphDefinition,
 ): GraphNode | undefined {
   return (
     (definition.outputNodeId

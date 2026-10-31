@@ -1,7 +1,7 @@
 import {
   createEditorController,
-  type NodeEngineConnectionCancelEvent,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightConnectionCancelEvent,
+} from '@node-wright/core/view'
 import { describe, expect, it } from 'vitest'
 import {
   createNodeFromConnectionMenu,
@@ -23,8 +23,8 @@ function createEditor() {
 }
 
 function cancelEvent(
-  overrides: Partial<NodeEngineConnectionCancelEvent>,
-): NodeEngineConnectionCancelEvent {
+  overrides: Partial<NodeWrightConnectionCancelEvent>,
+): NodeWrightConnectionCancelEvent {
   const graph = scenario.graph()
 
   return {

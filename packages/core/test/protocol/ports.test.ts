@@ -10,9 +10,9 @@ import {
   resolvePortKind,
   type GraphPort,
   type NodeDefinition,
-} from '@node-engine-sdk/core/protocol'
+} from '@node-wright/core/protocol'
 
-describe('@node-engine-sdk/core/protocol ports', () => {
+describe('@node-wright/core/protocol ports', () => {
   it('derives parameter input ports from the parameter kind and input policy', () => {
     const definition: NodeDefinition = {
       type: 'demo',

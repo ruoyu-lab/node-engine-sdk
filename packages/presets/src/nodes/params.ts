@@ -1,11 +1,11 @@
-import type { NodeEngineRuntimePortValues } from '@node-engine-sdk/core/runtime'
+import type { NodeWrightRuntimePortValues } from '@node-wright/core/runtime'
 
 /**
  * Reads the id a call node targets from its resolved `params[key]`, the only source of that id.
  * Blank strings and non-string values are rejected with an error that names the node and key.
  */
 export function readCallTargetId(
-  params: NodeEngineRuntimePortValues,
+  params: NodeWrightRuntimePortValues,
   key: string,
   node: string,
 ): string {

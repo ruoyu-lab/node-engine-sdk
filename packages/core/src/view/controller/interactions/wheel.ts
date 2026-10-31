@@ -1,6 +1,6 @@
 import type { XYPosition } from '../../../protocol/index.js'
 import { clamp } from '../../rendering/geometry.js'
-import type { NodeEngineWheelBehavior, ViewportState } from '../../types/index.js'
+import type { NodeWrightWheelBehavior, ViewportState } from '../../types/index.js'
 import type { FrameScheduler } from '../frame-scheduler.js'
 import type { InteractionState } from '../interaction-state.js'
 import { viewportEquals } from '../viewport.js'
@@ -34,7 +34,7 @@ export function createWheelGesture(options: {
   getViewport: () => ViewportState
   getLiveViewport: () => ViewportState
   getZoomRange: () => { minZoom: number; maxZoom: number }
-  getBehavior: () => NodeEngineWheelBehavior
+  getBehavior: () => NodeWrightWheelBehavior
   getInertia: () => boolean
   hasActiveGesture: () => boolean
   getScreenPoint: (event: WheelEvent) => XYPosition

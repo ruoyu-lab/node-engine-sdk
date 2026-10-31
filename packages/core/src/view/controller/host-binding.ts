@@ -1,5 +1,5 @@
 import { batch, type Signal } from '../reactive.js'
-import type { NodeEngineEditorHost } from '../types/index.js'
+import type { NodeWrightEditorHost } from '../types/index.js'
 import type { CanvasGestures } from './canvas-gestures.js'
 import { createWindowScheduler, type FrameScheduler } from './frame-scheduler.js'
 import type { KeyboardController } from './hotkeys.js'
@@ -14,12 +14,12 @@ import type { RenderScheduler } from './render-scheduler.js'
  */
 export interface HostBinding {
   readonly scheduler: () => FrameScheduler | null
-  mount: (target: NodeEngineEditorHost) => void
+  mount: (target: NodeWrightEditorHost) => void
   unmount: () => void
 }
 
 export function createHostBinding(options: {
-  host: Signal<NodeEngineEditorHost | null>
+  host: Signal<NodeWrightEditorHost | null>
   keyboard: KeyboardController
   wheel: WheelGesture
   gestures: CanvasGestures
@@ -29,11 +29,11 @@ export function createHostBinding(options: {
   let scheduler: FrameScheduler | null = null
   let detach: (() => void) | null = null
 
-  function attach(target: NodeEngineEditorHost): () => void {
+  function attach(target: NodeWrightEditorHost): () => void {
     const view = target.root.ownerDocument.defaultView
 
     if (!view) {
-      throw new Error('NodeEngine editor host must belong to a document with a window.')
+      throw new Error('NodeWright editor host must belong to a document with a window.')
     }
 
     const windowScheduler = createWindowScheduler(view)
@@ -86,7 +86,7 @@ export function createHostBinding(options: {
     scheduler: () => scheduler,
     mount(target) {
       if (detach) {
-        throw new Error('NodeEngine editor controller is already mounted.')
+        throw new Error('NodeWright editor controller is already mounted.')
       }
 
       batch(() => {

@@ -1,4 +1,4 @@
-import type { NodeEngineInsets } from '@node-engine-sdk/core/view'
+import type { NodeWrightInsets } from '@node-wright/core/view'
 
 /** Gap kept between fitted content and the floating panels around it. */
 const PANEL_GAP = 24
@@ -20,7 +20,7 @@ export interface InsetRect {
 export function resolveCanvasInsets(
   shell: InsetRect,
   panels: readonly InsetRect[],
-): Required<NodeEngineInsets> {
+): Required<NodeWrightInsets> {
   const width = shell.right - shell.left
   const height = shell.bottom - shell.top
   const insets = {
@@ -55,7 +55,7 @@ export function resolveCanvasInsets(
 export interface CanvasArea {
   width: number
   height: number
-  insets: Required<NodeEngineInsets>
+  insets: Required<NodeWrightInsets>
 }
 
 /**

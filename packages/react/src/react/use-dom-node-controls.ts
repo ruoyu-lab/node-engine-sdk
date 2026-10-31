@@ -3,8 +3,8 @@ import {
   type DomNodeControls,
   type DomNodeControlsSource,
   type DomNodeControlsState,
-  type NodeEngineDomNodeProps,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightDomNodeProps,
+} from '@node-wright/core/view'
 import { useRef, useState, useSyncExternalStore } from 'react'
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect.js'
 
@@ -13,7 +13,7 @@ import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect.js'
  * subscribes to their state. Mounting is a layout effect, so StrictMode's simulated remount
  * destroys and mounts the same controls again.
  */
-export function useDomNodeControls(props: NodeEngineDomNodeProps): {
+export function useDomNodeControls(props: NodeWrightDomNodeProps): {
   controls: DomNodeControls
   state: DomNodeControlsState
 } {
@@ -34,7 +34,7 @@ export function useDomNodeControls(props: NodeEngineDomNodeProps): {
   return { controls, state }
 }
 
-function toControlsSource(props: NodeEngineDomNodeProps): DomNodeControlsSource {
+function toControlsSource(props: NodeWrightDomNodeProps): DomNodeControlsSource {
   return {
     api: props.domApi,
     model: props.domModel,

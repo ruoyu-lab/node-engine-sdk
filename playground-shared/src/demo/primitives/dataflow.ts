@@ -1,4 +1,4 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
 import {
   PRESET_NODE_ACCENTS,
   DATA_MERGE_NODE_TYPE,
@@ -6,7 +6,7 @@ import {
   DATA_SOURCE_NODE_TYPE,
   DATA_TRANSFORM_NODE_TYPE,
   createDataflowPreset,
-} from '@node-engine-sdk/presets'
+} from '@node-wright/presets'
 import type { DemoScenario } from '../scenarios'
 import { dataEdge, groupOf, primitiveNode, snapshotOf } from './graph'
 
@@ -34,7 +34,7 @@ function createDataflowGraph(): GraphSnapshot {
       position: { x: 80, y: 100 },
       width: 248,
       height: 150,
-      params: { value: 'node-engine-sdk' },
+      params: { value: 'node-wright' },
     }),
     primitiveNode('df-build', DATA_SOURCE_NODE_TYPE, {
       title: '构建号',

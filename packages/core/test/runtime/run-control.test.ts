@@ -1,18 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import {
   SUBGRAPH_INPUT_NODE_TYPE,
   SUBGRAPH_OUTPUT_NODE_TYPE,
   type SemanticNodeDefinition,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 import {
-  NodeEngineRuntime,
-  type NodeEngineRuntimeEvent,
-  type NodeEngineRuntimeNodeDefinition,
-  type NodeEngineRuntimeOptions,
+  NodeWrightRuntime,
+  type NodeWrightRuntimeEvent,
+  type NodeWrightRuntimeNodeDefinition,
+  type NodeWrightRuntimeOptions,
 } from '../../src/runtime/index'
 
 const definitions: SemanticNodeDefinition[] = [
@@ -30,7 +27,7 @@ const definitions: SemanticNodeDefinition[] = [
   },
 ]
 
-const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
   { type: 'event', handler: () => ({ output: 'then' }) },
   { type: 'step', handler: () => ({ output: 'then' }) },
 ]
@@ -39,7 +36,7 @@ function createGraph(
   nodes: GraphSnapshot['nodes'],
   edges: GraphSnapshot['edges'] = [],
 ): GraphSnapshot {
-  return { schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION, nodes, edges, groups: [], meta: {} }
+  return { schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION, nodes, edges, groups: [], meta: {} }
 }
 
 /** start → mid → end, connected by exec edges. */
@@ -69,11 +66,11 @@ function createChainGraph(): GraphSnapshot {
 
 /** A runtime whose `onPause` decides how each pause continues. */
 function createRuntime(
-  onPause: (runtime: NodeEngineRuntime, event: NodeEngineRuntimeEvent) => void,
-  options: Partial<NodeEngineRuntimeOptions> = {},
-): { runtime: NodeEngineRuntime; events: NodeEngineRuntimeEvent[] } {
-  const events: NodeEngineRuntimeEvent[] = []
-  const runtime: NodeEngineRuntime = new NodeEngineRuntime({
+  onPause: (runtime: NodeWrightRuntime, event: NodeWrightRuntimeEvent) => void,
+  options: Partial<NodeWrightRuntimeOptions> = {},
+): { runtime: NodeWrightRuntime; events: NodeWrightRuntimeEvent[] } {
+  const events: NodeWrightRuntimeEvent[] = []
+  const runtime: NodeWrightRuntime = new NodeWrightRuntime({
     definitions,
     runtimeDefinitions,
     ...options,
@@ -89,11 +86,11 @@ function createRuntime(
   return { runtime, events }
 }
 
-function pausedAt(events: NodeEngineRuntimeEvent[]): Array<string | undefined> {
+function pausedAt(events: NodeWrightRuntimeEvent[]): Array<string | undefined> {
   return events.filter((event) => event.type === 'run:pause').map((event) => event.node?.id)
 }
 
-describe('@node-engine-sdk/core/runtime run control', () => {
+describe('@node-wright/core/runtime run control', () => {
   it('steps into and over nodes until the run is resumed', async () => {
     const actions = ['stepInto', 'stepOver', 'resume'] as const
     const { runtime, events } = createRuntime((target, event) => {
@@ -111,8 +108,8 @@ describe('@node-engine-sdk/core/runtime run control', () => {
   })
 
   it('pauses before the next node after a manual pause', async () => {
-    const events: NodeEngineRuntimeEvent[] = []
-    const runtime: NodeEngineRuntime = new NodeEngineRuntime({
+    const events: NodeWrightRuntimeEvent[] = []
+    const runtime: NodeWrightRuntime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent: (event) => {
@@ -229,7 +226,7 @@ describe('@node-engine-sdk/core/runtime run control', () => {
 
   it('exposes active runs by id and rejects control of unknown runs', async () => {
     const seen: Array<string | undefined> = []
-    const runtime: NodeEngineRuntime = new NodeEngineRuntime({
+    const runtime: NodeWrightRuntime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent: (event) => {
@@ -253,13 +250,13 @@ describe('@node-engine-sdk/core/runtime run control', () => {
 
   it('compiles the configured graph and rejects a plan whose entry node is missing', async () => {
     const graph = createChainGraph()
-    const withSource = new NodeEngineRuntime({
+    const withSource = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       graph: () => graph,
     })
-    const withGraph = new NodeEngineRuntime({ definitions, runtimeDefinitions, graph })
-    const withoutGraph = new NodeEngineRuntime({ definitions, runtimeDefinitions })
+    const withGraph = new NodeWrightRuntime({ definitions, runtimeDefinitions, graph })
+    const withoutGraph = new NodeWrightRuntime({ definitions, runtimeDefinitions })
 
     expect(withSource.compile().plan?.entryNodeId).toBe('start')
     expect(withGraph.compile('mid').plan?.entryNodeId).toBe('mid')

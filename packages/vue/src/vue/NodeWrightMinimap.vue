@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { NodeEngineEditorController, NodeEngineMinimapState } from '@node-engine-sdk/core/view'
+import type { NodeWrightEditorController, NodeWrightMinimapState } from '@node-wright/core/view'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 defineOptions({
-  name: 'NodeEngineMinimap',
+  name: 'NodeWrightMinimap',
 })
 
 const props = defineProps<{
-  controller: NodeEngineEditorController
-  state: NodeEngineMinimapState
+  controller: NodeWrightEditorController
+  state: NodeWrightMinimapState
 }>()
 
 const rootRef = ref<HTMLElement | null>(null)
@@ -19,7 +19,7 @@ let unmountMinimap: (() => void) | null = null
 // controller supports both orders.
 onMounted(() => {
   if (!rootRef.value || !canvasRef.value) {
-    throw new Error('NodeEngine minimap rendered without its root and canvas elements.')
+    throw new Error('NodeWright minimap rendered without its root and canvas elements.')
   }
 
   unmountMinimap = props.controller.mountMinimap({ root: rootRef.value, canvas: canvasRef.value })
@@ -34,17 +34,17 @@ onBeforeUnmount(() => {
 <template>
   <div
     ref="rootRef"
-    class="ne-minimap"
-    :class="{ 'ne-minimap--dragging': props.state.dragging }"
+    class="nw-minimap"
+    :class="{ 'nw-minimap--dragging': props.state.dragging }"
     :style="props.state.style"
     role="group"
     aria-label="Minimap"
     tabindex="0"
   >
-    <canvas ref="canvasRef" class="ne-minimap__canvas" aria-hidden="true" />
+    <canvas ref="canvasRef" class="nw-minimap__canvas" aria-hidden="true" />
     <div
       v-if="props.state.viewportStyle"
-      class="ne-minimap__viewport"
+      class="nw-minimap__viewport"
       :style="props.state.viewportStyle"
     />
   </div>

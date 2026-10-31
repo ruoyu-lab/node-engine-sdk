@@ -3,10 +3,10 @@ import {
   resolveNodePorts,
   validateGraph,
   type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { compileGraph } from '@node-engine-sdk/core/runtime'
+} from '@node-wright/core/protocol'
+import { compileGraph } from '@node-wright/core/runtime'
 import { describe, expect, it } from 'vitest'
-import { PRESET_NODE_ACCENTS } from '@node-engine-sdk/presets'
+import { PRESET_NODE_ACCENTS } from '@node-wright/presets'
 import {
   AI_IMAGE_ACCENT,
   AI_IMAGE_DISPLAY_DOM_COMPONENT,

@@ -8,12 +8,12 @@ import {
 } from '../../protocol/index.js'
 import type { ReadonlySignal } from '../reactive.js'
 import type {
-  NodeEngineAfterImportHook,
-  NodeEngineBeforeImportHook,
-  NodeEngineClipboard,
-  NodeEngineDeserializeHook,
-  NodeEngineEventSink,
-  NodeEngineSerializeHook,
+  NodeWrightAfterImportHook,
+  NodeWrightBeforeImportHook,
+  NodeWrightClipboard,
+  NodeWrightDeserializeHook,
+  NodeWrightEventSink,
+  NodeWrightSerializeHook,
   SelectionState,
 } from '../types/index.js'
 
@@ -23,10 +23,10 @@ interface ClipboardBounds {
 }
 
 export interface GraphTransferHooks {
-  serializeGraph?: NodeEngineSerializeHook
-  deserializeGraph?: NodeEngineDeserializeHook
-  beforeImport?: NodeEngineBeforeImportHook
-  afterImport?: NodeEngineAfterImportHook
+  serializeGraph?: NodeWrightSerializeHook
+  deserializeGraph?: NodeWrightDeserializeHook
+  beforeImport?: NodeWrightBeforeImportHook
+  afterImport?: NodeWrightAfterImportHook
 }
 
 /**
@@ -37,8 +37,8 @@ export interface ClipboardModel {
   hasContent: () => boolean
   serialize: () => GraphSnapshot
   importGraph: (input: unknown) => GraphSnapshot
-  copySelection: () => NodeEngineClipboard | null
-  pasteAt: (position?: XYPosition, clipboard?: NodeEngineClipboard | null) => GraphSnapshot | null
+  copySelection: () => NodeWrightClipboard | null
+  pasteAt: (position?: XYPosition, clipboard?: NodeWrightClipboard | null) => GraphSnapshot | null
   duplicateSelection: (offset?: XYPosition) => GraphSnapshot | null
 }
 
@@ -49,9 +49,9 @@ export function createClipboardModel(options: {
   getBounds: (nodes: GraphNode[]) => ClipboardBounds | null
   setSelection: (selection: Partial<SelectionState>, source: string) => GraphSnapshot
   closeContextMenu: () => void
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): ClipboardModel {
-  let clipboardState: NodeEngineClipboard | null = null
+  let clipboardState: NodeWrightClipboard | null = null
 
   function serialize(): GraphSnapshot {
     const graph = options.getStore().getSnapshot()
@@ -93,7 +93,7 @@ export function createClipboardModel(options: {
     return importedGraph
   }
 
-  function buildClipboardFromSelection(): NodeEngineClipboard | null {
+  function buildClipboardFromSelection(): NodeWrightClipboard | null {
     const graph = options.getStore().getSnapshot()
     const selection = options.selection.peek()
     const selectedNodeIds = new Set(selection.nodes)
@@ -123,11 +123,11 @@ export function createClipboardModel(options: {
     }
   }
 
-  function getClipboardBounds(clipboard: NodeEngineClipboard) {
+  function getClipboardBounds(clipboard: NodeWrightClipboard) {
     return options.getBounds(clipboard.nodes)
   }
 
-  function copySelection(): NodeEngineClipboard | null {
+  function copySelection(): NodeWrightClipboard | null {
     const clipboard = buildClipboardFromSelection()
     clipboardState = clipboard ? cloneValue(clipboard) : null
     return clipboard

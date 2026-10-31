@@ -83,7 +83,7 @@ const importPatterns: ReadonlyArray<{
 const sourceFiles = walk(sourceRoot).filter((file) => file.endsWith('.ts'))
 const sourceImports = sourceFiles.flatMap(readImports)
 
-describe('@node-engine-sdk/core module boundaries', () => {
+describe('@node-wright/core module boundaries', () => {
   it('places every source file in the root entry or a known domain module', () => {
     for (const file of sourceFiles) {
       const path = toSourcePath(file)

@@ -16,17 +16,17 @@ import {
   type RunSession,
 } from './run-session.js'
 import type {
-  NodeEngineRuntimeNodeResult,
-  NodeEngineRuntimeOptions,
-  NodeEngineRuntimePortValues,
-  NodeEngineRuntimeScheduledTask,
-  NodeEngineRuntimeScheduler,
+  NodeWrightRuntimeNodeResult,
+  NodeWrightRuntimeOptions,
+  NodeWrightRuntimePortValues,
+  NodeWrightRuntimeScheduledTask,
+  NodeWrightRuntimeScheduler,
 } from './types.js'
 
 export interface GraphExecutorDependencies {
-  options: Pick<NodeEngineRuntimeOptions, 'maxSteps' | 'maxLoopIterations'>
+  options: Pick<NodeWrightRuntimeOptions, 'maxSteps' | 'maxLoopIterations'>
   definitions: RuntimeDefinitions
-  scheduler: NodeEngineRuntimeScheduler
+  scheduler: NodeWrightRuntimeScheduler
   recorder: RunRecorder
   debugger: RuntimeDebugger
   events: RuntimeEventDispatcher
@@ -35,7 +35,7 @@ export interface GraphExecutorDependencies {
 interface NormalizedNodeResult {
   output?: string
   outputs?: string[]
-  values: NodeEngineRuntimePortValues
+  values: NodeWrightRuntimePortValues
   data: unknown
 }
 
@@ -205,7 +205,7 @@ export class GraphExecutor {
         ? [outputPortId]
         : this.resolveDefaultExecOutputs(node)
     let followed = false
-    const tasks: Array<NodeEngineRuntimeScheduledTask<void>> = []
+    const tasks: Array<NodeWrightRuntimeScheduledTask<void>> = []
 
     for (const portId of ports) {
       for (const edge of listOutgoingExecEdges(scope.graphIndex, node.id, portId)) {
@@ -267,7 +267,7 @@ export class GraphExecutor {
   }
 }
 
-function normalizeNodeResult(result: NodeEngineRuntimeNodeResult | void): NormalizedNodeResult {
+function normalizeNodeResult(result: NodeWrightRuntimeNodeResult | void): NormalizedNodeResult {
   return {
     output: result?.output,
     outputs: result?.outputs,

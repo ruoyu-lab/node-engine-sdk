@@ -1,15 +1,12 @@
-# Runtime API（`@node-engine-sdk/core/runtime`）
+# Runtime API（`@node-wright/core/runtime`）
 
-`@node-engine-sdk/core/runtime` 是可选的 headless 运行层：把 `GraphSnapshot` 编译为执行计划，再按数据依赖与执行边运行节点。它不依赖 DOM、UI 框架或 presets，可在浏览器、Node.js 与 Worker 中运行；只依赖 `protocol` 与 `semantics`。编辑器从不创建 Runtime，是否、何时执行由应用决定。
+`@node-wright/core/runtime` 是可选的 headless 运行层：把 `GraphSnapshot` 编译为执行计划，再按数据依赖与执行边运行节点。它不依赖 DOM、UI 框架或 presets，可在浏览器、Node.js 与 Worker 中运行；只依赖 `protocol` 与 `semantics`。编辑器从不创建 Runtime，是否、何时执行由应用决定。
 
 ## 快速示例
 
 ```ts
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { NodeEngineRuntime, createConcurrentScheduler } from '@node-engine-sdk/core/runtime'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import { NodeWrightRuntime, createConcurrentScheduler } from '@node-wright/core/runtime'
 import {
   EXEC_EVENT_NODE_TYPE,
   EXEC_IN_PORT_ID,
@@ -17,10 +14,10 @@ import {
   EXEC_THEN_PORT_ID,
   execflowNodeDefinitions,
   execflowRuntimeDefinitions,
-} from '@node-engine-sdk/presets/nodes/execflow'
+} from '@node-wright/presets/nodes/execflow'
 
 const graph: GraphSnapshot = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [
     { id: 'start', type: EXEC_EVENT_NODE_TYPE, x: 0, y: 0 },
     { id: 'log', type: EXEC_LOG_NODE_TYPE, x: 300, y: 0 },
@@ -37,7 +34,7 @@ const graph: GraphSnapshot = {
   meta: {},
 }
 
-const runtime = new NodeEngineRuntime({
+const runtime = new NodeWrightRuntime({
   graph,
   definitions: execflowNodeDefinitions,
   runtimeDefinitions: execflowRuntimeDefinitions,
@@ -65,9 +62,9 @@ console.log(result.status, result.trace.length)
 | `graph`               | `GraphSnapshot`，或返回快照的函数（`runtime.compile()` 未传图时使用）        |
 | `definitions`         | `SemanticNodeDefinition[]`：解析端口、能力、缓存与重试资格                   |
 | `getNodeDefinition`   | 可选解析器，适合定义由外部注册中心管理的场景                                 |
-| `runtimeDefinitions`  | `NodeEngineRuntimeNodeDefinition[]`：按节点 `type` 绑定 handler              |
+| `runtimeDefinitions`  | `NodeWrightRuntimeNodeDefinition[]`：按节点 `type` 绑定 handler              |
 | `handlers`            | 直接的 handler map（key 为节点 type），同 type 时优先于 `runtimeDefinitions` |
-| `functionDefinitions` | `NodeEngineRuntimeFunctionDefinition[]`：函数签名（来自 semantics）+ handler |
+| `functionDefinitions` | `NodeWrightRuntimeFunctionDefinition[]`：函数签名（来自 semantics）+ handler |
 | `functionHandlers`    | 直接的函数 handler map（key 为函数 id），优先于定义中的 handler              |
 | `subgraphDefinitions` | 子图定义（`SubgraphDefinition`）                                             |
 | `scheduler`           | 调度器，默认 `createSequentialScheduler()`                                   |
@@ -78,28 +75,28 @@ console.log(result.status, result.trace.length)
 | `summarizeValue`      | trace 中输入/输出摘要的生成函数                                              |
 | `onEvent`             | 运行事件监听器                                                               |
 
-`NodeEngineRuntimeNodeDefinition`：
+`NodeWrightRuntimeNodeDefinition`：
 
 | 字段         | 说明                                                                      |
 | ------------ | ------------------------------------------------------------------------- |
 | `type`       | 节点类型                                                                  |
-| `handler`    | `NodeEngineRuntimeNodeHandler`                                            |
+| `handler`    | `NodeWrightRuntimeNodeHandler`                                            |
 | `cacheable`  | 是否在同一次 run 内缓存已完成的数据求值结果；未声明时只有 `pure` 节点缓存 |
 | `idempotent` | 声明为 `true` 的非 pure 节点才允许被调度器重试                            |
 
 ## 编译执行计划
 
-Runtime 只执行 `NodeEngineExecutionPlan`。计划由 `runtime.compile(entryNodeId?, graph?)` 或独立的 `compileGraph(options)` 生成：
+Runtime 只执行 `NodeWrightExecutionPlan`。计划由 `runtime.compile(entryNodeId?, graph?)` 或独立的 `compileGraph(options)` 生成：
 
 ```ts
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { compileGraph, type NodeEngineRuntimeNodeDefinition } from '@node-engine-sdk/core/runtime'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { compileGraph, type NodeWrightRuntimeNodeDefinition } from '@node-wright/core/runtime'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 
 export function check(
   graph: GraphSnapshot,
   definitions: SemanticNodeDefinition[],
-  runtimeDefinitions: NodeEngineRuntimeNodeDefinition[],
+  runtimeDefinitions: NodeWrightRuntimeNodeDefinition[],
 ) {
   const compiled = compileGraph({ graph, entryNodeId: 'start', definitions, runtimeDefinitions })
 
@@ -125,14 +122,14 @@ export function check(
 
 | 方法                                                | 说明                                                                |
 | --------------------------------------------------- | ------------------------------------------------------------------- |
-| `run(plan, input?)`                                 | 执行计划，返回 `Promise<NodeEngineRunResult>`；`input` 交给入口节点 |
+| `run(plan, input?)`                                 | 执行计划，返回 `Promise<NodeWrightRunResult>`；`input` 交给入口节点 |
 | `cancel(runId)`                                     | 取消运行                                                            |
 | `pause(runId)` / `resume(runId)`                    | 暂停 / 继续                                                         |
 | `step(runId)` / `stepInto` / `stepOver` / `stepOut` | 单步控制，见 [runtime-debugging.md](./runtime-debugging.md)         |
 | `setBreakpoint(target)` / `clearBreakpoint(id)`     | 断点                                                                |
 | `getRun(runId)`                                     | 正在进行的运行的公共快照                                            |
 
-`NodeEngineRunResult`：`runId`、`status`（`success` / `error` / `cancelled` 等）、`trace`、`callFrames`、`nodeStates`、`variables`、`listenerErrors`、`error?`。
+`NodeWrightRunResult`：`runId`、`status`（`success` / `error` / `cancelled` 等）、`trace`、`callFrames`、`nodeStates`、`variables`、`listenerErrors`、`error?`。
 
 ### 数据求值与缓存
 
@@ -145,9 +142,9 @@ export function check(
 ## Handler
 
 ```ts
-import type { NodeEngineRuntimeNodeDefinition } from '@node-engine-sdk/core/runtime'
+import type { NodeWrightRuntimeNodeDefinition } from '@node-wright/core/runtime'
 
-export const formatTicket: NodeEngineRuntimeNodeDefinition = {
+export const formatTicket: NodeWrightRuntimeNodeDefinition = {
   type: 'ticket:format',
   handler({ values, params }) {
     return {
@@ -159,7 +156,7 @@ export const formatTicket: NodeEngineRuntimeNodeDefinition = {
 }
 ```
 
-`NodeEngineRuntimeNodeContext`：
+`NodeWrightRuntimeNodeContext`：
 
 | 字段                                                  | 说明                                                                                                       |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -175,7 +172,7 @@ export const formatTicket: NodeEngineRuntimeNodeDefinition = {
 
 `signal` 在 run 取消或调度超时时 abort，异步 handler 应把它传给 `fetch`、定时器等可取消操作。handler 即使忽略 signal 正常返回，runtime 也会在提交成功状态前再次检查取消。
 
-`NodeEngineRuntimeNodeResult`：
+`NodeWrightRuntimeNodeResult`：
 
 | 字段      | 说明                                   |
 | --------- | -------------------------------------- |
@@ -189,9 +186,9 @@ export const formatTicket: NodeEngineRuntimeNodeDefinition = {
 变量是作用域化的运行状态，不属于图模型，也不会写回图快照。
 
 ```ts
-import type { NodeEngineRuntimeNodeHandler } from '@node-engine-sdk/core/runtime'
+import type { NodeWrightRuntimeNodeHandler } from '@node-wright/core/runtime'
 
-export const countHandler: NodeEngineRuntimeNodeHandler = ({
+export const countHandler: NodeWrightRuntimeNodeHandler = ({
   getVariable,
   setVariable,
   variable,
@@ -220,9 +217,9 @@ export const countHandler: NodeEngineRuntimeNodeHandler = ({
 函数签名来自 semantics，handler 注册在 runtime：
 
 ```ts
-import type { NodeEngineRuntimeFunctionDefinition } from '@node-engine-sdk/core/runtime'
+import type { NodeWrightRuntimeFunctionDefinition } from '@node-wright/core/runtime'
 
-export const formatMessage: NodeEngineRuntimeFunctionDefinition = {
+export const formatMessage: NodeWrightRuntimeFunctionDefinition = {
   id: 'format-message',
   mode: 'pure',
   inputs: [{ id: 'payload', dataType: 'string' }],
@@ -231,7 +228,7 @@ export const formatMessage: NodeEngineRuntimeFunctionDefinition = {
 }
 ```
 
-函数 handler 的上下文包含 `functionDefinition`、`graph`、`values`、变量 API、`callFunction`、`callSubgraph`、`callStack`、`runId`、`signal`，可以继续调用其他函数。`mode: 'subgraph'` 且没有 handler 的函数会委托给子图：子图 id 取 `meta.subgraphId`，未给出时使用函数 id。默认调用节点 `function:call` 来自 `@node-engine-sdk/presets/nodes/function`，见 [node-systems.md](./node-systems.md#nodesfunction)。
+函数 handler 的上下文包含 `functionDefinition`、`graph`、`values`、变量 API、`callFunction`、`callSubgraph`、`callStack`、`runId`、`signal`，可以继续调用其他函数。`mode: 'subgraph'` 且没有 handler 的函数会委托给子图：子图 id 取 `meta.subgraphId`，未给出时使用函数 id。默认调用节点 `function:call` 来自 `@node-wright/presets/nodes/function`，见 [node-systems.md](./node-systems.md#nodesfunction)。
 
 ## 子图
 
@@ -242,7 +239,7 @@ export const formatMessage: NodeEngineRuntimeFunctionDefinition = {
 调度器决定数据输入求值与执行分支的执行策略，不改变图：
 
 ```ts
-import { createConcurrentScheduler, createSequentialScheduler } from '@node-engine-sdk/core/runtime'
+import { createConcurrentScheduler, createSequentialScheduler } from '@node-wright/core/runtime'
 
 export const sequential = createSequentialScheduler()
 export const concurrent = createConcurrentScheduler({
@@ -254,13 +251,13 @@ export const concurrent = createConcurrentScheduler({
 
 - 调度 phase 只有真实使用的 `data` 与 `exec` 两种。
 - 每个任务接收 `{ attempt, signal }`；超时先 abort 当前 attempt 的 signal，再以错误结束该 attempt。
-- `retries` 不是无条件重试：`pure` 节点默认可重试，副作用节点默认只执行一次；只有在 `NodeEngineRuntimeNodeDefinition` 上声明 `idempotent: true` 的非 pure 节点才允许重试。
+- `retries` 不是无条件重试：`pure` 节点默认可重试，副作用节点默认只执行一次；只有在 `NodeWrightRuntimeNodeDefinition` 上声明 `idempotent: true` 的非 pure 节点才允许重试。
 - 并发分支各自持有调用栈快照，一个分支的帧不会进入另一个分支的 handler 上下文。
-- 自定义调度器实现 `NodeEngineRuntimeScheduler.schedule(context, tasks)`，`context` 带 `runId`、`graph`、`signal`、`phase`、`node`，任务带 `id`、`label`、`retryable` 与 `run(attempt)`。
+- 自定义调度器实现 `NodeWrightRuntimeScheduler.schedule(context, tasks)`，`context` 带 `runId`、`graph`、`signal`、`phase`、`node`，任务带 `id`、`label`、`retryable` 与 `run(attempt)`。
 
 ## 运行事件与取消
 
-`onEvent` 收到的 `NodeEngineRuntimeEvent` 是与内部状态隔离并深度冻结的快照：
+`onEvent` 收到的 `NodeWrightRuntimeEvent` 是与内部状态隔离并深度冻结的快照：
 
 - 运行：`run:start`、`run:pause`、`run:resume`、`run:step`、`run:cancel`、`run:success`、`run:error`
 - 节点：`node:start`、`node:success`、`node:cancel`、`node:error`

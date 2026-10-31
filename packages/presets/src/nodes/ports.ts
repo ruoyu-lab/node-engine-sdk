@@ -1,4 +1,4 @@
-import type { GraphPort } from '@node-engine-sdk/core/protocol'
+import type { GraphPort } from '@node-wright/core/protocol'
 
 /**
  * Drops the optional fields a signature leaves unset. A protocol port omits an unset field rather

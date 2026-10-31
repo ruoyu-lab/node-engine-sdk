@@ -5,7 +5,7 @@ import type {
   GraphPort,
   GraphSnapshot,
 } from '../../protocol/index.js'
-import type { NodeEnginePortAnchor, NodeEngineResolvedDomNodeModel } from '../types/index.js'
+import type { NodeWrightPortAnchor, NodeWrightResolvedDomNodeModel } from '../types/index.js'
 import { asRecord } from './definition.js'
 import { formatDomFieldValue } from './fields.js'
 
@@ -15,7 +15,7 @@ import { formatDomFieldValue } from './fields.js'
  */
 
 export function applyDomFieldDriveState(
-  model: NodeEngineResolvedDomNodeModel,
+  model: NodeWrightResolvedDomNodeModel,
   graph: GraphSnapshot,
   resolvePort: (endpoint: GraphEndpoint) => GraphPort | undefined,
   resolveValue: (
@@ -23,7 +23,7 @@ export function applyDomFieldDriveState(
     endpoint: GraphEndpoint,
     port: GraphPort | undefined,
   ) => unknown,
-): NodeEngineResolvedDomNodeModel {
+): NodeWrightResolvedDomNodeModel {
   const fields = model.fields.map((field) => {
     if (!field.inputPort) {
       return field
@@ -87,7 +87,7 @@ export function applyDomFieldDriveState(
 }
 
 export function applyDomConnectionState(
-  model: NodeEngineResolvedDomNodeModel,
+  model: NodeWrightResolvedDomNodeModel,
   options: {
     source?: GraphEndpoint
     target?: GraphEndpoint
@@ -96,7 +96,7 @@ export function applyDomConnectionState(
       validation: ConnectionValidationResult
     } | null
   },
-): NodeEngineResolvedDomNodeModel {
+): NodeWrightResolvedDomNodeModel {
   if (!options.source && !options.target) {
     return model
   }
@@ -141,7 +141,7 @@ export function applyDomConnectionState(
 function portDirectionMatches(
   endpoint: GraphEndpoint,
   targetDirection: GraphPort['direction'] | null,
-  model: NodeEngineResolvedDomNodeModel,
+  model: NodeWrightResolvedDomNodeModel,
 ): boolean {
   if (!targetDirection) {
     return false
@@ -211,7 +211,7 @@ export function endpointMatches(
 }
 
 /** Stable signature of everything about a node's ports that affects its DOM model. */
-export function buildDomNodePortSignature(ports: NodeEnginePortAnchor[], nodeY: number): string {
+export function buildDomNodePortSignature(ports: NodeWrightPortAnchor[], nodeY: number): string {
   return ports
     .map((port) =>
       [

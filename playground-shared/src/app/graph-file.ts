@@ -1,4 +1,4 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
 import type { DemoScenario } from '../demo/scenarios'
 
 export const GRAPH_FILE_ACCEPT = '.json,application/json'

@@ -24,27 +24,27 @@ import type {
 } from '../../protocol/index.js'
 
 import type {
-  NodeEngineBounds,
-  NodeEngineClipboard,
-  NodeEngineCoordinateSpace,
-  NodeEngineInteractionState,
-  NodeEngineContextTarget,
-  NodeEngineFitPadding,
-  NodeEngineGridState,
-  NodeEnginePerformanceSample,
-  NodeEnginePortAnchor,
-  NodeEngineSelectionMode,
+  NodeWrightBounds,
+  NodeWrightClipboard,
+  NodeWrightCoordinateSpace,
+  NodeWrightInteractionState,
+  NodeWrightContextTarget,
+  NodeWrightFitPadding,
+  NodeWrightGridState,
+  NodeWrightPerformanceSample,
+  NodeWrightPortAnchor,
+  NodeWrightSelectionMode,
   SelectionState,
   ViewportState,
 } from './common.js'
-import type { NodeEngineNodeEditorState } from './editor.js'
+import type { NodeWrightNodeEditorState } from './editor.js'
 import type {
-  NodeEngineResolvedContextMenuItem,
-  NodeEngineResolvedToolbarItem,
+  NodeWrightResolvedContextMenuItem,
+  NodeWrightResolvedToolbarItem,
 } from './extensions.js'
-import type { NodeEngineContextMenuState } from './events.js'
+import type { NodeWrightContextMenuState } from './events.js'
 
-export interface NodeEngineApi {
+export interface NodeWrightApi {
   runtime: {
     ids: {
       create: (prefix?: string) => string
@@ -53,7 +53,7 @@ export interface NodeEngineApi {
       get: () => GraphStore
     }
     performance: {
-      get: () => NodeEnginePerformanceSample | null
+      get: () => NodeWrightPerformanceSample | null
     }
   }
   graph: {
@@ -76,9 +76,9 @@ export interface NodeEngineApi {
      * floating panels); the content is centred in the area that remains.
      */
     fit: {
-      graph: (padding?: NodeEngineFitPadding) => void
-      selection: (padding?: NodeEngineFitPadding) => void
-      nodes: (nodeIds: string[], padding?: NodeEngineFitPadding) => void
+      graph: (padding?: NodeWrightFitPadding) => void
+      selection: (padding?: NodeWrightFitPadding) => void
+      nodes: (nodeIds: string[], padding?: NodeWrightFitPadding) => void
     }
     center: {
       node: (nodeId: string) => void
@@ -90,14 +90,14 @@ export interface NodeEngineApi {
     grid: {
       setVisible: (visible: boolean) => void
       toggle: () => void
-      state: () => NodeEngineGridState
+      state: () => NodeWrightGridState
     }
   }
   coordinates: {
     screenToGraph: (point: XYPosition) => XYPosition
     clientToGraph: (point: XYPosition) => XYPosition
     graphToScreen: (point: XYPosition) => XYPosition
-    graphRectToScreenRect: (bounds: NodeEngineBounds) => NodeEngineBounds
+    graphRectToScreenRect: (bounds: NodeWrightBounds) => NodeWrightBounds
   }
   selection: {
     get: () => SelectionState
@@ -107,9 +107,9 @@ export interface NodeEngineApi {
     nodes: (nodeIds: string[]) => GraphSnapshot
     edges: (edgeIds: string[]) => GraphSnapshot
     rect: (
-      bounds: NodeEngineBounds,
+      bounds: NodeWrightBounds,
       options?: {
-        mode?: NodeEngineSelectionMode
+        mode?: NodeWrightSelectionMode
         includeEdges?: boolean
       },
     ) => GraphSnapshot
@@ -129,7 +129,7 @@ export interface NodeEngineApi {
     update: (nodeId: string, patch: GraphNodePatch) => GraphSnapshot
     move: (nodeIds: string[], delta: XYPosition) => GraphSnapshot
     remove: (nodeId: string) => GraphSnapshot
-    bounds: (nodeId: string, space?: NodeEngineCoordinateSpace) => NodeEngineBounds | null
+    bounds: (nodeId: string, space?: NodeWrightCoordinateSpace) => NodeWrightBounds | null
     params: {
       update: (
         nodeId: string,
@@ -151,7 +151,7 @@ export interface NodeEngineApi {
     editor: {
       open: (nodeId: string) => boolean
       close: () => void
-      state: () => NodeEngineNodeEditorState | null
+      state: () => NodeWrightNodeEditorState | null
     }
   }
   edges: {
@@ -197,18 +197,18 @@ export interface NodeEngineApi {
     isCollapsed: (groupId: string) => boolean
     remove: (groupId: string) => GraphSnapshot
     list: () => GraphGroup[]
-    bounds: (groupId: string, space?: NodeEngineCoordinateSpace) => NodeEngineBounds | null
+    bounds: (groupId: string, space?: NodeWrightCoordinateSpace) => NodeWrightBounds | null
   }
   ports: {
     get: (endpoint: GraphEndpoint) => GraphPort | undefined
     anchor: (
       endpoint: GraphEndpoint,
-      space?: NodeEngineCoordinateSpace,
-    ) => NodeEnginePortAnchor | null
+      space?: NodeWrightCoordinateSpace,
+    ) => NodeWrightPortAnchor | null
   }
   clipboard: {
-    copy: () => NodeEngineClipboard | null
-    paste: (position?: XYPosition, clipboard?: NodeEngineClipboard | null) => GraphSnapshot | null
+    copy: () => NodeWrightClipboard | null
+    paste: (position?: XYPosition, clipboard?: NodeWrightClipboard | null) => GraphSnapshot | null
     duplicate: (offset?: XYPosition) => GraphSnapshot | null
   }
   commands: {
@@ -234,18 +234,18 @@ export interface NodeEngineApi {
     run: (label: string | undefined, operation: () => void) => GraphSnapshot
   }
   menu: {
-    open: (target: NodeEngineContextTarget, position: XYPosition) => void
+    open: (target: NodeWrightContextTarget, position: XYPosition) => void
     close: () => void
-    state: () => NodeEngineContextMenuState | null
+    state: () => NodeWrightContextMenuState | null
     resolve: {
-      toolbar: () => NodeEngineResolvedToolbarItem[]
+      toolbar: () => NodeWrightResolvedToolbarItem[]
       context: (
-        target: NodeEngineContextTarget,
+        target: NodeWrightContextTarget,
         position: XYPosition,
-      ) => NodeEngineResolvedContextMenuItem[]
+      ) => NodeWrightResolvedContextMenuItem[]
     }
   }
   interaction: {
-    state: () => NodeEngineInteractionState
+    state: () => NodeWrightInteractionState
   }
 }

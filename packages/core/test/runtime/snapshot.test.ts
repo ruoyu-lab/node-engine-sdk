@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cloneRuntimeValue, deepFreeze } from '../../src/runtime/snapshot'
 
-describe('@node-engine-sdk/core/runtime snapshots', () => {
+describe('@node-wright/core/runtime snapshots', () => {
   it('copies errors with their cause and own properties', () => {
     const cause = new Error('Root cause')
     const error = Object.assign(new Error('Request failed', { cause }), {

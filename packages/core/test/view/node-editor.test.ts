@@ -1,4 +1,4 @@
-import type { NodeDefinition } from '@node-engine-sdk/core/protocol'
+import type { NodeDefinition } from '@node-wright/core/protocol'
 import { afterEach, describe, expect, it } from 'vitest'
 import { canvasOnlyNodeTypes, createGraph, mountEditor, type EditorHarness } from './editor-harness'
 

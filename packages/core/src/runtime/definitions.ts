@@ -3,17 +3,17 @@ import type { GraphNode, GraphPort } from '../protocol/index.js'
 import { hasNodeCapability } from '../semantics/index.js'
 import type { SemanticNodeDefinition } from '../semantics/index.js'
 import type {
-  NodeEngineCompileOptions,
-  NodeEngineRuntimeFunctionDefinition,
-  NodeEngineRuntimeFunctionHandler,
-  NodeEngineRuntimeNodeDefinition,
-  NodeEngineRuntimeNodeHandler,
-  NodeEngineRuntimeOptions,
-  NodeEngineRuntimeSubgraphDefinition,
+  NodeWrightCompileOptions,
+  NodeWrightRuntimeFunctionDefinition,
+  NodeWrightRuntimeFunctionHandler,
+  NodeWrightRuntimeNodeDefinition,
+  NodeWrightRuntimeNodeHandler,
+  NodeWrightRuntimeOptions,
+  NodeWrightRuntimeSubgraphDefinition,
 } from './types.js'
 
 type DefinitionOptions = Pick<
-  NodeEngineRuntimeOptions,
+  NodeWrightRuntimeOptions,
   | 'definitions'
   | 'getNodeDefinition'
   | 'runtimeDefinitions'
@@ -30,9 +30,9 @@ type DefinitionOptions = Pick<
  */
 export class RuntimeDefinitions {
   private readonly nodes = new Map<string, SemanticNodeDefinition>()
-  private readonly runtimeNodes = new Map<string, NodeEngineRuntimeNodeDefinition>()
-  private readonly functions = new Map<string, NodeEngineRuntimeFunctionDefinition>()
-  private readonly subgraphs = new Map<string, NodeEngineRuntimeSubgraphDefinition>()
+  private readonly runtimeNodes = new Map<string, NodeWrightRuntimeNodeDefinition>()
+  private readonly functions = new Map<string, NodeWrightRuntimeFunctionDefinition>()
+  private readonly subgraphs = new Map<string, NodeWrightRuntimeSubgraphDefinition>()
 
   constructor(private readonly options: DefinitionOptions) {
     for (const definition of options.definitions ?? []) {
@@ -53,7 +53,7 @@ export class RuntimeDefinitions {
   }
 
   /** Everything `compileGraph` needs besides the graph and its entry node. */
-  compileOptions(): Omit<NodeEngineCompileOptions, 'graph' | 'entryNodeId' | 'diagnostics'> {
+  compileOptions(): Omit<NodeWrightCompileOptions, 'graph' | 'entryNodeId' | 'diagnostics'> {
     return {
       definitions: [...this.nodes.values()],
       getNodeDefinition: (type) => this.getNodeDefinition(type),
@@ -74,7 +74,7 @@ export class RuntimeDefinitions {
     return resolveNodePorts(node, definition ? [definition] : [])
   }
 
-  getHandler(node: GraphNode): NodeEngineRuntimeNodeHandler | undefined {
+  getHandler(node: GraphNode): NodeWrightRuntimeNodeHandler | undefined {
     return this.options.handlers?.[node.type] ?? this.runtimeNodes.get(node.type)?.handler
   }
 
@@ -94,15 +94,15 @@ export class RuntimeDefinitions {
     )
   }
 
-  getFunction(id: string): NodeEngineRuntimeFunctionDefinition | undefined {
+  getFunction(id: string): NodeWrightRuntimeFunctionDefinition | undefined {
     return this.functions.get(id)
   }
 
-  getFunctionHandler(id: string): NodeEngineRuntimeFunctionHandler | undefined {
+  getFunctionHandler(id: string): NodeWrightRuntimeFunctionHandler | undefined {
     return this.options.functionHandlers?.[id] ?? this.functions.get(id)?.handler
   }
 
-  getSubgraph(id: string): NodeEngineRuntimeSubgraphDefinition | undefined {
+  getSubgraph(id: string): NodeWrightRuntimeSubgraphDefinition | undefined {
     return this.subgraphs.get(id)
   }
 }

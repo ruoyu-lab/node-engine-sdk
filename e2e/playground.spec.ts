@@ -32,7 +32,7 @@ test('keeps the standard preset usable at every supported viewport', async ({ pa
   await editorToolbar(page).getByRole('button', { name: '自动布局' }).click()
   await editorToolbar(page).getByRole('button', { name: '适配' }).click()
 
-  await expect(page.locator('.ne-default-dom-node')).toHaveCount(4)
+  await expect(page.locator('.nw-default-dom-node')).toHaveCount(4)
   await expect(domNode(page, '提示词')).toBeVisible()
   await expect(domNode(page, '生成图片')).toBeVisible()
   await expect(domNode(page, '固定种子')).toBeVisible()
@@ -65,10 +65,10 @@ test('runs the complete AI image workflow with a deterministic network response'
     /^https:\/\/image\.pollinations\.ai\/prompt\//u,
   )
   // Every node the run reached shows its status on the canvas.
-  await expect(page.locator('.ne-default-dom-node__status--success')).toHaveCount(4)
+  await expect(page.locator('.nw-default-dom-node__status--success')).toHaveCount(4)
   await expect(page.locator('.runtime-panel__status')).toHaveText('成功')
   await editorToolbar(page).getByRole('button', { name: '适配' }).click()
-  await expect(page.locator('.ne-default-dom-node__field-image-img')).toHaveAttribute(
+  await expect(page.locator('.nw-default-dom-node__field-image-img')).toHaveAttribute(
     'src',
     /image\.pollinations\.ai/,
   )
@@ -77,18 +77,18 @@ test('runs the complete AI image workflow with a deterministic network response'
   // Resetting the scenario clears the run and the node statuses.
   await editorToolbar(page).getByRole('button', { name: '重置' }).click()
   await expect(panelValue(page, '运行时')).toHaveText('空闲')
-  await expect(page.locator('.ne-default-dom-node__status')).toHaveCount(0)
+  await expect(page.locator('.nw-default-dom-node__status')).toHaveCount(0)
   expect(failures).toEqual([])
 })
 
 test('switches the whole interface between the dark and the light theme', async ({ page }) => {
   const failures = captureBrowserFailures(page)
   const shell = page.locator('.app-shell')
-  const editor = page.locator('.ne-root')
+  const editor = page.locator('.nw-root')
   const themeButton = editorToolbar(page).getByRole('button', { name: '浅色主题' })
   const background = () =>
     editor.evaluate((element) =>
-      getComputedStyle(element).getPropertyValue('--ne-background').trim(),
+      getComputedStyle(element).getPropertyValue('--nw-background').trim(),
     )
 
   await page.emulateMedia({ colorScheme: 'dark' })
@@ -124,7 +124,7 @@ test('starts in the theme the system prefers', async ({ page }) => {
   await page.goto('/')
 
   await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'light')
-  await expect(page.locator('.ne-root')).toHaveAttribute('data-color-scheme', 'light')
+  await expect(page.locator('.nw-root')).toHaveAttribute('data-color-scheme', 'light')
   await expect(editorToolbar(page).getByRole('button', { name: '浅色主题' })).toHaveAttribute(
     'aria-pressed',
     'true',
@@ -178,7 +178,7 @@ test('zooms from the zoom controls and round-trips the graph through export and 
   await page.locator('.app-shell__file-input').setInputFiles(importPath)
   await expect(graphStats(page)).toContainText('3 个节点')
   await expect(graphStats(page)).toContainText('2 条连线')
-  await expect(page.locator('.ne-default-dom-node')).toHaveCount(3)
+  await expect(page.locator('.nw-default-dom-node')).toHaveCount(3)
 
   const invalidPath = testInfo.outputPath('invalid-graph.json')
 
@@ -208,11 +208,11 @@ test('lists the shortcuts and toggles the performance overlay', async ({ page },
   await page.getByRole('button', { name: '关闭快捷键' }).click()
   await expect(page.locator('#shortcut-hints')).toBeHidden()
 
-  await expect(page.locator('.ne-performance')).toHaveCount(0)
+  await expect(page.locator('.nw-performance')).toHaveCount(0)
   await performance.click()
   await expect(performance).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.locator('.ne-performance')).toContainText('fps')
+  await expect(page.locator('.nw-performance')).toContainText('fps')
   await performance.click()
-  await expect(page.locator('.ne-performance')).toHaveCount(0)
+  await expect(page.locator('.nw-performance')).toHaveCount(0)
   expect(failures).toEqual([])
 })

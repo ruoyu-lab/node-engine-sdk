@@ -2,15 +2,15 @@ import { cloneValue, type GraphNode, type GraphSnapshot } from '../../protocol/i
 import type { GraphStore } from '../../store/index.js'
 import { computed, effect, signal, type ReadonlySignal } from '../reactive.js'
 import type {
-  NodeEngineBounds,
-  NodeEngineEventSink,
-  NodeEngineNodeEditorDefinition,
-  NodeEngineNodeEditorFieldContext,
-  NodeEngineNodeEditorInset,
-  NodeEngineNodeEditorRegistry,
-  NodeEngineNodeEditorState,
-  NodeEngineRenderContext,
-  NodeEngineResolvedNodeEditorField,
+  NodeWrightBounds,
+  NodeWrightEventSink,
+  NodeWrightNodeEditorDefinition,
+  NodeWrightNodeEditorFieldContext,
+  NodeWrightNodeEditorInset,
+  NodeWrightNodeEditorRegistry,
+  NodeWrightNodeEditorState,
+  NodeWrightRenderContext,
+  NodeWrightResolvedNodeEditorField,
   NodeTypeRegistry,
   SelectionState,
 } from '../types/index.js'
@@ -20,13 +20,13 @@ import {
   resolveParameterLabel,
 } from '../dom-model/parameter-display.js'
 import type { EditorExtensions } from './extensions.js'
-import type { ResolvedNodeEngineBehaviors } from './theme.js'
+import type { ResolvedNodeWrightBehaviors } from './theme.js'
 import { getNodeParams } from './values.js'
 
 interface ResolvedNodeEditor {
-  activateOn: NodeEngineNodeEditorState['activateOn']
-  inset: NodeEngineNodeEditorInset
-  fields: NodeEngineResolvedNodeEditorField[]
+  activateOn: NodeWrightNodeEditorState['activateOn']
+  inset: NodeWrightNodeEditorInset
+  fields: NodeWrightResolvedNodeEditorField[]
 }
 
 /**
@@ -34,14 +34,14 @@ interface ResolvedNodeEditor {
  * activates on selection, or explicitly (double click, API) for editors with other triggers.
  */
 export interface NodeEditorModel {
-  readonly active: ReadonlySignal<NodeEngineNodeEditorState | null>
+  readonly active: ReadonlySignal<NodeWrightNodeEditorState | null>
   readonly manualNodeId: ReadonlySignal<string | null>
   resolve: (node: GraphNode) => ResolvedNodeEditor | null
   open: (nodeId: string) => boolean
   close: () => void
   /** Closes the editor only when it currently edits `nodeId`. */
   closeFor: (nodeId: string) => void
-  getState: () => NodeEngineNodeEditorState | null
+  getState: () => NodeWrightNodeEditorState | null
   /** Emits open/close events and closes the editor when its node disappears. */
   start: () => () => void
 }
@@ -50,12 +50,12 @@ export function createNodeEditorModel(options: {
   graph: ReadonlySignal<GraphSnapshot>
   getStore: () => GraphStore
   extensions: EditorExtensions
-  behavior: ReadonlySignal<ResolvedNodeEngineBehaviors['editor']>
+  behavior: ReadonlySignal<ResolvedNodeWrightBehaviors['editor']>
   readonly: () => boolean
   selection: ReadonlySignal<SelectionState>
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
-  getScreenBounds: (nodeId: string) => NodeEngineBounds | null
-  emit: NodeEngineEventSink
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
+  getScreenBounds: (nodeId: string) => NodeWrightBounds | null
+  emit: NodeWrightEventSink
 }): NodeEditorModel {
   const manualNodeId = signal<string | null>(null)
 
@@ -69,7 +69,7 @@ export function createNodeEditorModel(options: {
     })
   }
 
-  const active = computed<NodeEngineNodeEditorState | null>(() => {
+  const active = computed<NodeWrightNodeEditorState | null>(() => {
     if (options.readonly() || !options.behavior.value.enabled) {
       return null
     }
@@ -137,7 +137,7 @@ export function createNodeEditorModel(options: {
       return state ? cloneValue(state) : null
     },
     start() {
-      let previous: NodeEngineNodeEditorState | null | undefined
+      let previous: NodeWrightNodeEditorState | null | undefined
       const stopEvents = effect(() => {
         const next = active.value
 
@@ -180,11 +180,11 @@ export function createNodeEditorModel(options: {
 function resolveNodeEditor(
   node: GraphNode,
   options: {
-    nodeEditors: NodeEngineNodeEditorRegistry
+    nodeEditors: NodeWrightNodeEditorRegistry
     nodeTypes: NodeTypeRegistry
-    behavior: ResolvedNodeEngineBehaviors['editor']
+    behavior: ResolvedNodeWrightBehaviors['editor']
     readonly: boolean
-    context: NodeEngineRenderContext
+    context: NodeWrightRenderContext
   },
 ): ResolvedNodeEditor | null {
   const explicit = options.nodeEditors[node.type] ?? options.nodeTypes[node.type]?.editor
@@ -196,7 +196,7 @@ function resolveNodeEditor(
   const parameters = options.context.api.definitions.nodes.get(node.type)?.parameters ?? []
   const hints = new Map((explicit?.fields ?? []).map((hint) => [hint.key, hint]))
   const params = getNodeParams(node)
-  const fields: NodeEngineResolvedNodeEditorField[] = []
+  const fields: NodeWrightResolvedNodeEditorField[] = []
   const maxFields = explicit?.maxFields ?? options.behavior.defaultMaxFields
 
   for (const parameter of parameters) {
@@ -206,7 +206,7 @@ function resolveNodeEditor(
 
     const hint = hints.get(parameter.key)
     const value = params[parameter.key]
-    const fieldContext: NodeEngineNodeEditorFieldContext = {
+    const fieldContext: NodeWrightNodeEditorFieldContext = {
       node,
       key: parameter.key,
       value,
@@ -246,16 +246,16 @@ function resolveNodeEditor(
 }
 
 function resolveNodeEditorActivateOn(
-  definition: NodeEngineNodeEditorDefinition | undefined,
-  defaultActivateOn: NodeEngineNodeEditorState['activateOn'],
-): NodeEngineNodeEditorState['activateOn'] {
+  definition: NodeWrightNodeEditorDefinition | undefined,
+  defaultActivateOn: NodeWrightNodeEditorState['activateOn'],
+): NodeWrightNodeEditorState['activateOn'] {
   return definition?.activateOn ?? defaultActivateOn
 }
 
 function resolveNodeEditorInset(
-  definition: NodeEngineNodeEditorDefinition | undefined,
-  defaultInset: NodeEngineNodeEditorInset,
-): NodeEngineNodeEditorInset {
+  definition: NodeWrightNodeEditorDefinition | undefined,
+  defaultInset: NodeWrightNodeEditorInset,
+): NodeWrightNodeEditorInset {
   return {
     top: definition?.inset?.top ?? defaultInset.top,
     right: definition?.inset?.right ?? defaultInset.right,

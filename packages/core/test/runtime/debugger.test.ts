@@ -1,13 +1,10 @@
 import { describe, expect, it } from 'vitest'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
-import {
-  NodeEngineRuntime,
+  NodeWrightRuntime,
   compileGraph,
-  type NodeEngineRuntimeNodeDefinition,
+  type NodeWrightRuntimeNodeDefinition,
 } from '../../src/runtime/index'
 
 const definitions: SemanticNodeDefinition[] = [
@@ -28,7 +25,7 @@ const definitions: SemanticNodeDefinition[] = [
 
 function makeChainGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'start', type: 'event', x: 0, y: 0 },
       { id: 'mid', type: 'step', x: 100, y: 0 },
@@ -53,13 +50,13 @@ function makeChainGraph(): GraphSnapshot {
   }
 }
 
-const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
   { type: 'event', handler: () => ({ output: 'then' }) },
   { type: 'step', handler: () => ({ output: 'then' }) },
   { type: 'sink', handler: () => ({}) },
 ]
 
-describe('@node-engine-sdk/core/runtime debugger', () => {
+describe('@node-wright/core/runtime debugger', () => {
   it('pauses on a breakpoint and resumes after manual resume', async () => {
     const compiled = compileGraph({
       graph: makeChainGraph(),
@@ -72,7 +69,7 @@ describe('@node-engine-sdk/core/runtime debugger', () => {
     const pausedAt: string[] = []
     let runIdSeen: string | undefined
 
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent: (event) => {
@@ -101,7 +98,7 @@ describe('@node-engine-sdk/core/runtime debugger', () => {
       runtimeDefinitions,
     })
 
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent: (event) => {
@@ -128,7 +125,7 @@ describe('@node-engine-sdk/core/runtime debugger', () => {
     })
 
     let paused = false
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent: (event) => {
@@ -153,7 +150,7 @@ describe('@node-engine-sdk/core/runtime debugger', () => {
     })
 
     let pauses = 0
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent: (event) => {
@@ -183,7 +180,7 @@ describe('@node-engine-sdk/core/runtime debugger', () => {
       runtimeDefinitions,
     })
 
-    const runtime = new NodeEngineRuntime({ definitions, runtimeDefinitions })
+    const runtime = new NodeWrightRuntime({ definitions, runtimeDefinitions })
     const result = await runtime.run(compiled.plan!)
 
     expect(
@@ -213,7 +210,7 @@ describe('@node-engine-sdk/core/runtime debugger', () => {
       ],
     })
 
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions: [
         { type: 'event', handler: () => ({ output: 'then' }) },

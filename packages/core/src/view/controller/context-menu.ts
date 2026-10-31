@@ -1,15 +1,15 @@
 import type { XYPosition } from '../../protocol/index.js'
 import { signal, type ReadonlySignal } from '../reactive.js'
 import type {
-  NodeEngineContextMenuContext,
-  NodeEngineContextMenuItem,
-  NodeEngineContextMenuState,
-  NodeEngineContextTarget,
-  NodeEngineEventSink,
-  NodeEngineRenderContext,
-  NodeEngineResolvedContextMenuItem,
-  NodeEngineResolvedToolbarItem,
-  NodeEngineToolbarItem,
+  NodeWrightContextMenuContext,
+  NodeWrightContextMenuItem,
+  NodeWrightContextMenuState,
+  NodeWrightContextTarget,
+  NodeWrightEventSink,
+  NodeWrightRenderContext,
+  NodeWrightResolvedContextMenuItem,
+  NodeWrightResolvedToolbarItem,
+  NodeWrightToolbarItem,
 } from '../types/index.js'
 
 /**
@@ -17,31 +17,31 @@ import type {
  * current render context. The editor tracks which menu is open; adapters render it.
  */
 export interface ContextMenuModel {
-  readonly state: ReadonlySignal<NodeEngineContextMenuState | null>
-  open: (target: NodeEngineContextTarget, position: XYPosition) => void
+  readonly state: ReadonlySignal<NodeWrightContextMenuState | null>
+  open: (target: NodeWrightContextTarget, position: XYPosition) => void
   close: () => void
-  getState: () => NodeEngineContextMenuState | null
-  resolveToolbar: () => NodeEngineResolvedToolbarItem[]
+  getState: () => NodeWrightContextMenuState | null
+  resolveToolbar: () => NodeWrightResolvedToolbarItem[]
   resolveContext: (
-    target: NodeEngineContextTarget,
+    target: NodeWrightContextTarget,
     position: XYPosition,
-  ) => NodeEngineResolvedContextMenuItem[]
+  ) => NodeWrightResolvedContextMenuItem[]
 }
 
 export function createContextMenuModel(options: {
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
-  toolbarItems: ReadonlySignal<NodeEngineToolbarItem[]>
-  contextMenuItems: ReadonlySignal<NodeEngineContextMenuItem[]>
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
+  toolbarItems: ReadonlySignal<NodeWrightToolbarItem[]>
+  contextMenuItems: ReadonlySignal<NodeWrightContextMenuItem[]>
   screenToGraph: (point: XYPosition) => XYPosition
   createDefaultEvent: () => MouseEvent
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): ContextMenuModel {
-  const state = signal<NodeEngineContextMenuState | null>(null)
+  const state = signal<NodeWrightContextMenuState | null>(null)
 
   function createContext(
-    target: NodeEngineContextTarget,
+    target: NodeWrightContextTarget,
     position: XYPosition,
-  ): NodeEngineContextMenuContext {
+  ): NodeWrightContextMenuContext {
     return {
       ...options.renderContext.peek(),
       position,
@@ -50,13 +50,13 @@ export function createContextMenuModel(options: {
     }
   }
 
-  function visibleItems(context: NodeEngineContextMenuContext): NodeEngineContextMenuItem[] {
+  function visibleItems(context: NodeWrightContextMenuContext): NodeWrightContextMenuItem[] {
     return options.contextMenuItems
       .peek()
       .filter((item) => (item.visible ? item.visible(context) : true))
   }
 
-  function getState(): NodeEngineContextMenuState | null {
+  function getState(): NodeWrightContextMenuState | null {
     const current = state.peek()
 
     if (!current) {
@@ -82,7 +82,7 @@ export function createContextMenuModel(options: {
         return
       }
 
-      const next: NodeEngineContextMenuState = {
+      const next: NodeWrightContextMenuState = {
         position,
         graphPosition: context.graphPosition,
         items,
@@ -100,7 +100,7 @@ export function createContextMenuModel(options: {
     getState,
     resolveToolbar() {
       const context = options.renderContext.peek()
-      const isDisabled = (item: NodeEngineToolbarItem) =>
+      const isDisabled = (item: NodeWrightToolbarItem) =>
         item.disabled ? item.disabled(options.renderContext.peek()) : false
 
       return options.toolbarItems

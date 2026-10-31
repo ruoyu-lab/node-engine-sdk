@@ -8,7 +8,7 @@ import {
   type GraphSnapshot,
 } from '../../protocol/index.js'
 import type { GraphStore } from '../../store/index.js'
-import type { NodeEngineEventSink } from '../types/index.js'
+import type { NodeWrightEventSink } from '../types/index.js'
 
 /** Edge mutations; invalid connections are reported through `connection-invalid`. */
 export interface EdgeCommands {
@@ -31,7 +31,7 @@ export interface EdgeCommands {
 
 export function createEdgeCommands(options: {
   getStore: () => GraphStore
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): EdgeCommands {
   const store = options.getStore
 

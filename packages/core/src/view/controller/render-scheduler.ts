@@ -1,20 +1,20 @@
 import { batch, computed, effect, signal, type ReadonlySignal, type Signal } from '../reactive.js'
 import { createPerformanceSample, type PerformanceSampleInput } from '../rendering/performance.js'
 import type {
-  NodeEngineEditorHost,
-  NodeEngineEventSink,
-  NodeEnginePerformanceSample,
+  NodeWrightEditorHost,
+  NodeWrightEventSink,
+  NodeWrightPerformanceSample,
 } from '../types/index.js'
 import { paintCanvas, paintGrid, type CanvasFrame, type GridFrame } from './canvas-layers.js'
 import type { FrameScheduler } from './frame-scheduler.js'
-import type { ResolvedNodeEnginePerformanceOptions } from './theme.js'
+import type { ResolvedNodeWrightPerformanceOptions } from './theme.js'
 import type { RenderSurface } from './visibility.js'
 
 const MAX_FRAME_GAP_MS = 250
 const REFRESH_INTERVAL_MS = 150
 
 interface MountedRenderer {
-  host: NodeEngineEditorHost
+  host: NodeWrightEditorHost
   scheduler: FrameScheduler
   gridFrame: number | null
   canvasFrame: number | null
@@ -34,23 +34,23 @@ export type PerformanceMetrics = Omit<
  * for the performance overlay.
  */
 export interface RenderScheduler {
-  readonly performanceSample: ReadonlySignal<NodeEnginePerformanceSample | null>
+  readonly performanceSample: ReadonlySignal<NodeWrightPerformanceSample | null>
   readonly overlayVisible: ReadonlySignal<boolean>
   /** Paints both canvases immediately (used inside gesture animation frames). */
   drawNow: (timestamp: number) => void
   hideOverlay: () => void
-  mount: (host: NodeEngineEditorHost, scheduler: FrameScheduler) => () => void
+  mount: (host: NodeWrightEditorHost, scheduler: FrameScheduler) => () => void
 }
 
 export function createRenderScheduler(options: {
   surface: Signal<RenderSurface>
-  performanceOptions: ReadonlySignal<ResolvedNodeEnginePerformanceOptions>
+  performanceOptions: ReadonlySignal<ResolvedNodeWrightPerformanceOptions>
   gridFrame: ReadonlySignal<GridFrame>
   canvasFrame: ReadonlySignal<CanvasFrame>
   getMetrics: () => PerformanceMetrics
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): RenderScheduler {
-  const performanceSample = signal<NodeEnginePerformanceSample | null>(null)
+  const performanceSample = signal<NodeWrightPerformanceSample | null>(null)
   const overlayDismissed = signal(false)
   const overlayEnabled = computed(() => {
     const performance = options.performanceOptions.value

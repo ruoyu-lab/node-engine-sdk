@@ -7,48 +7,48 @@ import type {
   SubgraphReferenceInput,
 } from '../semantics/index.js'
 import type {
-  NodeEngineRuntimeInitialVariables,
-  NodeEngineRuntimeVariableApi,
-  NodeEngineRuntimeVariableInput,
-  NodeEngineRuntimeVariableSnapshot,
+  NodeWrightRuntimeInitialVariables,
+  NodeWrightRuntimeVariableApi,
+  NodeWrightRuntimeVariableInput,
+  NodeWrightRuntimeVariableSnapshot,
 } from './variables.js'
 
-export type NodeEngineRuntimePortValues = Record<string, unknown>
+export type NodeWrightRuntimePortValues = Record<string, unknown>
 
-export type NodeEngineRuntimeSchedulePhase = 'data' | 'exec'
-export type NodeEngineRuntimeTraceKind = 'node' | 'data' | 'function' | 'subgraph'
-export type NodeEngineRuntimeCallFrameKind = 'node' | 'function' | 'subgraph'
+export type NodeWrightRuntimeSchedulePhase = 'data' | 'exec'
+export type NodeWrightRuntimeTraceKind = 'node' | 'data' | 'function' | 'subgraph'
+export type NodeWrightRuntimeCallFrameKind = 'node' | 'function' | 'subgraph'
 
-export interface NodeEngineRuntimeTaskAttempt {
+export interface NodeWrightRuntimeTaskAttempt {
   attempt: number
   signal: AbortSignal
 }
 
-export interface NodeEngineRuntimeScheduledTask<T = unknown> {
+export interface NodeWrightRuntimeScheduledTask<T = unknown> {
   id: string
   label?: string
   retryable: boolean
-  run: (attempt: NodeEngineRuntimeTaskAttempt) => Promise<T>
+  run: (attempt: NodeWrightRuntimeTaskAttempt) => Promise<T>
 }
 
-export interface NodeEngineRuntimeSchedulerContext {
+export interface NodeWrightRuntimeSchedulerContext {
   runId: string
   graph: GraphSnapshot
   signal: AbortSignal
-  phase: NodeEngineRuntimeSchedulePhase
+  phase: NodeWrightRuntimeSchedulePhase
   node?: GraphNode
 }
 
-export interface NodeEngineRuntimeScheduler {
+export interface NodeWrightRuntimeScheduler {
   schedule: <T>(
-    context: NodeEngineRuntimeSchedulerContext,
-    tasks: Array<NodeEngineRuntimeScheduledTask<T>>,
+    context: NodeWrightRuntimeSchedulerContext,
+    tasks: Array<NodeWrightRuntimeScheduledTask<T>>,
   ) => Promise<T[]>
 }
 
-export interface NodeEngineRuntimeCallFrame {
+export interface NodeWrightRuntimeCallFrame {
   id: string
-  kind: NodeEngineRuntimeCallFrameKind
+  kind: NodeWrightRuntimeCallFrameKind
   name: string
   parentId?: string
   nodeId?: string
@@ -58,171 +58,171 @@ export interface NodeEngineRuntimeCallFrame {
   startedAt: number
   endedAt?: number
   durationMs?: number
-  status: NodeEngineRuntimeNodeStatus
+  status: NodeWrightRuntimeNodeStatus
 }
 
-export type NodeEngineRuntimeStepMode = 'into' | 'over' | 'out'
+export type NodeWrightRuntimeStepMode = 'into' | 'over' | 'out'
 
-export interface NodeEngineRuntimeDebugOptions {
+export interface NodeWrightRuntimeDebugOptions {
   captureInputs?: boolean
   captureOutputs?: boolean
   captureCallStack?: boolean
 }
 
-export interface NodeEngineRuntimeFunctionResult {
-  values?: NodeEngineRuntimePortValues
+export interface NodeWrightRuntimeFunctionResult {
+  values?: NodeWrightRuntimePortValues
   data?: unknown
 }
 
-export type NodeEngineRuntimeCallFunction = (
+export type NodeWrightRuntimeCallFunction = (
   reference: FunctionReferenceInput,
-  values?: NodeEngineRuntimePortValues,
-) => Promise<NodeEngineRuntimeFunctionResult>
+  values?: NodeWrightRuntimePortValues,
+) => Promise<NodeWrightRuntimeFunctionResult>
 
-export interface NodeEngineRuntimeSubgraphResult {
-  values?: NodeEngineRuntimePortValues
+export interface NodeWrightRuntimeSubgraphResult {
+  values?: NodeWrightRuntimePortValues
   data?: unknown
 }
 
-export type NodeEngineRuntimeCallSubgraph = (
+export type NodeWrightRuntimeCallSubgraph = (
   reference: SubgraphReferenceInput,
-  values?: NodeEngineRuntimePortValues,
-) => Promise<NodeEngineRuntimeSubgraphResult>
+  values?: NodeWrightRuntimePortValues,
+) => Promise<NodeWrightRuntimeSubgraphResult>
 
-export type NodeEngineRuntimeSubgraphDefinition = SubgraphDefinition
+export type NodeWrightRuntimeSubgraphDefinition = SubgraphDefinition
 
-export interface NodeEngineRuntimeFunctionContext {
+export interface NodeWrightRuntimeFunctionContext {
   functionDefinition: FunctionDefinition
   graph: GraphSnapshot
-  values: NodeEngineRuntimePortValues
-  variables: NodeEngineRuntimeVariableSnapshot
-  variable: NodeEngineRuntimeVariableApi
-  getVariable: (reference: NodeEngineRuntimeVariableInput) => unknown
-  setVariable: (reference: NodeEngineRuntimeVariableInput, value: unknown) => void
-  callFunction: NodeEngineRuntimeCallFunction
-  callSubgraph: NodeEngineRuntimeCallSubgraph
-  callStack: NodeEngineRuntimeCallFrame[]
+  values: NodeWrightRuntimePortValues
+  variables: NodeWrightRuntimeVariableSnapshot
+  variable: NodeWrightRuntimeVariableApi
+  getVariable: (reference: NodeWrightRuntimeVariableInput) => unknown
+  setVariable: (reference: NodeWrightRuntimeVariableInput, value: unknown) => void
+  callFunction: NodeWrightRuntimeCallFunction
+  callSubgraph: NodeWrightRuntimeCallSubgraph
+  callStack: NodeWrightRuntimeCallFrame[]
   runId: string
   signal: AbortSignal
 }
 
-export type NodeEngineRuntimeFunctionHandler = (
-  context: NodeEngineRuntimeFunctionContext,
-) => NodeEngineRuntimeFunctionResult | void | Promise<NodeEngineRuntimeFunctionResult | void>
+export type NodeWrightRuntimeFunctionHandler = (
+  context: NodeWrightRuntimeFunctionContext,
+) => NodeWrightRuntimeFunctionResult | void | Promise<NodeWrightRuntimeFunctionResult | void>
 
-export interface NodeEngineRuntimeFunctionDefinition extends FunctionDefinition {
-  handler?: NodeEngineRuntimeFunctionHandler
+export interface NodeWrightRuntimeFunctionDefinition extends FunctionDefinition {
+  handler?: NodeWrightRuntimeFunctionHandler
 }
 
-export interface NodeEngineRuntimeNodeContext {
+export interface NodeWrightRuntimeNodeContext {
   node: GraphNode
   definition?: SemanticNodeDefinition
   graph: GraphSnapshot
   input: unknown
-  values: NodeEngineRuntimePortValues
-  params: NodeEngineRuntimePortValues
-  variables: NodeEngineRuntimeVariableSnapshot
-  variable: NodeEngineRuntimeVariableApi
-  getVariable: (reference: NodeEngineRuntimeVariableInput) => unknown
-  setVariable: (reference: NodeEngineRuntimeVariableInput, value: unknown) => void
-  callFunction: NodeEngineRuntimeCallFunction
-  callSubgraph: NodeEngineRuntimeCallSubgraph
-  callStack: NodeEngineRuntimeCallFrame[]
+  values: NodeWrightRuntimePortValues
+  params: NodeWrightRuntimePortValues
+  variables: NodeWrightRuntimeVariableSnapshot
+  variable: NodeWrightRuntimeVariableApi
+  getVariable: (reference: NodeWrightRuntimeVariableInput) => unknown
+  setVariable: (reference: NodeWrightRuntimeVariableInput, value: unknown) => void
+  callFunction: NodeWrightRuntimeCallFunction
+  callSubgraph: NodeWrightRuntimeCallSubgraph
+  callStack: NodeWrightRuntimeCallFrame[]
   runId: string
   signal: AbortSignal
 }
 
-export interface NodeEngineRuntimeNodeResult {
+export interface NodeWrightRuntimeNodeResult {
   output?: string
   outputs?: string[]
-  values?: NodeEngineRuntimePortValues
+  values?: NodeWrightRuntimePortValues
   data?: unknown
 }
 
-export type NodeEngineRuntimeNodeHandler = (
-  context: NodeEngineRuntimeNodeContext,
-) => NodeEngineRuntimeNodeResult | void | Promise<NodeEngineRuntimeNodeResult | void>
+export type NodeWrightRuntimeNodeHandler = (
+  context: NodeWrightRuntimeNodeContext,
+) => NodeWrightRuntimeNodeResult | void | Promise<NodeWrightRuntimeNodeResult | void>
 
-export interface NodeEngineRuntimeNodeDefinition {
+export interface NodeWrightRuntimeNodeDefinition {
   type: string
-  handler?: NodeEngineRuntimeNodeHandler
+  handler?: NodeWrightRuntimeNodeHandler
   cacheable?: boolean
   idempotent?: boolean
 }
 
-export type NodeEngineRuntimeNodeStatus =
+export type NodeWrightRuntimeNodeStatus =
   'idle' | 'running' | 'paused' | 'success' | 'error' | 'cancelled'
 
-export type NodeEngineRunStatus = 'idle' | 'running' | 'paused' | 'success' | 'error' | 'cancelled'
+export type NodeWrightRunStatus = 'idle' | 'running' | 'paused' | 'success' | 'error' | 'cancelled'
 
-export interface NodeEngineBreakpointContext {
-  run: NodeEngineRuntimeRunState
+export interface NodeWrightBreakpointContext {
+  run: NodeWrightRuntimeRunState
   node?: GraphNode
   functionDefinition?: FunctionDefinition
   subgraphDefinition?: SubgraphDefinition
-  frame?: NodeEngineRuntimeCallFrame
+  frame?: NodeWrightRuntimeCallFrame
 }
 
-export interface NodeEngineBreakpoint {
+export interface NodeWrightBreakpoint {
   id?: string
   nodeId?: string
   functionId?: string
   subgraphId?: string
   enabled?: boolean
-  condition?: (context: NodeEngineBreakpointContext) => boolean | Promise<boolean>
+  condition?: (context: NodeWrightBreakpointContext) => boolean | Promise<boolean>
 }
 
-export interface NodeEngineRuntimeTraceEntry {
+export interface NodeWrightRuntimeTraceEntry {
   id?: string
-  kind?: NodeEngineRuntimeTraceKind
+  kind?: NodeWrightRuntimeTraceKind
   frameId?: string
   depth?: number
-  callStack?: NodeEngineRuntimeCallFrame[]
+  callStack?: NodeWrightRuntimeCallFrame[]
   nodeId?: string
   functionId?: string
   subgraphId?: string
   type: string
-  status: NodeEngineRuntimeNodeStatus
+  status: NodeWrightRuntimeNodeStatus
   startedAt: number
   endedAt?: number
   durationMs?: number
   inputSummary?: unknown
-  inputValues?: NodeEngineRuntimePortValues
+  inputValues?: NodeWrightRuntimePortValues
   outputSummary?: unknown
-  outputValues?: NodeEngineRuntimePortValues
+  outputValues?: NodeWrightRuntimePortValues
   error?: unknown
 }
 
-export interface NodeEngineRuntimeNodeState {
+export interface NodeWrightRuntimeNodeState {
   nodeId: string
-  status: NodeEngineRuntimeNodeStatus
+  status: NodeWrightRuntimeNodeStatus
   startedAt?: number
   endedAt?: number
   durationMs?: number
   error?: unknown
-  inputValues?: NodeEngineRuntimePortValues
-  outputValues?: NodeEngineRuntimePortValues
-  values?: NodeEngineRuntimePortValues
+  inputValues?: NodeWrightRuntimePortValues
+  outputValues?: NodeWrightRuntimePortValues
+  values?: NodeWrightRuntimePortValues
   frameId?: string
-  callStack?: NodeEngineRuntimeCallFrame[]
+  callStack?: NodeWrightRuntimeCallFrame[]
 }
 
-export interface NodeEngineRunResult {
+export interface NodeWrightRunResult {
   runId: string
-  status: NodeEngineRunStatus
-  trace: NodeEngineRuntimeTraceEntry[]
-  callFrames: NodeEngineRuntimeCallFrame[]
-  nodeStates: Record<string, NodeEngineRuntimeNodeState>
-  variables: NodeEngineRuntimeVariableSnapshot
+  status: NodeWrightRunStatus
+  trace: NodeWrightRuntimeTraceEntry[]
+  callFrames: NodeWrightRuntimeCallFrame[]
+  nodeStates: Record<string, NodeWrightRuntimeNodeState>
+  variables: NodeWrightRuntimeVariableSnapshot
   listenerErrors: unknown[]
   error?: unknown
 }
 
-export interface NodeEngineRuntimeRunState extends NodeEngineRunResult {
+export interface NodeWrightRuntimeRunState extends NodeWrightRunResult {
   currentNodeId?: string
 }
 
-export interface NodeEngineRuntimeEvent {
+export interface NodeWrightRuntimeEvent {
   type:
     | 'run:start'
     | 'run:pause'
@@ -241,48 +241,48 @@ export interface NodeEngineRuntimeEvent {
     | 'subgraph:start'
     | 'subgraph:success'
     | 'subgraph:error'
-  run: NodeEngineRuntimeRunState
+  run: NodeWrightRuntimeRunState
   node?: GraphNode
   functionDefinition?: FunctionDefinition
   subgraphDefinition?: SubgraphDefinition
-  frame?: NodeEngineRuntimeCallFrame
-  trace?: NodeEngineRuntimeTraceEntry
+  frame?: NodeWrightRuntimeCallFrame
+  trace?: NodeWrightRuntimeTraceEntry
 }
 
-export type NodeEngineRuntimeListener = (event: NodeEngineRuntimeEvent) => void
+export type NodeWrightRuntimeListener = (event: NodeWrightRuntimeEvent) => void
 
-export interface NodeEngineRuntimeOptions {
+export interface NodeWrightRuntimeOptions {
   graph?: GraphSnapshot | (() => GraphSnapshot)
   definitions?: SemanticNodeDefinition[]
   getNodeDefinition?: (type: string) => SemanticNodeDefinition | undefined
-  runtimeDefinitions?: NodeEngineRuntimeNodeDefinition[]
-  handlers?: Record<string, NodeEngineRuntimeNodeHandler>
-  functionDefinitions?: NodeEngineRuntimeFunctionDefinition[]
-  functionHandlers?: Record<string, NodeEngineRuntimeFunctionHandler>
-  subgraphDefinitions?: NodeEngineRuntimeSubgraphDefinition[]
-  scheduler?: NodeEngineRuntimeScheduler
-  debug?: NodeEngineRuntimeDebugOptions
-  initialVariables?: NodeEngineRuntimeInitialVariables
+  runtimeDefinitions?: NodeWrightRuntimeNodeDefinition[]
+  handlers?: Record<string, NodeWrightRuntimeNodeHandler>
+  functionDefinitions?: NodeWrightRuntimeFunctionDefinition[]
+  functionHandlers?: Record<string, NodeWrightRuntimeFunctionHandler>
+  subgraphDefinitions?: NodeWrightRuntimeSubgraphDefinition[]
+  scheduler?: NodeWrightRuntimeScheduler
+  debug?: NodeWrightRuntimeDebugOptions
+  initialVariables?: NodeWrightRuntimeInitialVariables
   maxSteps?: number
   maxLoopIterations?: number
   summarizeValue?: (value: unknown) => unknown
-  onEvent?: NodeEngineRuntimeListener
+  onEvent?: NodeWrightRuntimeListener
 }
 
-export interface NodeEngineCompileOptions {
+export interface NodeWrightCompileOptions {
   graph: GraphSnapshot
   entryNodeId?: string
   definitions?: SemanticNodeDefinition[]
   getNodeDefinition?: (type: string) => SemanticNodeDefinition | undefined
-  runtimeDefinitions?: NodeEngineRuntimeNodeDefinition[]
-  handlers?: Record<string, NodeEngineRuntimeNodeHandler>
-  functionDefinitions?: NodeEngineRuntimeFunctionDefinition[]
-  subgraphDefinitions?: NodeEngineRuntimeSubgraphDefinition[]
+  runtimeDefinitions?: NodeWrightRuntimeNodeDefinition[]
+  handlers?: Record<string, NodeWrightRuntimeNodeHandler>
+  functionDefinitions?: NodeWrightRuntimeFunctionDefinition[]
+  subgraphDefinitions?: NodeWrightRuntimeSubgraphDefinition[]
   diagnostics?: GraphDiagnostic[]
 }
 
 export type {
   GraphDiagnostic,
-  NodeEngineCompileResult,
-  NodeEngineExecutionPlan,
+  NodeWrightCompileResult,
+  NodeWrightExecutionPlan,
 } from '../protocol/index.js'

@@ -1,9 +1,9 @@
 import type {
-  NodeEngineDomNodeLayoutDefinition,
-  NodeEngineDomNodeSizeConstraints,
-  NodeEngineResolvedDomNodeField,
-  NodeEngineResolvedDomNodeLayout,
-  NodeEngineResolvedDomNodePort,
+  NodeWrightDomNodeLayoutDefinition,
+  NodeWrightDomNodeSizeConstraints,
+  NodeWrightResolvedDomNodeField,
+  NodeWrightResolvedDomNodeLayout,
+  NodeWrightResolvedDomNodePort,
 } from '../types/index.js'
 
 export const DEFAULT_DOM_MIN_WIDTH = 120
@@ -40,15 +40,15 @@ const DEFAULT_DOM_FIELD_DEFAULT_WIDTH = 140
 
 export interface DomNodeContent {
   title: string
-  inputs: NodeEngineResolvedDomNodePort[]
-  outputs: NodeEngineResolvedDomNodePort[]
-  fields: NodeEngineResolvedDomNodeField[]
+  inputs: NodeWrightResolvedDomNodePort[]
+  outputs: NodeWrightResolvedDomNodePort[]
+  fields: NodeWrightResolvedDomNodeField[]
 }
 
 export function resolveDomNodeLayoutDefinition(
-  value: NodeEngineDomNodeLayoutDefinition | undefined,
-  override?: Partial<NodeEngineDomNodeLayoutDefinition>,
-): NodeEngineResolvedDomNodeLayout {
+  value: NodeWrightDomNodeLayoutDefinition | undefined,
+  override?: Partial<NodeWrightDomNodeLayoutDefinition>,
+): NodeWrightResolvedDomNodeLayout {
   const headerHeight = Math.max(
     override?.headerHeight ?? value?.headerHeight ?? DEFAULT_DOM_HEADER_HEIGHT,
     0,
@@ -94,14 +94,14 @@ export function resolveDomNodeLayoutDefinition(
 
 export function resolveDomNodePortTop(
   index: number,
-  layout: Pick<NodeEngineResolvedDomNodeLayout, 'portTop' | 'portGap'>,
+  layout: Pick<NodeWrightResolvedDomNodeLayout, 'portTop' | 'portGap'>,
 ): number {
   return layout.portTop + Math.max(index, 0) * layout.portGap
 }
 
 export function resolveDomNodePortsBottom(
   portCount: number,
-  layout: Pick<NodeEngineResolvedDomNodeLayout, 'headerHeight' | 'portTop' | 'portGap'>,
+  layout: Pick<NodeWrightResolvedDomNodeLayout, 'headerHeight' | 'portTop' | 'portGap'>,
 ): number {
   if (portCount <= 0) {
     return layout.headerHeight
@@ -111,9 +111,9 @@ export function resolveDomNodePortsBottom(
 }
 
 export function resolveFieldsTop(
-  inputs: NodeEngineResolvedDomNodePort[],
-  outputs: NodeEngineResolvedDomNodePort[],
-  layout: Pick<NodeEngineResolvedDomNodeLayout, 'minFieldsTop' | 'fieldPortGap'>,
+  inputs: NodeWrightResolvedDomNodePort[],
+  outputs: NodeWrightResolvedDomNodePort[],
+  layout: Pick<NodeWrightResolvedDomNodeLayout, 'minFieldsTop' | 'fieldPortGap'>,
 ): number {
   const allPorts = [...inputs, ...outputs]
 
@@ -129,9 +129,9 @@ export function resolveFieldsTop(
 
 /** Estimates the minimum node size that fits the title, port columns and every field row. */
 export function resolveDomNodeSizeConstraintsFromLayout(
-  layout: NodeEngineResolvedDomNodeLayout,
+  layout: NodeWrightResolvedDomNodeLayout,
   content: DomNodeContent,
-): NodeEngineDomNodeSizeConstraints {
+): NodeWrightDomNodeSizeConstraints {
   const portCount = Math.max(content.inputs.length, content.outputs.length)
   const portsBottom = resolveDomNodePortsBottom(portCount, layout)
   const fieldsTop = resolveFieldsTop(content.inputs, content.outputs, layout)
@@ -159,11 +159,11 @@ export function resolveDomNodeSizeConstraintsFromLayout(
  * remaining height so the fields fill the node.
  */
 export function positionDomFields(
-  fields: NodeEngineResolvedDomNodeField[],
+  fields: NodeWrightResolvedDomNodeField[],
   fieldsTop: number,
-  layout: Pick<NodeEngineResolvedDomNodeLayout, 'fieldRowGap'>,
+  layout: Pick<NodeWrightResolvedDomNodeLayout, 'fieldRowGap'>,
   extraHeight: number,
-): NodeEngineResolvedDomNodeField[] {
+): NodeWrightResolvedDomNodeField[] {
   let stretchableIndex = -1
 
   for (let index = fields.length - 1; index >= 0; index -= 1) {
@@ -193,9 +193,9 @@ export function positionDomFields(
 }
 
 export function resolveVisibleDomFieldCount(
-  fields: NodeEngineResolvedDomNodeField[],
+  fields: NodeWrightResolvedDomNodeField[],
   availableHeight: number,
-  layout: Pick<NodeEngineResolvedDomNodeLayout, 'fieldRowGap'>,
+  layout: Pick<NodeWrightResolvedDomNodeLayout, 'fieldRowGap'>,
 ): number {
   if (!fields.length || availableHeight <= 0) {
     return 0
@@ -220,8 +220,8 @@ export function resolveVisibleDomFieldCount(
 }
 
 export function resolveDomFieldsHeight(
-  fields: NodeEngineResolvedDomNodeField[],
-  layout: Pick<NodeEngineResolvedDomNodeLayout, 'fieldRowGap'>,
+  fields: NodeWrightResolvedDomNodeField[],
+  layout: Pick<NodeWrightResolvedDomNodeLayout, 'fieldRowGap'>,
 ): number {
   return fields.reduce((total, field, index) => {
     const gap = index > 0 ? layout.fieldRowGap : 0
@@ -229,7 +229,7 @@ export function resolveDomFieldsHeight(
   }, 0)
 }
 
-function resolveDomFieldsWidth(fields: NodeEngineResolvedDomNodeField[]): number {
+function resolveDomFieldsWidth(fields: NodeWrightResolvedDomNodeField[]): number {
   if (!fields.length) {
     return 0
   }
@@ -249,7 +249,7 @@ function resolveDomFieldsWidth(fields: NodeEngineResolvedDomNodeField[]): number
   )
 }
 
-function resolveDomFieldVisualHeight(field: NodeEngineResolvedDomNodeField): number {
+function resolveDomFieldVisualHeight(field: NodeWrightResolvedDomNodeField): number {
   if (field.height > 0) {
     return field.height
   }
@@ -268,7 +268,7 @@ function resolveDomFieldVisualHeight(field: NodeEngineResolvedDomNodeField): num
   }
 }
 
-function resolveDomFieldControlWidth(field: NodeEngineResolvedDomNodeField): number {
+function resolveDomFieldControlWidth(field: NodeWrightResolvedDomNodeField): number {
   const textWidth = estimateDomTextWidth(field.textValue)
   const optionWidth = Math.max(
     0,
@@ -299,7 +299,7 @@ function resolveDomFieldControlWidth(field: NodeEngineResolvedDomNodeField): num
   }
 }
 
-function resolveDomPortColumnWidth(ports: NodeEngineResolvedDomNodePort[]): number {
+function resolveDomPortColumnWidth(ports: NodeWrightResolvedDomNodePort[]): number {
   if (!ports.length) {
     return 0
   }

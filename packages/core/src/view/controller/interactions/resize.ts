@@ -2,11 +2,11 @@ import type { GraphGroup, XYPosition } from '../../../protocol/index.js'
 import type { ReadonlySignal, Signal } from '../../reactive.js'
 import { snap, type GraphRect } from '../../rendering/geometry.js'
 import type {
-  NodeEngineDomNodeResizeHandle,
-  NodeEngineDomNodeSizeConstraints,
-  NodeEngineEventSink,
-  NodeEngineGroupResizeEvent,
-  NodeEngineNodeResizeEvent,
+  NodeWrightDomNodeResizeHandle,
+  NodeWrightDomNodeSizeConstraints,
+  NodeWrightEventSink,
+  NodeWrightGroupResizeEvent,
+  NodeWrightNodeResizeEvent,
 } from '../../types/index.js'
 import type { GroupResizeState, NodeResizeState } from '../interaction-state.js'
 import type { GridSnapping } from './drag.js'
@@ -21,7 +21,7 @@ export interface ResizePreview {
   /** Bounds for dragging `handle` by a delta from `origin`, respecting constraints and snapping. */
   resolveNodeBounds: (resize: {
     nodeId: string
-    handle: NodeEngineDomNodeResizeHandle
+    handle: NodeWrightDomNodeResizeHandle
     origin: GraphRect
     deltaX: number
     deltaY: number
@@ -35,7 +35,7 @@ export function createResizePreview(options: {
   nodeResize: ReadonlySignal<NodeResizeState | null>
   groupResize: ReadonlySignal<GroupResizeState | null>
   getSnapping: () => GridSnapping
-  getNodeConstraints: (nodeId: string) => NodeEngineDomNodeSizeConstraints
+  getNodeConstraints: (nodeId: string) => NodeWrightDomNodeSizeConstraints
 }): ResizePreview {
   function resolveLength(value: number): number {
     const snapping = options.getSnapping()
@@ -86,7 +86,7 @@ export function createResizePreview(options: {
 export interface ResizeGesture {
   startNode: (
     node: GraphRect & { id: string },
-    handle: NodeEngineDomNodeResizeHandle,
+    handle: NodeWrightDomNodeResizeHandle,
     pointerStart: XYPosition,
   ) => void
   startGroup: (group: GraphGroup, pointerStart: XYPosition) => void
@@ -100,9 +100,9 @@ export function createResizeGesture(options: {
   groupResize: Signal<GroupResizeState | null>
   preview: ResizePreview
   getGroupMinimumSize: () => Size
-  emit: NodeEngineEventSink
-  buildNodeResizeEvent: (nodeId: string) => NodeEngineNodeResizeEvent
-  buildGroupResizeEvent: (groupId: string) => NodeEngineGroupResizeEvent
+  emit: NodeWrightEventSink
+  buildNodeResizeEvent: (nodeId: string) => NodeWrightNodeResizeEvent
+  buildGroupResizeEvent: (groupId: string) => NodeWrightGroupResizeEvent
   resizeNode: (nodeId: string, bounds: GraphRect) => void
   resizeGroup: (groupId: string, size: Size) => void
 }): ResizeGesture {

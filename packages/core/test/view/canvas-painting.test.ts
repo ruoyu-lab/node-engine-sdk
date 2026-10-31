@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { drawGraphCanvas } from '../../src/view/rendering/graph-canvas'
 import { drawCanvasNodes } from '../../src/view/rendering/node-canvas'
-import type { NodeEngineCanvasNodeTheme, NodeEngineRenderContext } from '@node-engine-sdk/core/view'
+import type { NodeWrightCanvasNodeTheme, NodeWrightRenderContext } from '@node-wright/core/view'
 import {
   canvasOnlyNodeTypes,
   createConnectableGraph,
@@ -55,7 +55,7 @@ function createRecordingContext(canvas: { width: number; height: number; style: 
   } satisfies RecordingContext
 }
 
-const theme: NodeEngineCanvasNodeTheme = {
+const theme: NodeWrightCanvasNodeTheme = {
   background: '#161B22',
   border: '#30363D',
   borderSelected: '#2EA043',
@@ -179,7 +179,7 @@ describe('canvas painters', () => {
         readonly: false,
         theme,
         connectionSource: port.endpoint,
-        context: {} as NodeEngineRenderContext,
+        context: {} as NodeWrightRenderContext,
       })
       return { calls: [...recording.calls], texts: [...recording.texts] }
     }
@@ -200,7 +200,7 @@ describe('canvas painters', () => {
       zoom: 1,
       readonly: false,
       theme,
-      context: {} as NodeEngineRenderContext,
+      context: {} as NodeWrightRenderContext,
     })
     expect(custom).toHaveBeenCalledWith(expect.objectContaining({ node, zoom: 1, selected: true }))
   })

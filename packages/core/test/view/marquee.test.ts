@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createMarqueeGesture } from '../../src/view/controller/interactions/marquee'
 import { signal } from '../../src/view/reactive'
-import type { SelectionState } from '@node-engine-sdk/core/view'
+import type { SelectionState } from '@node-wright/core/view'
 import { canvasOnlyNodeTypes, createGraph, mountEditor, type EditorHarness } from './editor-harness'
 
 const graph = createGraph({

@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
   GraphIndex,
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   type GraphSnapshot,
   type NodeDefinition,
 } from '../../src/protocol/index'
 
-describe('@node-engine-sdk/core/protocol GraphIndex', () => {
+describe('@node-wright/core/protocol GraphIndex', () => {
   it('looks up nodes, edges, and groups by id across all entity kinds', () => {
     const index = new GraphIndex(createGraph())
 
@@ -53,7 +53,7 @@ describe('@node-engine-sdk/core/protocol GraphIndex', () => {
 
 function createGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'a', type: 'source', x: 0, y: 0 },
       {

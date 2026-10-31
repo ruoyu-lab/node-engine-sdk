@@ -1,7 +1,4 @@
-import {
-  createEditorController,
-  NODE_ENGINE_DEFAULT_DOM_COMPONENT,
-} from '@node-engine-sdk/core/view'
+import { createEditorController, NODE_WRIGHT_DEFAULT_DOM_COMPONENT } from '@node-wright/core/view'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createGraph, mountEditor, type EditorHarness } from './editor-harness'
 
@@ -62,7 +59,7 @@ describe('DOM node layer', () => {
     })
     const [prompt, preview] = controller.getSnapshot().domLayer.nodes
 
-    expect(prompt).toMatchObject({ id: 'prompt', component: NODE_ENGINE_DEFAULT_DOM_COMPONENT })
+    expect(prompt).toMatchObject({ id: 'prompt', component: NODE_WRIGHT_DEFAULT_DOM_COMPONENT })
     expect(prompt!.props.domModel.fields.map((field) => field.key)).toEqual(['text'])
     expect(preview).toMatchObject({
       id: 'preview',

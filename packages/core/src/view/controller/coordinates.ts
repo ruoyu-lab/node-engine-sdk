@@ -2,9 +2,9 @@ import type { XYPosition } from '../../protocol/index.js'
 import { computed, type ReadonlySignal } from '../reactive.js'
 import { normalizeRect, type GraphRect } from '../rendering/geometry.js'
 import type {
-  NodeEngineBounds,
-  NodeEngineEditorHost,
-  NodeEngineStyleDeclaration,
+  NodeWrightBounds,
+  NodeWrightEditorHost,
+  NodeWrightStyleDeclaration,
   ViewportState,
 } from '../types/index.js'
 import { resolvePanViewport, type InteractionState } from './interaction-state.js'
@@ -19,17 +19,17 @@ export interface EditorCoordinates {
   screenToGraph: (point: XYPosition) => XYPosition
   graphToScreen: (point: XYPosition) => XYPosition
   clientToGraph: (point: XYPosition) => XYPosition
-  graphRectToScreenRect: (bounds: NodeEngineBounds) => NodeEngineBounds
+  graphRectToScreenRect: (bounds: NodeWrightBounds) => NodeWrightBounds
   /** Host-relative position of a pointer, mouse or wheel event. */
   getScreenPoint: (event: Pick<MouseEvent, 'clientX' | 'clientY'>) => XYPosition
   /** Screen-space CSS box of the graph rectangle spanned by two graph points. */
-  toScreenBox: (start: XYPosition, end: XYPosition) => NodeEngineStyleDeclaration
+  toScreenBox: (start: XYPosition, end: XYPosition) => NodeWrightStyleDeclaration
 }
 
 export function createEditorCoordinates(options: {
   viewport: ReadonlySignal<ViewportState>
   state: InteractionState
-  host: ReadonlySignal<NodeEngineEditorHost | null>
+  host: ReadonlySignal<NodeWrightEditorHost | null>
 }): EditorCoordinates {
   const liveViewport = computed(() => {
     const pan = options.state.pan.value
@@ -73,7 +73,7 @@ export function createEditorCoordinates(options: {
     return { x: event.clientX - rect.left, y: event.clientY - rect.top }
   }
 
-  function graphRectToScreenRect(bounds: NodeEngineBounds): NodeEngineBounds {
+  function graphRectToScreenRect(bounds: NodeWrightBounds): NodeWrightBounds {
     const topLeft = graphToScreen(bounds)
     const zoom = liveViewport.value.zoom
 

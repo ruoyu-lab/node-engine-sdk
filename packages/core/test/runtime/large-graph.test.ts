@@ -1,16 +1,13 @@
 import { describe, expect, it } from 'vitest'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
-import {
-  NodeEngineRuntime,
+  NodeWrightRuntime,
   compileGraph,
-  type NodeEngineRuntimeNodeDefinition,
+  type NodeWrightRuntimeNodeDefinition,
 } from '../../src/runtime/index'
 
-describe('@node-engine-sdk/core/runtime large graphs', () => {
+describe('@node-wright/core/runtime large graphs', () => {
   it('compiles and executes a 5,000-node dependency chain without recursive overflow', async () => {
     const size = 5_000
     const definition: SemanticNodeDefinition = {
@@ -21,12 +18,12 @@ describe('@node-engine-sdk/core/runtime large graphs', () => {
       ],
       capabilities: ['event', 'pure'],
     }
-    const runtimeDefinition: NodeEngineRuntimeNodeDefinition = {
+    const runtimeDefinition: NodeWrightRuntimeNodeDefinition = {
       type: definition.type,
       handler: ({ values }) => ({ values: { output: values.input } }),
     }
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: Array.from({ length: size }, (_, index) => ({
         id: `node-${index}`,
         type: definition.type,
@@ -54,7 +51,7 @@ describe('@node-engine-sdk/core/runtime large graphs', () => {
     expect(result.plan?.nodeOrder[0]).toBe('node-0')
     expect(result.plan?.nodeOrder[size - 1]).toBe(`node-${size - 1}`)
 
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions: [definition],
       runtimeDefinitions: [runtimeDefinition],
       debug: {

@@ -1,8 +1,8 @@
 import type {
-  NodeEngineRuntimeNodeDefinition,
-  NodeEngineRuntimeNodeHandler,
-} from '@node-engine-sdk/core/runtime'
-import { EXEC_THEN_PORT_ID } from '@node-engine-sdk/core/semantics'
+  NodeWrightRuntimeNodeDefinition,
+  NodeWrightRuntimeNodeHandler,
+} from '@node-wright/core/runtime'
+import { EXEC_THEN_PORT_ID } from '@node-wright/core/semantics'
 import { readCallTargetId } from '../params.js'
 import { FUNCTION_CALL_NODE_TYPE } from './definitions.js'
 
@@ -10,7 +10,7 @@ import { FUNCTION_CALL_NODE_TYPE } from './definitions.js'
  * Calls the function named by the `functionId` parameter. Every data input of the node is a port
  * generated from the function signature, so all input values are passed to the function.
  */
-export const functionCallRuntimeHandler: NodeEngineRuntimeNodeHandler = async ({
+export const functionCallRuntimeHandler: NodeWrightRuntimeNodeHandler = async ({
   node,
   params,
   values,
@@ -26,7 +26,7 @@ export const functionCallRuntimeHandler: NodeEngineRuntimeNodeHandler = async ({
   }
 }
 
-export const functionCallRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+export const functionCallRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
   {
     type: FUNCTION_CALL_NODE_TYPE,
     handler: functionCallRuntimeHandler,

@@ -25,7 +25,7 @@ const primitiveScenarios: PrimitiveScenarioExpectation[] = [
     title: '数据流管线',
     stats: ['5 个节点', '4 条连线', '1 个分组'],
     node: '转为字符串',
-    outputs: [['预览', '["node-engine-sdk","42"]']],
+    outputs: [['预览', '["node-wright","42"]']],
     trace: 5,
   },
   {
@@ -43,14 +43,14 @@ const primitiveScenarios: PrimitiveScenarioExpectation[] = [
     title: '函数调用链',
     stats: ['4 个节点', '3 条连线', '1 个分组'],
     node: '格式化问候',
-    outputs: [['预览', '你好，Node Engine SDK！（19 字）']],
+    outputs: [['预览', '你好，Node Wright！（15 字）']],
     trace: 6,
   },
   {
     title: '子图复用',
     stats: ['6 个节点', '5 条连线', '1 个分组'],
     node: '包装副标题',
-    outputs: [['预览', '["《Node Engine SDK》","《子图指南》"]']],
+    outputs: [['预览', '["《Node Wright》","《子图指南》"]']],
     trace: 14,
   },
 ]

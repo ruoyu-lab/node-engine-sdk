@@ -1,13 +1,13 @@
-export { NodeEngine } from './react/NodeEngine.js'
+export { NodeWright } from './react/NodeWright.js'
 export { DefaultDomNode } from './react/DefaultDomNode.js'
-export { useNodeEngineApi } from './react/node-engine-context.js'
+export { useNodeWrightApi } from './react/node-wright-context.js'
 
 export type {
-  NodeEngineBackgroundRenderProps,
-  NodeEngineDomComponent,
-  NodeEngineEventHandlerName,
-  NodeEngineEventHandlers,
-  NodeEngineHandle,
-  NodeEngineOverlayRenderProps,
-  NodeEngineProps,
+  NodeWrightBackgroundRenderProps,
+  NodeWrightDomComponent,
+  NodeWrightEventHandlerName,
+  NodeWrightEventHandlers,
+  NodeWrightHandle,
+  NodeWrightOverlayRenderProps,
+  NodeWrightProps,
 } from './types.js'

@@ -2,9 +2,9 @@ import type { GraphStore } from '../../store/index.js'
 import type { ReadonlySignal } from '../reactive.js'
 import { clamp, type GraphRect } from '../rendering/geometry.js'
 import type {
-  NodeEngineEditorHost,
-  NodeEngineFitPadding,
-  NodeEngineInsets,
+  NodeWrightEditorHost,
+  NodeWrightFitPadding,
+  NodeWrightInsets,
   SelectionState,
 } from '../types/index.js'
 import type { GeometryQueries } from './geometry-queries.js'
@@ -14,16 +14,16 @@ const DEFAULT_FIT_PADDING = 64
 
 /** Fitting, centring and zooming relative to the mounted host size. */
 export interface ViewportCommands {
-  fitGraph: (padding?: NodeEngineFitPadding) => void
-  fitNodes: (nodeIds: string[], padding?: NodeEngineFitPadding) => void
-  fitSelection: (padding?: NodeEngineFitPadding) => void
+  fitGraph: (padding?: NodeWrightFitPadding) => void
+  fitNodes: (nodeIds: string[], padding?: NodeWrightFitPadding) => void
+  fitSelection: (padding?: NodeWrightFitPadding) => void
   zoomTo: (zoom: number) => void
   centerNode: (nodeId: string) => void
   centerSelection: () => void
 }
 
 export function createViewportCommands(options: {
-  host: ReadonlySignal<NodeEngineEditorHost | null>
+  host: ReadonlySignal<NodeWrightEditorHost | null>
   viewport: ViewportModel
   geometry: GeometryQueries
   getSelection: () => SelectionState
@@ -33,7 +33,7 @@ export function createViewportCommands(options: {
   /** Fits `bounds` into the host area left inside the padding and centres it there. */
   function fitBounds(
     bounds: GraphRect | null,
-    padding: NodeEngineFitPadding,
+    padding: NodeWrightFitPadding,
     source: string,
   ): void {
     const root = options.host.peek()?.root
@@ -80,16 +80,16 @@ export function createViewportCommands(options: {
     )
   }
 
-  function fitNodes(nodeIds: string[], padding: NodeEngineFitPadding = DEFAULT_FIT_PADDING): void {
+  function fitNodes(nodeIds: string[], padding: NodeWrightFitPadding = DEFAULT_FIT_PADDING): void {
     fitBounds(options.geometry.nodesBounds(nodeIds), padding, 'fit-nodes')
   }
 
   return {
-    fitGraph(padding: NodeEngineFitPadding = DEFAULT_FIT_PADDING) {
+    fitGraph(padding: NodeWrightFitPadding = DEFAULT_FIT_PADDING) {
       fitBounds(options.geometry.graphBounds(), padding, 'fit-view')
     },
     fitNodes,
-    fitSelection(padding: NodeEngineFitPadding = DEFAULT_FIT_PADDING) {
+    fitSelection(padding: NodeWrightFitPadding = DEFAULT_FIT_PADDING) {
       const selection = options.getSelection()
       const nodeIds = selection.nodes.length
         ? selection.nodes
@@ -132,7 +132,7 @@ export function createViewportCommands(options: {
 }
 
 /** A number pads every side alike; missing sides of an object default to 0. */
-function resolveFitPadding(padding: NodeEngineFitPadding): Required<NodeEngineInsets> {
+function resolveFitPadding(padding: NodeWrightFitPadding): Required<NodeWrightInsets> {
   if (typeof padding === 'number') {
     return { top: padding, right: padding, bottom: padding, left: padding }
   }

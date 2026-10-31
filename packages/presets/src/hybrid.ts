@@ -1,5 +1,5 @@
-import { createHybridFlowPlugin } from '@node-engine-sdk/core/semantics'
-import type { HybridFlowPresetOptions, NodeEnginePreset } from './types.js'
+import { createHybridFlowPlugin } from '@node-wright/core/semantics'
+import type { HybridFlowPresetOptions, NodeWrightPreset } from './types.js'
 import {
   dataflowNodeDefinitions,
   dataflowNodeTypes,
@@ -22,7 +22,7 @@ import {
 } from './subgraphs.js'
 import { createPresetLayout } from './layout.js'
 
-export function createHybridFlowPreset(options: HybridFlowPresetOptions = {}): NodeEnginePreset {
+export function createHybridFlowPreset(options: HybridFlowPresetOptions = {}): NodeWrightPreset {
   const includeDataflowNodes = options.includeDataflowNodes !== false
   const includeExecflowNodes = options.includeExecflowNodes !== false
   const includeFunctionNodes = options.includeFunctionNodes !== false

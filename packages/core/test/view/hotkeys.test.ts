@@ -1,4 +1,4 @@
-import { createEditorController } from '@node-engine-sdk/core/view'
+import { createEditorController } from '@node-wright/core/view'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createEditorExtensions } from '../../src/view/controller/extensions'
 import { hotkeyMatches, normalizeKey } from '../../src/view/controller/hotkeys'

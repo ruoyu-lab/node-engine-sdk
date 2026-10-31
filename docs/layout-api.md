@@ -1,12 +1,12 @@
-# Layout API（`@node-engine-sdk/core/layout`）
+# Layout API（`@node-wright/core/layout`）
 
-`@node-engine-sdk/core/layout` 是可选的 headless 自动布局模块。它只依赖 `protocol`，输入 `GraphSnapshot`，输出节点与分组的位置 patch；不读 DOM、不修改 Store、不产生历史，也不负责动画或视口。
+`@node-wright/core/layout` 是可选的 headless 自动布局模块。它只依赖 `protocol`，输入 `GraphSnapshot`，输出节点与分组的位置 patch；不读 DOM、不修改 Store、不产生历史，也不负责动画或视口。
 
 ## 基础用法
 
 ```ts
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { applyGraphLayout, layoutGraph } from '@node-engine-sdk/core/layout'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { applyGraphLayout, layoutGraph } from '@node-wright/core/layout'
 
 export function autoLayout(graph: GraphSnapshot): GraphSnapshot {
   const layout = layoutGraph(graph, { direction: 'LR', rankSpacing: 320, nodeSpacing: 96 })
@@ -53,7 +53,7 @@ export function autoLayout(graph: GraphSnapshot): GraphSnapshot {
 ## 固定策略
 
 ```ts
-import { createDagLayout } from '@node-engine-sdk/core/layout'
+import { createDagLayout } from '@node-wright/core/layout'
 
 export const layoutExecFlow = createDagLayout({ direction: 'LR', edgeKinds: ['exec'] })
 ```
@@ -65,10 +65,10 @@ export const layoutExecFlow = createDagLayout({ direction: 'LR', edgeKinds: ['ex
 layout 只计算位置，何时写回、是否进入历史由编辑器层决定：
 
 ```ts
-import { applyGraphLayout, layoutGraph } from '@node-engine-sdk/core/layout'
-import type { NodeEngineApi } from '@node-engine-sdk/core/view'
+import { applyGraphLayout, layoutGraph } from '@node-wright/core/layout'
+import type { NodeWrightApi } from '@node-wright/core/view'
 
-export function layoutWithUndo(api: NodeEngineApi): void {
+export function layoutWithUndo(api: NodeWrightApi): void {
   const graph = api.graph.get()
 
   api.graph.apply(applyGraphLayout(graph, layoutGraph(graph, { edgeKinds: ['data', 'exec'] })))

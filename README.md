@@ -3,12 +3,12 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-en-dark.svg">
-    <img src="docs/assets/banner-en-light.svg" alt="Node Engine SDK: a framework-agnostic node-graph SDK with official Vue 3 and React adapters" width="100%">
+    <img src="docs/assets/banner-en-light.svg" alt="Node Wright: a framework-agnostic node-graph engine with official Vue 3 and React adapters" width="100%">
   </picture>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ruoyu-lab/node-engine-sdk/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ruoyu-lab/node-engine-sdk/ci.yml?branch=main&label=CI&style=flat" alt="CI"></a>
+  <a href="https://github.com/ruoyu-lab/node-wright/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ruoyu-lab/node-wright/ci.yml?branch=main&label=CI&style=flat" alt="CI"></a>
   <img src="https://img.shields.io/badge/version-0.1.0--beta.3-5b64e6?style=flat" alt="Version 0.1.0-beta.3">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-4b53d6?style=flat" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat&logo=typescript&logoColor=white" alt="TypeScript strict">
@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://ruoyu-lab.github.io/node-engine-sdk/"><b>Live Demo</b></a>
+  <a href="https://ruoyu-lab.github.io/node-wright/"><b>Live Demo</b></a>
   &nbsp;·&nbsp;
   <a href="docs/README.md"><b>Docs</b></a>
   &nbsp;·&nbsp;
@@ -26,9 +26,9 @@
   <a href="CHANGELOG.md"><b>Changelog</b></a>
 </p>
 
-**Node Engine SDK** is a framework-agnostic node-graph SDK with official Vue 3 and React adapters.
+**Node Wright** is a framework-agnostic node-graph engine with official Vue 3 and React adapters.
 
-`@node-engine-sdk/core` is the **low-level SDK**: graph protocol, state, semantics, runtime, layout, debugging and a framework-agnostic editor controller. `@node-engine-sdk/vue` and `@node-engine-sdk/react` are the **official adapters** that render that controller with identical behavior, and `@node-engine-sdk/presets` provides the **official preset nodes**. The same graph can be edited in the browser, or validated and executed headless in Node.js or a Worker.
+`@node-wright/core` is the **low-level core**: graph protocol, state, semantics, runtime, layout, debugging and a framework-agnostic editor controller. `@node-wright/vue` and `@node-wright/react` are the **official adapters** that render that controller with identical behavior, and `@node-wright/presets` provides the **official preset nodes**. The same graph can be edited in the browser, or validated and executed headless in Node.js or a Worker.
 
 <p align="center"><img src="docs/assets/playground-ai-image-dark.png" alt="The playground in its dark theme: the AI image workflow on a full-screen canvas, with the scenario list at the top left, the toolbar at the top, the run results and execution trace on the right and the minimap at the bottom right" width="100%"></p>
 
@@ -36,7 +36,7 @@
 
 <p align="center"><img src="docs/assets/demo-connect-run.gif" alt="Demo: drag the preview node back, connect the image URL to its input, press Run until the preview shows the generated image, then drag the visible area in the minimap to pan the canvas" width="900"></p>
 
-<p align="center"><sub>Drag a node → connect → run → see the image → navigate with the minimap. Captured from the playground that the <a href="https://ruoyu-lab.github.io/node-engine-sdk/">live demo</a> hosts (Vue build; there is also a <a href="https://ruoyu-lab.github.io/node-engine-sdk/react/">React build</a>). The playground UI is in Chinese.</sub></p>
+<p align="center"><sub>Drag a node → connect → run → see the image → navigate with the minimap. Captured from the playground that the <a href="https://ruoyu-lab.github.io/node-wright/">live demo</a> hosts (Vue build; there is also a <a href="https://ruoyu-lab.github.io/node-wright/react/">React build</a>). The playground UI is in Chinese.</sub></p>
 
 <table>
   <tr>
@@ -56,8 +56,8 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <b>🧠 Framework-agnostic core SDK</b><br>
-      <code>@node-engine-sdk/core</code> depends on no UI framework, and everything but the editor view runs without a DOM: save, validate and run graphs in the browser, Node.js or a Worker.
+      <b>🧠 Framework-agnostic core</b><br>
+      <code>@node-wright/core</code> depends on no UI framework, and everything but the editor view runs without a DOM: save, validate and run graphs in the browser, Node.js or a Worker.
     </td>
     <td width="50%" valign="top">
       <b>🧩 Official Vue 3 and React adapters</b><br>
@@ -87,7 +87,7 @@
   <tr>
     <td valign="top">
       <b>📦 Official preset nodes</b><br>
-      <code>@node-engine-sdk/presets</code>: 5 presets and 15 primitive nodes with DOM rendering config, semantic plugins, runtime definitions and layout strategies.
+      <code>@node-wright/presets</code>: 5 presets and 15 primitive nodes with DOM rendering config, semantic plugins, runtime definitions and layout strategies.
     </td>
     <td valign="top">
       <b>🧭 Auto layout</b><br>
@@ -110,14 +110,14 @@
 
 ```mermaid
 flowchart BT
-  core["<b>@node-engine-sdk/core</b> · low-level SDK<br/>protocol · store · semantics · runtime<br/>layout · debug · view"]
-  presets["<b>@node-engine-sdk/presets</b> · official presets<br/>5 presets · 15 primitive nodes"] --> core
-  vue["<b>@node-engine-sdk/vue</b><br/>official Vue 3 adapter"] --> core
-  react["<b>@node-engine-sdk/react</b><br/>official React adapter"] --> core
+  core["<b>@node-wright/core</b> · low-level core<br/>protocol · store · semantics · runtime<br/>layout · debug · view"]
+  presets["<b>@node-wright/presets</b> · official presets<br/>5 presets · 15 primitive nodes"] --> core
+  vue["<b>@node-wright/vue</b><br/>official Vue 3 adapter"] --> core
+  react["<b>@node-wright/react</b><br/>official React adapter"] --> core
   headless["Node.js / Worker / server<br/>headless validation and execution"] -.-> core
 ```
 
-All editor state and interaction (viewport, selection, dragging, connecting, clipboard, shortcuts, Canvas draw scheduling) lives in the controller of `@node-engine-sdk/core/view`; the Vue and React adapters only render its snapshots. Module dependency directions are enforced by tests. See [Architecture](docs/architecture.md) (in Chinese, like the rest of `docs/`).
+All editor state and interaction (viewport, selection, dragging, connecting, clipboard, shortcuts, Canvas draw scheduling) lives in the controller of `@node-wright/core/view`; the Vue and React adapters only render its snapshots. Module dependency directions are enforced by tests. See [Architecture](docs/architecture.md) (in Chinese, like the rest of `docs/`).
 
 ## Quick Start
 
@@ -125,9 +125,9 @@ All editor state and interaction (viewport, selection, dragging, connecting, cli
 
 ```bash
 # Vue 3
-npm install @node-engine-sdk/core @node-engine-sdk/presets @node-engine-sdk/vue vue
+npm install @node-wright/core @node-wright/presets @node-wright/vue vue
 # React
-npm install @node-engine-sdk/core @node-engine-sdk/presets @node-engine-sdk/react react react-dom
+npm install @node-wright/core @node-wright/presets @node-wright/react react react-dom
 ```
 
 Requirements: Node.js `>=20.19.0`, ESM-only / ES2022, Vue `^3.5.13`, React / React DOM `^18.3.0 || ^19.0.0`. See [support](docs/support.md).
@@ -138,21 +138,18 @@ The Vue and React examples below share one graph and preset:
 <summary><code>demo-graph.ts</code>: a data source node wired to a preview node (click to expand)</summary>
 
 ```ts
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import {
   DATA_PREVIEW_NODE_TYPE,
   DATA_SOURCE_NODE_TYPE,
   createDataflowPreset,
-} from '@node-engine-sdk/presets'
+} from '@node-wright/presets'
 
 export const preset = createDataflowPreset()
 
 export function createDemoGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'source', type: DATA_SOURCE_NODE_TYPE, x: 80, y: 120, data: { params: { value: 42 } } },
       { id: 'preview', type: DATA_PREVIEW_NODE_TYPE, x: 420, y: 120 },
@@ -178,8 +175,8 @@ export function createDemoGraph(): GraphSnapshot {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { NodeEngine } from '@node-engine-sdk/vue'
-import '@node-engine-sdk/vue/style.css'
+import { NodeWright } from '@node-wright/vue'
+import '@node-wright/vue/style.css'
 import { createDemoGraph, preset } from './demo-graph'
 
 const graph = ref(createDemoGraph())
@@ -187,7 +184,7 @@ const graph = ref(createDemoGraph())
 
 <template>
   <div style="height: 600px">
-    <NodeEngine
+    <NodeWright
       v-model:graph="graph"
       :node-definitions="preset.nodeDefinitions"
       :node-types="preset.nodeTypes"
@@ -202,8 +199,8 @@ const graph = ref(createDemoGraph())
 
 ```tsx
 import { useState } from 'react'
-import { NodeEngine } from '@node-engine-sdk/react'
-import '@node-engine-sdk/react/style.css'
+import { NodeWright } from '@node-wright/react'
+import '@node-wright/react/style.css'
 import { createDemoGraph, preset } from './demo-graph'
 
 export function Editor() {
@@ -211,7 +208,7 @@ export function Editor() {
 
   return (
     <div style={{ height: 600 }}>
-      <NodeEngine
+      <NodeWright
         graph={graph}
         onGraphChange={setGraph}
         nodeDefinitions={preset.nodeDefinitions}
@@ -224,17 +221,17 @@ export function Editor() {
 }
 ```
 
-The editor root fills `100%` of its parent, so give the parent a definite height. Keep the React preset at module level so renders do not rebuild the internal store. The component ref exposes the full [`NodeEngineApi`](docs/controller-api.md#nodeengineapi-全表); see [getting started](docs/getting-started.md), the [Vue adapter](docs/vue-adapter.md) and the [React adapter](docs/react-adapter.md).
+The editor root fills `100%` of its parent, so give the parent a definite height. Keep the React preset at module level so renders do not rebuild the internal store. The component ref exposes the full [`NodeWrightApi`](docs/controller-api.md#nodewrightapi-全表); see [getting started](docs/getting-started.md), the [Vue adapter](docs/vue-adapter.md) and the [React adapter](docs/react-adapter.md).
 
 ### Headless runtime
 
 The same graph runs in Node.js without any UI:
 
 ```ts
-import { NodeEngineRuntime } from '@node-engine-sdk/core/runtime'
+import { NodeWrightRuntime } from '@node-wright/core/runtime'
 import { createDemoGraph, preset } from './demo-graph'
 
-const runtime = new NodeEngineRuntime({
+const runtime = new NodeWrightRuntime({
   graph: createDemoGraph(), // graphs from files or APIs go through parseGraph first
   definitions: preset.nodeDefinitions,
   runtimeDefinitions: preset.runtimeDefinitions,
@@ -248,18 +245,18 @@ console.log(result.status, result.nodeStates.preview?.inputValues) // 'success' 
 
 ## Packages
 
-| Package                    | Role                   | Contents                                                                                        | Subpaths                                                                                                               |
-| -------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `@node-engine-sdk/core`    | Low-level SDK          | Protocol, state, semantics, runtime, layout, debugging and the editor controller; runs headless | `.` (protocol + store)<br>`/protocol` `/store` `/semantics` `/runtime`<br>`/layout` `/debug` `/view` `/view/style.css` |
-| `@node-engine-sdk/presets` | Official preset nodes  | 5 presets and 15 primitive nodes                                                                | `.` `/nodes/dataflow` `/nodes/execflow`<br>`/nodes/function` `/nodes/subgraph`                                         |
-| `@node-engine-sdk/vue`     | Official Vue 3 adapter | Editor component                                                                                | `.` `/style.css`                                                                                                       |
-| `@node-engine-sdk/react`   | Official React adapter | Editor component and hook                                                                       | `.` `/style.css`                                                                                                       |
+| Package                | Role                   | Contents                                                                                        | Subpaths                                                                                                               |
+| ---------------------- | ---------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `@node-wright/core`    | Low-level core         | Protocol, state, semantics, runtime, layout, debugging and the editor controller; runs headless | `.` (protocol + store)<br>`/protocol` `/store` `/semantics` `/runtime`<br>`/layout` `/debug` `/view` `/view/style.css` |
+| `@node-wright/presets` | Official preset nodes  | 5 presets and 15 primitive nodes                                                                | `.` `/nodes/dataflow` `/nodes/execflow`<br>`/nodes/function` `/nodes/subgraph`                                         |
+| `@node-wright/vue`     | Official Vue 3 adapter | Editor component                                                                                | `.` `/style.css`                                                                                                       |
+| `@node-wright/react`   | Official React adapter | Editor component and hook                                                                       | `.` `/style.css`                                                                                                       |
 
 Every subpath export is listed in [core-api.md](docs/core-api.md) and [presets-api.md](docs/presets-api.md).
 
 ## Live demo
 
-[ruoyu-lab.github.io/node-engine-sdk](https://ruoyu-lab.github.io/node-engine-sdk/) hosts this repository's playground: the Vue build at the site root and the [React build](https://ruoyu-lab.github.io/node-engine-sdk/react/) under `/react/`, with a switch at the bottom of the scenario list. It contains an AI image workflow and four primitive scenarios (data flow, exec flow, functions, subgraphs). The interface is a full-screen canvas with floating panels: scenario list, toolbar, run panel, minimap and zoom controls. It follows the system's dark or light preference and switches from the toolbar; on phones the run panel becomes a bottom drawer. The AI image scenario calls the public Pollinations image API, so it needs network access but no key; the primitive scenarios run entirely in the browser. To run it locally: `npm install && npm run dev` (React: `npm run dev:react`); see [Playground](docs/playground-demo.md).
+[ruoyu-lab.github.io/node-wright](https://ruoyu-lab.github.io/node-wright/) hosts this repository's playground: the Vue build at the site root and the [React build](https://ruoyu-lab.github.io/node-wright/react/) under `/react/`, with a switch at the bottom of the scenario list. It contains an AI image workflow and four primitive scenarios (data flow, exec flow, functions, subgraphs). The interface is a full-screen canvas with floating panels: scenario list, toolbar, run panel, minimap and zoom controls. It follows the system's dark or light preference and switches from the toolbar; on phones the run panel becomes a bottom drawer. The AI image scenario calls the public Pollinations image API, so it needs network access but no key; the primitive scenarios run entirely in the browser. To run it locally: `npm install && npm run dev` (React: `npm run dev:react`); see [Playground](docs/playground-demo.md).
 
 ## Documentation
 
@@ -272,9 +269,9 @@ Start at the [documentation index](docs/README.md). The documentation is written
 <details>
 <summary>What this release covers and what it does not</summary>
 
-- Included: the low-level SDK (strict graph protocol, semantic rules, runtime, layout, debug helpers, the framework-agnostic editor controller and `NodeEngineApi`), the official Vue 3 and React adapters, the official presets with 15 primitive nodes, and the Vue and React playgrounds.
+- Included: the low-level core (strict graph protocol, semantic rules, runtime, layout, debug helpers, the framework-agnostic editor controller and `NodeWrightApi`), the official Vue 3 and React adapters, the official presets with 15 primitive nodes, and the Vue and React playgrounds.
 - Quality gates: strict TypeScript, type-aware ESLint, Prettier, coverage thresholds, real-tarball consumer tests (including Vue / React SSR and a React 18 consumer), three-engine E2E for both playground apps, and a 5,000-node performance budget.
-- Not included yet: React 18 DOM component tests (covered by the packed consumer's type check and SSR); product features such as node search, persistence, collaboration, and entering or leaving subgraphs (no placeholder APIs); adapters for other UI frameworks (build one on `@node-engine-sdk/core/view` and the contract tests).
+- Not included yet: React 18 DOM component tests (covered by the packed consumer's type check and SSR); product features such as node search, persistence, collaboration, and entering or leaving subgraphs (no placeholder APIs); adapters for other UI frameworks (build one on `@node-wright/core/view` and the contract tests).
 
 </details>
 

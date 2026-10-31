@@ -1,4 +1,4 @@
-import { parseGraph, validateGraph, type NodeDefinition } from '@node-engine-sdk/core/protocol'
+import { parseGraph, validateGraph, type NodeDefinition } from '@node-wright/core/protocol'
 import { afterEach, describe, expect, it } from 'vitest'
 import { mountEditor, type EditorHarness } from './editor-harness'
 

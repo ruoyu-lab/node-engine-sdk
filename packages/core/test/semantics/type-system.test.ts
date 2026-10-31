@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { GraphStore } from '@node-engine-sdk/core/store'
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
+import { GraphStore } from '@node-wright/core/store'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
 import {
   createDataflowPlugin,
   isValueTypeCompatible,
@@ -11,7 +11,7 @@ import {
   type ValueTypeSchema,
 } from '../../src/semantics/index'
 
-describe('@node-engine-sdk/core/semantics capacity and value types', () => {
+describe('@node-wright/core/semantics capacity and value types', () => {
   it('uses the shared incoming-edge index for capacity diagnostics', () => {
     const definitions: SemanticNodeDefinition[] = [
       {
@@ -32,7 +32,7 @@ describe('@node-engine-sdk/core/semantics capacity and value types', () => {
     ]
     const store = new GraphStore(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [
           { id: 'a', type: 'source', x: 0, y: 0 },
           { id: 'b', type: 'source', x: 0, y: 100 },

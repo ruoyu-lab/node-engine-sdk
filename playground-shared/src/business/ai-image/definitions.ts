@@ -1,4 +1,4 @@
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 
 export const AI_PROMPT_NODE_TYPE = 'ai:prompt'
 export const AI_IMAGE_GENERATE_NODE_TYPE = 'ai:image-generate'

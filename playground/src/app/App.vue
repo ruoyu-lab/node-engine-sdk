@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, ref, shallowRef, watchEffect, type Component } from 'vue'
-import type { GraphNode, GraphSnapshot, NodeDefinition } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
+import type { GraphNode, GraphSnapshot, NodeDefinition } from '@node-wright/core/protocol'
+import type { NodeWrightRunResult } from '@node-wright/core/runtime'
 import type {
-  NodeEngineApi,
-  NodeEngineConnectionCancelEvent,
-  NodeEngineNodeStatus,
-  NodeEngineResolvePortValueContext,
+  NodeWrightApi,
+  NodeWrightConnectionCancelEvent,
+  NodeWrightNodeStatus,
+  NodeWrightResolvePortValueContext,
   SelectionState,
   ViewportState,
-} from '@node-engine-sdk/core/view'
-import { NodeEngine } from '@node-engine-sdk/vue'
+} from '@node-wright/core/view'
+import { NodeWright } from '@node-wright/vue'
 import { measureCanvasArea, type CanvasArea } from '@playground/shared/app/canvas-insets'
 import {
   applyDocumentTheme,
@@ -79,11 +79,11 @@ const initialLayout = resolveInitialShellLayout(window)
 const activeScenarioId = ref<DemoScenarioId>('ai-image')
 const activeScenario = computed(() => getDemoScenario(activeScenarioId.value))
 const graph = shallowRef<GraphSnapshot>(activeScenario.value.graph())
-const graphApi = shallowRef<NodeEngineApi | null>(null)
+const graphApi = shallowRef<NodeWrightApi | null>(null)
 const selection = shallowRef<SelectionState>(EMPTY_SELECTION)
-const runtimeResult = shallowRef<NodeEngineRunResult | null>(null)
+const runtimeResult = shallowRef<NodeWrightRunResult | null>(null)
 const runtimeEvents = shallowRef<DemoRuntimeLogEntry[]>([])
-const nodeStatus = shallowRef<Readonly<Record<string, NodeEngineNodeStatus>>>(NO_NODE_STATUS)
+const nodeStatus = shallowRef<Readonly<Record<string, NodeWrightNodeStatus>>>(NO_NODE_STATUS)
 const errorMessage = ref<string | null>(null)
 const runtimeRunning = ref(false)
 const connectionCreateMenu = shallowRef<ConnectionCreateMenu | null>(null)
@@ -116,13 +116,13 @@ const resolvePortValue = computed(() => {
   const result = runtimeResult.value
   const scenario = activeScenario.value
 
-  return (context: NodeEngineResolvePortValueContext): unknown =>
+  return (context: NodeWrightResolvePortValueContext): unknown =>
     resolveDemoPortValue(context, result, scenario)
 })
 
 watchEffect(() => applyDocumentTheme(document, themeId.value))
 
-function requireApi(): NodeEngineApi {
+function requireApi(): NodeWrightApi {
   if (!graphApi.value) {
     throw new Error('The playground editor is not mounted.')
   }
@@ -138,7 +138,7 @@ function canvasArea(): CanvasArea {
  * Each scenario mounts its own editor: it starts fitted into the area the panels leave free, and
  * the toolbar reads zoom and history from it.
  */
-function onEditorMount(api: NodeEngineApi): void {
+function onEditorMount(api: NodeWrightApi): void {
   fitGraph(api, canvasArea())
   zoom.value = api.view.get().zoom
   history.value = readHistory(api)
@@ -223,7 +223,7 @@ function onSelectionChange(nextSelection: SelectionState): void {
   selection.value = nextSelection
 }
 
-function onConnectionCancel(event: NodeEngineConnectionCancelEvent): void {
+function onConnectionCancel(event: NodeWrightConnectionCancelEvent): void {
   connectionCreateMenu.value = openConnectionCreateMenu(
     event,
     { width: window.innerWidth, height: window.innerHeight },
@@ -271,7 +271,7 @@ async function importGraph(file: File): Promise<void> {
     :data-theme="themeId"
     @pointerdown="closeConnectionCreateMenu"
   >
-    <NodeEngine
+    <NodeWright
       :key="activeScenario.id"
       ref="graphApi"
       class="app-shell__graph"

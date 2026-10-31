@@ -16,10 +16,10 @@ const runtimeMethods = [
   'getRun',
 ] as const
 
-describe('@node-engine-sdk/core/runtime API surface', () => {
+describe('@node-wright/core/runtime API surface', () => {
   it('exports the runtime, compiler, schedulers, and variable helpers, and nothing internal', () => {
     expect(Object.keys(runtime).sort()).toEqual([
-      'NodeEngineRuntime',
+      'NodeWrightRuntime',
       'compileGraph',
       'createConcurrentScheduler',
       'createRuntimeVariableApi',
@@ -28,8 +28,8 @@ describe('@node-engine-sdk/core/runtime API surface', () => {
     ])
   })
 
-  it('keeps every public NodeEngineRuntime entry point', () => {
-    const instance = new runtime.NodeEngineRuntime({})
+  it('keeps every public NodeWrightRuntime entry point', () => {
+    const instance = new runtime.NodeWrightRuntime({})
 
     for (const method of runtimeMethods) {
       expect(typeof instance[method], method).toBe('function')

@@ -1,15 +1,12 @@
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import type { NodeEngineApi, NodeEngineDomNodeProps } from '@node-engine-sdk/core/view'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightApi, NodeWrightDomNodeProps } from '@node-wright/core/view'
 import { createApp, defineComponent, h, nextTick, ref, type App } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { NodeEngine } from '../src/index'
+import { NodeWright } from '../src/index'
 
 function createGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'prompt', type: 'prompt', x: 0, y: 0, data: { params: { text: 'hello' } } },
       { id: 'canvas-only', type: 'sketch', x: 400, y: 0 },
@@ -41,12 +38,12 @@ afterEach(() => {
 })
 
 function mount(props: Record<string, unknown>) {
-  const api = ref<NodeEngineApi | null>(null)
+  const api = ref<NodeWrightApi | null>(null)
   const graph = ref(createGraph())
   const events: Array<[string, unknown[]]> = []
   const Root = defineComponent({
     setup: () => () =>
-      h(NodeEngine, {
+      h(NodeWright, {
         ref: api,
         graph: graph.value,
         'onUpdate:graph': (next: GraphSnapshot) => {
@@ -68,17 +65,17 @@ function mount(props: Record<string, unknown>) {
   return { api, graph, events, host }
 }
 
-describe('Vue NodeEngine adapter', () => {
+describe('Vue NodeWright adapter', () => {
   it('renders the controller snapshot with the default DOM node component', () => {
     const { host } = mount({ ariaLabel: 'Workflow' })
-    const root = host.querySelector('.ne-root')!
+    const root = host.querySelector('.nw-root')!
 
     expect(root.getAttribute('aria-label')).toBe('Workflow')
     expect(root.querySelectorAll('canvas')).toHaveLength(2)
-    expect(host.querySelectorAll('.ne-default-dom-node')).toHaveLength(1)
-    expect(host.querySelector('.ne-default-dom-node__title')?.textContent).toBe('Prompt')
-    expect(host.querySelector('.ne-default-dom-node__field-input')).toBeTruthy()
-    expect(host.querySelector('.ne-accessible-node')?.textContent?.trim()).toBe(
+    expect(host.querySelectorAll('.nw-default-dom-node')).toHaveLength(1)
+    expect(host.querySelector('.nw-default-dom-node__title')?.textContent).toBe('Prompt')
+    expect(host.querySelector('.nw-default-dom-node__field-input')).toBeTruthy()
+    expect(host.querySelector('.nw-accessible-node')?.textContent?.trim()).toBe(
       'Sketch (canvas-only)',
     )
   })
@@ -93,19 +90,19 @@ describe('Vue NodeEngine adapter', () => {
     expect(events.filter(([name]) => name === 'update:graph')).toHaveLength(1)
     expect(api.value!.history.canUndo()).toBe(true)
 
-    const article = host.querySelector<HTMLElement>('.ne-dom-node')!
+    const article = host.querySelector<HTMLElement>('.nw-dom-node')!
     expect(article.style.transform).toContain('translate3d(30px, 0px, 0)')
 
     api.value!.selection.nodes(['prompt'])
     await nextTick()
 
     expect(events.at(-1)?.[0]).toBe('selection-change')
-    expect(host.querySelector('.ne-default-dom-node--selected')).toBeTruthy()
+    expect(host.querySelector('.nw-default-dom-node--selected')).toBeTruthy()
   })
 
   it('edits parameters through the default node fields', async () => {
     const { api, host } = mount({})
-    const input = host.querySelector<HTMLInputElement>('.ne-default-dom-node__field-input')!
+    const input = host.querySelector<HTMLInputElement>('.nw-default-dom-node__field-input')!
 
     input.value = 'world'
     input.dispatchEvent(new Event('input', { bubbles: true }))
@@ -118,7 +115,7 @@ describe('Vue NodeEngine adapter', () => {
     const Custom = defineComponent({
       props: { node: { type: Object, required: true } },
       setup: (props) => () =>
-        h('span', { class: 'custom-node' }, (props.node as NodeEngineDomNodeProps['node']).id),
+        h('span', { class: 'custom-node' }, (props.node as NodeWrightDomNodeProps['node']).id),
     })
     const { host } = mount({
       nodeTypes: { sketch: { dom: false }, prompt: { dom: { component: 'custom' } } },
@@ -144,7 +141,7 @@ describe('Vue NodeEngine adapter', () => {
     const gridVisible = ref(true)
     const Root = defineComponent({
       setup: () => () =>
-        h(NodeEngine, { graph: createGraph(), nodeDefinitions, gridVisible: gridVisible.value }),
+        h(NodeWright, { graph: createGraph(), nodeDefinitions, gridVisible: gridVisible.value }),
     })
 
     host = document.createElement('div')
@@ -152,7 +149,7 @@ describe('Vue NodeEngine adapter', () => {
     app = createApp(Root)
     app.mount(host)
 
-    const grid = host.querySelector<HTMLCanvasElement>('.ne-grid-surface')!
+    const grid = host.querySelector<HTMLCanvasElement>('.nw-grid-surface')!
     expect(grid.style.display).toBe('')
 
     gridVisible.value = false
@@ -174,7 +171,7 @@ describe('Vue NodeEngine adapter', () => {
     const Root = defineComponent({
       setup: () => () =>
         h(
-          NodeEngine,
+          NodeWright,
           { graph: createGraph(), nodeDefinitions, gridVisible: false },
           {
             background: (props: Record<string, unknown>) => {

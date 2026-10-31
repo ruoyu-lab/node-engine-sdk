@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import type { NodeEngineApi, ViewportState } from '@node-engine-sdk/core/view'
+import type { NodeWrightApi, ViewportState } from '@node-wright/core/view'
 import { resolveCanvasInsets } from '../src/app/canvas-insets'
 import { fitGraph } from '../src/app/editor-commands'
 import { playgroundIcons } from '../src/app/icons'
 import { NO_NODE_STATUS, resolveRunNodeStatus } from '../src/app/run-result'
 import { resolveInitialShellLayout } from '../src/app/shell-layout'
 import { playgroundShortcuts } from '../src/app/shortcuts'
-import type { NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
+import type { NodeWrightRunResult } from '@node-wright/core/runtime'
 
 const shell = { left: 0, top: 0, right: 1440, bottom: 900 }
 
@@ -46,7 +46,7 @@ describe('playground shell', () => {
         get: () => viewport,
         set: (patch: Partial<ViewportState>) => (viewport = { ...viewport, ...patch }),
       },
-    } as unknown as NodeEngineApi
+    } as unknown as NodeWrightApi
     const area = { width: 390, height: 844, insets: { top: 160, right: 48, bottom: 84, left: 48 } }
 
     fitGraph(api, area)
@@ -78,7 +78,7 @@ describe('playground shell', () => {
         seed: { nodeId: 'seed', status: 'idle' },
         image: { nodeId: 'image', status: 'error' },
       },
-    } as unknown as NodeEngineRunResult
+    } as unknown as NodeWrightRunResult
 
     expect(resolveRunNodeStatus(null)).toBe(NO_NODE_STATUS)
     expect(resolveRunNodeStatus(result)).toEqual({ prompt: 'success', image: 'error' })

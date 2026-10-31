@@ -1,23 +1,23 @@
 import { describe, expect, it } from 'vitest'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   type GraphSnapshot,
-  type NodeEngineExecutionPlan,
-} from '@node-engine-sdk/core/protocol'
+  type NodeWrightExecutionPlan,
+} from '@node-wright/core/protocol'
 import {
   SUBGRAPH_INPUT_NODE_TYPE,
   SUBGRAPH_OUTPUT_NODE_TYPE,
   type SemanticNodeDefinition,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 import {
-  NodeEngineRuntime,
+  NodeWrightRuntime,
   compileGraph,
   createConcurrentScheduler,
-  type NodeEngineRuntimeEvent,
-  type NodeEngineRuntimeNodeDefinition,
+  type NodeWrightRuntimeEvent,
+  type NodeWrightRuntimeNodeDefinition,
 } from '../../src/runtime/index'
 
-describe('@node-engine-sdk/core/runtime correctness', () => {
+describe('@node-wright/core/runtime correctness', () => {
   it('shares one in-flight node evaluation across output ports and releases it after each run', async () => {
     const definitions: SemanticNodeDefinition[] = [
       {
@@ -55,7 +55,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       ],
     )
     let evaluations = 0
-    const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({ output: 'then' }) },
       {
         type: 'source',
@@ -73,7 +73,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       },
     ]
     const plan = compilePlan(graph, definitions, runtimeDefinitions, 'start')
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       scheduler: createConcurrentScheduler({ maxConcurrency: 4 }),
@@ -128,7 +128,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       createEdge('undefined', 'data', 'source', 'undefinedValue', 'sink', 'undefinedValue'),
       createEdge('null', 'data', 'source', 'nullValue', 'sink', 'nullValue'),
     ]
-    const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       {
         type: 'source',
         handler: () => ({
@@ -145,7 +145,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
     ]
     const validGraph = createGraph(nodes, baseEdges)
     const validPlan = compilePlan(validGraph, definitions, runtimeDefinitions, 'sink')
-    const runtime = new NodeEngineRuntime({ definitions, runtimeDefinitions })
+    const runtime = new NodeWrightRuntime({ definitions, runtimeDefinitions })
     const result = await runtime.run(validPlan)
 
     expect(
@@ -158,7 +158,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       ...baseEdges,
       createEdge('missing', 'data', 'source', 'missingValue', 'sink', 'missingValue'),
     ])
-    const missingPlan: NodeEngineExecutionPlan = {
+    const missingPlan: NodeWrightExecutionPlan = {
       ...validPlan,
       graph: missingGraph,
     }
@@ -196,14 +196,14 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
         createEdge('a-sink', 'data', 'a', 'output', 'sink', 'input'),
       ],
     )
-    const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'data', handler: ({ values }) => ({ values: { output: values.input } }) },
       { type: 'sink', handler: () => ({}) },
     ]
-    const runtime = new NodeEngineRuntime({ definitions, runtimeDefinitions })
-    const plan: NodeEngineExecutionPlan = {
+    const runtime = new NodeWrightRuntime({ definitions, runtimeDefinitions })
+    const plan: NodeWrightExecutionPlan = {
       id: 'manual-cycle',
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       graph,
       entryNodeId: 'sink',
       nodeOrder: ['a', 'b', 'sink'],
@@ -221,11 +221,11 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       { type: 'event', capabilities: ['event'], ports: [] },
     ]
     const graph = createGraph([{ id: 'start', type: 'event', x: 0, y: 0 }], [])
-    const validRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const validRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({}) },
     ]
     const plan = compilePlan(graph, definitions, validRuntimeDefinitions, 'start')
-    const runtime = new NodeEngineRuntime({ definitions })
+    const runtime = new NodeWrightRuntime({ definitions })
 
     const result = await runtime.run(plan)
 
@@ -239,12 +239,12 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       { type: 'event', capabilities: ['event'], ports: [] },
     ]
     const graph = createGraph([{ id: 'start', type: 'event', x: 0, y: 0 }], [])
-    const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({}) },
     ]
     const plan = compilePlan(graph, definitions, runtimeDefinitions, 'start')
-    const events: NodeEngineRuntimeEvent['type'][] = []
-    const runtime = new NodeEngineRuntime({
+    const events: NodeWrightRuntimeEvent['type'][] = []
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent(event) {
@@ -269,12 +269,12 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       { type: 'event', capabilities: ['event'], ports: [] },
     ]
     const graph = createGraph([{ id: 'start', type: 'event', x: 0, y: 0 }], [])
-    const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({}) },
     ]
     const plan = compilePlan(graph, definitions, runtimeDefinitions, 'start')
     let snapshotWasFrozen = false
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       onEvent(event) {
@@ -322,7 +322,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       ],
     )
     const stacks = new Map<string, string[]>()
-    const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({ outputs: ['left', 'right'] }) },
       {
         type: 'worker',
@@ -337,7 +337,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       },
     ]
     const plan = compilePlan(graph, definitions, runtimeDefinitions, 'start')
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       scheduler: createConcurrentScheduler({ maxConcurrency: 2 }),
@@ -382,7 +382,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       ],
       [createEdge('value', 'data', 'input', 'value', 'output', 'value')],
     )
-    const runtimeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const runtimeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       {
         type: 'event',
         handler: async ({ callFunction, callSubgraph }) => {
@@ -393,7 +393,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       },
     ]
     const plan = compilePlan(graph, definitions, runtimeDefinitions, 'start')
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions,
       functionDefinitions: [
@@ -456,7 +456,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       [createEdge('exec', 'exec', 'start', 'then', 'effect', 'exec')],
     )
     let unsafeAttempts = 0
-    const unsafeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const unsafeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({ output: 'then' }) },
       {
         type: 'effect',
@@ -467,7 +467,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       },
     ]
     const unsafePlan = compilePlan(graph, definitions, unsafeDefinitions, 'start')
-    const unsafeRuntime = new NodeEngineRuntime({
+    const unsafeRuntime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions: unsafeDefinitions,
       scheduler: createConcurrentScheduler({ retries: 2 }),
@@ -477,7 +477,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
     expect(unsafeAttempts).toBe(1)
 
     let safeAttempts = 0
-    const safeDefinitions: NodeEngineRuntimeNodeDefinition[] = [
+    const safeDefinitions: NodeWrightRuntimeNodeDefinition[] = [
       { type: 'event', handler: () => ({ output: 'then' }) },
       {
         type: 'effect',
@@ -490,7 +490,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
       },
     ]
     const safePlan = compilePlan(graph, definitions, safeDefinitions, 'start')
-    const safeRuntime = new NodeEngineRuntime({
+    const safeRuntime = new NodeWrightRuntime({
       definitions,
       runtimeDefinitions: safeDefinitions,
       scheduler: createConcurrentScheduler({ retries: 2 }),
@@ -503,7 +503,7 @@ describe('@node-engine-sdk/core/runtime correctness', () => {
 
 function createGraph(nodes: GraphSnapshot['nodes'], edges: GraphSnapshot['edges']): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes,
     edges,
     groups: [],
@@ -530,9 +530,9 @@ function createEdge(
 function compilePlan(
   graph: GraphSnapshot,
   definitions: SemanticNodeDefinition[],
-  runtimeDefinitions: NodeEngineRuntimeNodeDefinition[],
+  runtimeDefinitions: NodeWrightRuntimeNodeDefinition[],
   entryNodeId: string,
-): NodeEngineExecutionPlan {
+): NodeWrightExecutionPlan {
   const compiled = compileGraph({
     graph,
     definitions,

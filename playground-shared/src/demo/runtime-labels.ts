@@ -1,12 +1,12 @@
 import type {
-  NodeEngineRunResult,
-  NodeEngineRunStatus,
-  NodeEngineRuntimeEvent,
-  NodeEngineRuntimeTraceEntry,
-} from '@node-engine-sdk/core/runtime'
+  NodeWrightRunResult,
+  NodeWrightRunStatus,
+  NodeWrightRuntimeEvent,
+  NodeWrightRuntimeTraceEntry,
+} from '@node-wright/core/runtime'
 import type { DemoScenario, DemoScenarioOutput } from './scenarios'
 
-const RUN_STATUS_LABELS: Record<NodeEngineRunStatus, string> = {
+const RUN_STATUS_LABELS: Record<NodeWrightRunStatus, string> = {
   idle: '空闲',
   running: '运行中',
   paused: '已暂停',
@@ -16,7 +16,7 @@ const RUN_STATUS_LABELS: Record<NodeEngineRunStatus, string> = {
 }
 
 /** Run and node events the panel names; function and subgraph events keep their type. */
-const RUNTIME_EVENT_LABELS: Partial<Record<NodeEngineRuntimeEvent['type'], string>> = {
+const RUNTIME_EVENT_LABELS: Partial<Record<NodeWrightRuntimeEvent['type'], string>> = {
   'run:start': '运行开始',
   'run:pause': '运行暂停',
   'run:resume': '运行继续',
@@ -31,11 +31,11 @@ const RUNTIME_EVENT_LABELS: Partial<Record<NodeEngineRuntimeEvent['type'], strin
 }
 
 /** Run and trace statuses; a panel without a run result shows the idle status. */
-export function formatRunStatus(status: NodeEngineRunStatus | undefined): string {
+export function formatRunStatus(status: NodeWrightRunStatus | undefined): string {
   return RUN_STATUS_LABELS[status ?? 'idle']
 }
 
-export function formatRuntimeEventType(type: NodeEngineRuntimeEvent['type']): string {
+export function formatRuntimeEventType(type: NodeWrightRuntimeEvent['type']): string {
   return RUNTIME_EVENT_LABELS[type] ?? type
 }
 
@@ -61,7 +61,7 @@ export interface DemoTraceRow {
   title: string
   detail: string
   /** Status of the traced step; the panel marks each row with it. */
-  status: NodeEngineRunStatus
+  status: NodeWrightRunStatus
 }
 
 /**
@@ -70,7 +70,7 @@ export interface DemoTraceRow {
  */
 export function listRunOutputs(
   scenario: DemoScenario,
-  result: NodeEngineRunResult | null,
+  result: NodeWrightRunResult | null,
 ): DemoRunOutputRow[] {
   return scenario.outputs.map((output) => ({
     key: `${output.nodeId}:${output.portId}`,
@@ -82,7 +82,7 @@ export function listRunOutputs(
 /** Number of scenario outputs that received a value in the run. */
 export function countRunOutputs(
   scenario: DemoScenario,
-  result: NodeEngineRunResult | null,
+  result: NodeWrightRunResult | null,
 ): number {
   return scenario.outputs.filter(
     (output) => result?.nodeStates[output.nodeId]?.status === 'success',
@@ -90,7 +90,7 @@ export function countRunOutputs(
 }
 
 /** Trace entries in execution order; function and subgraph calls name the call instead of a node. */
-export function listTraceRows(result: NodeEngineRunResult | null): DemoTraceRow[] {
+export function listTraceRows(result: NodeWrightRunResult | null): DemoTraceRow[] {
   return (result?.trace ?? []).map((entry, index) => ({
     key: String(index),
     title: entry.type,
@@ -99,7 +99,7 @@ export function listTraceRows(result: NodeEngineRunResult | null): DemoTraceRow[
   }))
 }
 
-function describeRunOutput(output: DemoScenarioOutput, result: NodeEngineRunResult | null): string {
+function describeRunOutput(output: DemoScenarioOutput, result: NodeWrightRunResult | null): string {
   if (!result) {
     return '等待运行'
   }
@@ -124,7 +124,7 @@ function formatOutputValue(value: unknown): string {
   return typeof value === 'string' ? value : JSON.stringify(value)
 }
 
-function describeTraceTarget(entry: NodeEngineRuntimeTraceEntry): string {
+function describeTraceTarget(entry: NodeWrightRuntimeTraceEntry): string {
   if (entry.kind === 'function') {
     return '函数调用'
   }

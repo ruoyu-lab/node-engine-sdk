@@ -1,14 +1,11 @@
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import { StrictMode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { NodeEngine } from '../src/index'
+import { NodeWright } from '../src/index'
 import { render, type Rendered } from './harness'
 
 const graph: GraphSnapshot = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [{ id: 'sketch', type: 'sketch', x: 0, y: 0, width: 200, height: 100 }],
   edges: [],
   groups: [],
@@ -25,7 +22,7 @@ afterEach(async () => {
   vi.restoreAllMocks()
 })
 
-describe('React NodeEngine minimap', () => {
+describe('React NodeWright minimap', () => {
   it('re-attaches the minimap across a StrictMode remount and detaches it on unmount', async () => {
     const add = vi.spyOn(HTMLElement.prototype, 'addEventListener')
     const remove = vi.spyOn(HTMLElement.prototype, 'removeEventListener')
@@ -35,11 +32,11 @@ describe('React NodeEngine minimap', () => {
 
     rendered = await render(
       <StrictMode>
-        <NodeEngine graph={graph} nodeTypes={nodeTypes} minimap={{ width: 180, height: 120 }} />
+        <NodeWright graph={graph} nodeTypes={nodeTypes} minimap={{ width: 180, height: 120 }} />
       </StrictMode>,
     )
 
-    const minimap = rendered.host.querySelector<HTMLElement>('.ne-minimap')!
+    const minimap = rendered.host.querySelector<HTMLElement>('.nw-minimap')!
 
     expect(minimap.style.width).toBe('180px')
     expect(remove.mock.contexts).toContain(minimap)

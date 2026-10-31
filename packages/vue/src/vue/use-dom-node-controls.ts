@@ -2,12 +2,12 @@ import {
   createDomNodeControls,
   type DomNodeControls,
   type DomNodeControlsState,
-  type NodeEngineDomNodeProps,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightDomNodeProps,
+} from '@node-wright/core/view'
 import { onBeforeUnmount, onMounted, shallowRef, type ShallowRef } from 'vue'
 
 /** Creates the default node's interaction controls and mirrors their state into a shallow ref. */
-export function useDomNodeControls(props: NodeEngineDomNodeProps): {
+export function useDomNodeControls(props: NodeWrightDomNodeProps): {
   controls: DomNodeControls
   state: ShallowRef<DomNodeControlsState>
 } {

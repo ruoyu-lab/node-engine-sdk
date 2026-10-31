@@ -114,7 +114,7 @@ export function createConnectionRulesPlugin(
   rules: ConnectionRuleInput[],
   options: ConnectionRulesPluginOptions = {},
 ): GraphPlugin {
-  const name = options.name ?? 'node-engine:connection-rules'
+  const name = options.name ?? 'node-wright:connection-rules'
 
   return {
     name,

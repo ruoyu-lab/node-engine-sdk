@@ -4,26 +4,26 @@ const repositoryRoot = new URL('../../', import.meta.url)
 
 /** Every published workspace entry the playground apps import, resolved to its source file. */
 const workspaceSources: Record<string, string> = {
-  '@node-engine-sdk/core': 'packages/core/src/index.ts',
-  '@node-engine-sdk/core/protocol': 'packages/core/src/protocol/index.ts',
-  '@node-engine-sdk/core/store': 'packages/core/src/store/index.ts',
-  '@node-engine-sdk/core/semantics': 'packages/core/src/semantics/index.ts',
-  '@node-engine-sdk/core/runtime': 'packages/core/src/runtime/index.ts',
-  '@node-engine-sdk/core/layout': 'packages/core/src/layout/index.ts',
-  '@node-engine-sdk/core/debug': 'packages/core/src/debug/index.ts',
-  '@node-engine-sdk/core/view': 'packages/core/src/view/index.ts',
-  '@node-engine-sdk/core/view/style.css': 'packages/core/src/view/style.css',
-  '@node-engine-sdk/vue': 'packages/vue/src/index.ts',
+  '@node-wright/core': 'packages/core/src/index.ts',
+  '@node-wright/core/protocol': 'packages/core/src/protocol/index.ts',
+  '@node-wright/core/store': 'packages/core/src/store/index.ts',
+  '@node-wright/core/semantics': 'packages/core/src/semantics/index.ts',
+  '@node-wright/core/runtime': 'packages/core/src/runtime/index.ts',
+  '@node-wright/core/layout': 'packages/core/src/layout/index.ts',
+  '@node-wright/core/debug': 'packages/core/src/debug/index.ts',
+  '@node-wright/core/view': 'packages/core/src/view/index.ts',
+  '@node-wright/core/view/style.css': 'packages/core/src/view/style.css',
+  '@node-wright/vue': 'packages/vue/src/index.ts',
   // The published Vue stylesheet is the core view stylesheet bundled by the adapter build.
-  '@node-engine-sdk/vue/style.css': 'packages/core/src/view/style.css',
-  '@node-engine-sdk/react': 'packages/react/src/index.ts',
+  '@node-wright/vue/style.css': 'packages/core/src/view/style.css',
+  '@node-wright/react': 'packages/react/src/index.ts',
   // The published React stylesheet is the core view stylesheet bundled by the adapter build.
-  '@node-engine-sdk/react/style.css': 'packages/core/src/view/style.css',
-  '@node-engine-sdk/presets': 'packages/presets/src/index.ts',
-  '@node-engine-sdk/presets/nodes/dataflow': 'packages/presets/src/nodes/dataflow/index.ts',
-  '@node-engine-sdk/presets/nodes/execflow': 'packages/presets/src/nodes/execflow/index.ts',
-  '@node-engine-sdk/presets/nodes/function': 'packages/presets/src/nodes/function/index.ts',
-  '@node-engine-sdk/presets/nodes/subgraph': 'packages/presets/src/nodes/subgraph/index.ts',
+  '@node-wright/react/style.css': 'packages/core/src/view/style.css',
+  '@node-wright/presets': 'packages/presets/src/index.ts',
+  '@node-wright/presets/nodes/dataflow': 'packages/presets/src/nodes/dataflow/index.ts',
+  '@node-wright/presets/nodes/execflow': 'packages/presets/src/nodes/execflow/index.ts',
+  '@node-wright/presets/nodes/function': 'packages/presets/src/nodes/function/index.ts',
+  '@node-wright/presets/nodes/subgraph': 'packages/presets/src/nodes/subgraph/index.ts',
 }
 
 /**

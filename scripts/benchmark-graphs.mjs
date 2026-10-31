@@ -1,6 +1,6 @@
 import { performance } from 'node:perf_hooks'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   validateGraph,
 } from '../packages/core/dist/protocol/index.js'
 import { GraphStore } from '../packages/core/dist/store/index.js'
@@ -9,7 +9,7 @@ import {
   createDataflowConnectionRules,
   hasCycleForKind,
 } from '../packages/core/dist/semantics/index.js'
-import { NodeEngineRuntime, compileGraph } from '../packages/core/dist/runtime/index.js'
+import { NodeWrightRuntime, compileGraph } from '../packages/core/dist/runtime/index.js'
 
 const sizes = [100, 1_000, 5_000]
 const assertPerformance = process.argv.includes('--assert')
@@ -91,7 +91,7 @@ for (const size of sizes) {
     throw new Error(`Runtime compilation failed for ${size.toLocaleString()} nodes.`)
   }
 
-  const runtime = new NodeEngineRuntime({
+  const runtime = new NodeWrightRuntime({
     definitions: [definition],
     runtimeDefinitions: [runtimeDefinition],
     debug: {
@@ -126,7 +126,7 @@ if (assertPerformance) {
 
 function createLinearGraph(size) {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: Array.from({ length: size }, (_, index) => ({
       id: `node-${index}`,
       type: definition.type,

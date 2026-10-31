@@ -18,14 +18,14 @@ import {
   type RunSession,
 } from './run-session.js'
 import type {
-  NodeEngineRuntimePortValues,
-  NodeEngineRuntimeScheduledTask,
-  NodeEngineRuntimeScheduler,
+  NodeWrightRuntimePortValues,
+  NodeWrightRuntimeScheduledTask,
+  NodeWrightRuntimeScheduler,
 } from './types.js'
 
 export interface DataEvaluatorDependencies {
   definitions: RuntimeDefinitions
-  scheduler: NodeEngineRuntimeScheduler
+  scheduler: NodeWrightRuntimeScheduler
   recorder: RunRecorder
   handlerServices: (run: RunSession, scope: ExecutionScope, nodeId: string) => HandlerServices
 }
@@ -44,13 +44,13 @@ export class DataEvaluator {
     scope: ExecutionScope,
     node: GraphNode,
     visiting: ReadonlySet<string> = new Set(),
-  ): Promise<NodeEngineRuntimePortValues> {
+  ): Promise<NodeWrightRuntimePortValues> {
     const { definitions, scheduler } = this.dependencies
-    const values: NodeEngineRuntimePortValues = {}
+    const values: NodeWrightRuntimePortValues = {}
     const ports = definitions
       .getNodePorts(node)
       .filter((port) => port.direction === 'input' && resolvePortKind(port) === 'data')
-    const tasks = ports.map((port): NodeEngineRuntimeScheduledTask => {
+    const tasks = ports.map((port): NodeWrightRuntimeScheduledTask => {
       const edge = findIncomingDataEdge(scope.graphIndex, node.id, port.id)
       const source = edge ? scope.graphIndex.nodes.get(edge.source.nodeId) : undefined
 
@@ -85,8 +85,8 @@ export class DataEvaluator {
     scope: ExecutionScope,
     node: GraphNode,
     definition: SemanticNodeDefinition | undefined,
-    values: NodeEngineRuntimePortValues,
-  ): NodeEngineRuntimePortValues {
+    values: NodeWrightRuntimePortValues,
+  ): NodeWrightRuntimePortValues {
     return resolveNodeParameterValues(
       node,
       definition,
@@ -134,7 +134,7 @@ export class DataEvaluator {
     scope: ExecutionScope,
     node: GraphNode,
     visiting: ReadonlySet<string>,
-  ): Promise<NodeEngineRuntimePortValues> {
+  ): Promise<NodeWrightRuntimePortValues> {
     if (visiting.has(node.id)) {
       throw new Error(`Runtime data dependency cycle reached node "${node.id}".`)
     }
@@ -172,7 +172,7 @@ export class DataEvaluator {
     scope: ExecutionScope,
     node: GraphNode,
     visiting: ReadonlySet<string>,
-  ): Promise<NodeEngineRuntimePortValues> {
+  ): Promise<NodeWrightRuntimePortValues> {
     const { definitions, recorder } = this.dependencies
     assertRunnable(run, scope.signal)
     const definition = definitions.getNodeDefinition(node.type)

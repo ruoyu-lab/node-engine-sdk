@@ -1,4 +1,4 @@
-import type { NodeParameterOption } from '@node-engine-sdk/core/protocol'
+import type { NodeParameterOption } from '@node-wright/core/protocol'
 import {
   isDomFieldOptionSelected,
   isDomSelectOpen,
@@ -18,33 +18,33 @@ import {
   type DomNodeControls,
   type DomNodeControlsState,
   type DomTimeSegment,
-  type NodeEngineResolvedDomNodeField,
-  type NodeEngineResolvedDomNodeModel,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightResolvedDomNodeField,
+  type NodeWrightResolvedDomNodeModel,
+} from '@node-wright/core/view'
 import type { ReactElement } from 'react'
 import { DefaultDomNodeFieldPort } from './DefaultDomNodePort.js'
 import { toClassName } from './class-names.js'
 import { useDomEvents } from './use-dom-events.js'
 
 interface FieldProps {
-  field: NodeEngineResolvedDomNodeField
+  field: NodeWrightResolvedDomNodeField
   controls: DomNodeControls
   state: DomNodeControlsState
 }
 
 export function DefaultDomNodeFields(props: {
-  domModel: NodeEngineResolvedDomNodeModel
+  domModel: NodeWrightResolvedDomNodeModel
   controls: DomNodeControls
   state: DomNodeControlsState
 }): ReactElement {
   const { domModel, controls, state } = props
 
   return (
-    <section className="ne-default-dom-node__fields" style={resolveDomFieldsStyle(domModel)}>
+    <section className="nw-default-dom-node__fields" style={resolveDomFieldsStyle(domModel)}>
       {domModel.fields.map((field) => (
         <div
           key={field.key}
-          className={toClassName(['ne-default-dom-node__field', resolveDomFieldRowClass(field)])}
+          className={toClassName(['nw-default-dom-node__field', resolveDomFieldRowClass(field)])}
           style={resolveDomFieldRowStyle(field)}
         >
           {field.kind === 'textarea' ? (
@@ -62,7 +62,7 @@ export function DefaultDomNodeFields(props: {
 
 function FieldPortRail({ field, controls }: FieldProps): ReactElement | null {
   return field.inputPort ? (
-    <div className="ne-default-dom-node__field-port-rail">
+    <div className="nw-default-dom-node__field-port-rail">
       <DefaultDomNodeFieldPort port={field.inputPort} controls={controls} />
     </div>
   ) : null
@@ -78,13 +78,13 @@ function TextareaField(props: FieldProps): ReactElement {
   return (
     <>
       <FieldPortRail {...props} />
-      <div className="ne-default-dom-node__field-stack">
-        <span className="ne-default-dom-node__field-label ne-default-dom-node__field-label--stack">
+      <div className="nw-default-dom-node__field-stack">
+        <span className="nw-default-dom-node__field-label nw-default-dom-node__field-label--stack">
           {field.label}
         </span>
         <textarea
           ref={textareaRef}
-          className="ne-default-dom-node__field-textarea ne-default-dom-node__field-textarea--stack"
+          className="nw-default-dom-node__field-textarea nw-default-dom-node__field-textarea--stack"
           value={resolveDomFieldStringValue(field)}
           placeholder={field.placeholder}
           readOnly={field.driven}
@@ -107,34 +107,34 @@ function ImageField(props: FieldProps): ReactElement {
   return (
     <>
       <FieldPortRail {...props} />
-      <div className="ne-default-dom-node__field-stack ne-default-dom-node__field-stack--image">
-        <span className="ne-default-dom-node__field-label ne-default-dom-node__field-label--stack">
+      <div className="nw-default-dom-node__field-stack nw-default-dom-node__field-stack--image">
+        <span className="nw-default-dom-node__field-label nw-default-dom-node__field-label--stack">
           {field.label}
         </span>
         <div
           ref={frameRef}
           className={toClassName([
-            'ne-default-dom-node__field-image',
-            { 'ne-default-dom-node__field-image--contain': field.fit === 'contain' },
+            'nw-default-dom-node__field-image',
+            { 'nw-default-dom-node__field-image--contain': field.fit === 'contain' },
           ])}
           style={resolveDomFieldImageAspectStyle(field)}
         >
           {url ? (
             <img
-              className="ne-default-dom-node__field-image-img"
+              className="nw-default-dom-node__field-image-img"
               src={url}
               alt=""
               referrerPolicy="no-referrer"
               draggable={false}
             />
           ) : (
-            <div className="ne-default-dom-node__field-image-empty">
+            <div className="nw-default-dom-node__field-image-empty">
               {field.emptyHint ?? '暂无图片'}
             </div>
           )}
 
           {url && (field.downloadable || field.openable) ? (
-            <div className="ne-default-dom-node__field-image-actions">
+            <div className="nw-default-dom-node__field-image-actions">
               {field.downloadable ? (
                 <ImageAction
                   label="下载"
@@ -172,7 +172,7 @@ function ImageAction(props: {
   })
 
   return (
-    <button ref={buttonRef} type="button" className="ne-default-dom-node__field-image-action">
+    <button ref={buttonRef} type="button" className="nw-default-dom-node__field-image-action">
       {props.label}
     </button>
   )
@@ -190,19 +190,19 @@ function InlineField(props: FieldProps): ReactElement {
 
   return (
     <>
-      <div ref={labelRef} className="ne-default-dom-node__field-label-wrap">
+      <div ref={labelRef} className="nw-default-dom-node__field-label-wrap">
         {field.inputPort ? (
           <DefaultDomNodeFieldPort port={field.inputPort} controls={controls} />
         ) : (
-          <span className="ne-default-dom-node__field-port-placeholder" aria-hidden="true" />
+          <span className="nw-default-dom-node__field-port-placeholder" aria-hidden="true" />
         )}
-        <span className="ne-default-dom-node__field-label">{field.label}</span>
+        <span className="nw-default-dom-node__field-label">{field.label}</span>
       </div>
 
       <div
         ref={controlRef}
         className={toClassName([
-          'ne-default-dom-node__field-control',
+          'nw-default-dom-node__field-control',
           resolveDomFieldControlClass(field),
         ])}
       >
@@ -237,15 +237,15 @@ function RangeControl({ field, controls }: FieldProps): ReactElement {
 
   return (
     <>
-      <div className="ne-default-dom-node__field-range">
-        <span className="ne-default-dom-node__field-range-track" />
+      <div className="nw-default-dom-node__field-range">
+        <span className="nw-default-dom-node__field-range-track" />
         <span
-          className="ne-default-dom-node__field-range-fill"
+          className="nw-default-dom-node__field-range-fill"
           style={{ width: `${resolveDomFieldRangeProgress(field)}%` }}
         />
         <input
           ref={inputRef}
-          className="ne-default-dom-node__field-range-input"
+          className="nw-default-dom-node__field-range-input"
           type="range"
           value={resolveDomFieldNumberValue(field)}
           min={field.min ?? 0}
@@ -255,7 +255,7 @@ function RangeControl({ field, controls }: FieldProps): ReactElement {
           onChange={(event) => controls.rangeInput(field, event.currentTarget.value)}
         />
       </div>
-      <span className="ne-default-dom-node__field-range-value">
+      <span className="nw-default-dom-node__field-range-value">
         {resolveDomFieldDisplayValue(field)}
       </span>
     </>
@@ -264,9 +264,9 @@ function RangeControl({ field, controls }: FieldProps): ReactElement {
 
 function TimeControl(props: FieldProps): ReactElement {
   return (
-    <div className="ne-default-dom-node__field-time-group">
+    <div className="nw-default-dom-node__field-time-group">
       <TimeSegmentInput {...props} segment="hours" />
-      <span className="ne-default-dom-node__field-time-separator">:</span>
+      <span className="nw-default-dom-node__field-time-separator">:</span>
       <TimeSegmentInput {...props} segment="minutes" />
     </div>
   )
@@ -286,7 +286,7 @@ function TimeSegmentInput({
   return (
     <input
       ref={inputRef}
-      className="ne-default-dom-node__field-time-segment"
+      className="nw-default-dom-node__field-time-segment"
       type="text"
       inputMode="numeric"
       maxLength={2}
@@ -310,13 +310,13 @@ function SelectControl(props: FieldProps): ReactElement {
       <button
         ref={triggerRef}
         type="button"
-        className="ne-default-dom-node__field-select-trigger"
+        className="nw-default-dom-node__field-select-trigger"
         disabled={field.driven}
       >
-        <span className="ne-default-dom-node__field-select-label">
+        <span className="nw-default-dom-node__field-select-label">
           {resolveDomSelectedOptionLabel(field)}
         </span>
-        <span className="ne-default-dom-node__field-select-icon">
+        <span className="nw-default-dom-node__field-select-icon">
           <Chevron points="6 9 12 15 18 9" strokeWidth={2.5} />
         </span>
       </button>
@@ -333,7 +333,7 @@ function SelectMenu({ field, controls }: FieldProps): ReactElement {
   })
 
   return (
-    <div ref={menuRef} className="ne-default-dom-node__field-select-menu">
+    <div ref={menuRef} className="nw-default-dom-node__field-select-menu">
       {(field.options ?? []).map((option) => (
         <SelectOption
           key={`${field.key}-${String(option.value ?? '')}`}
@@ -347,7 +347,7 @@ function SelectMenu({ field, controls }: FieldProps): ReactElement {
 }
 
 function SelectOption(props: {
-  field: NodeEngineResolvedDomNodeField
+  field: NodeWrightResolvedDomNodeField
   option: NodeParameterOption
   controls: DomNodeControls
 }): ReactElement {
@@ -361,9 +361,9 @@ function SelectOption(props: {
       ref={optionRef}
       type="button"
       className={toClassName([
-        'ne-default-dom-node__field-select-option',
+        'nw-default-dom-node__field-select-option',
         {
-          'ne-default-dom-node__field-select-option--selected': isDomFieldOptionSelected(
+          'nw-default-dom-node__field-select-option--selected': isDomFieldOptionSelected(
             field,
             option.value,
           ),
@@ -390,25 +390,25 @@ function BooleanControl({ field, controls }: FieldProps): ReactElement {
 
   return (
     <>
-      <span className="ne-default-dom-node__field-value ne-default-dom-node__field-value--left">
+      <span className="nw-default-dom-node__field-value nw-default-dom-node__field-value--left">
         {resolveDomFieldDisplayValue(field)}
       </span>
       <label
         ref={switchRef}
         className={toClassName([
-          'ne-default-dom-node__field-switch',
-          { 'ne-default-dom-node__field-switch--on': checked },
+          'nw-default-dom-node__field-switch',
+          { 'nw-default-dom-node__field-switch--on': checked },
         ])}
       >
         <input
           ref={inputRef}
-          className="ne-default-dom-node__field-switch-input"
+          className="nw-default-dom-node__field-switch-input"
           type="checkbox"
           checked={checked}
           readOnly
           disabled={field.driven}
         />
-        <span className="ne-default-dom-node__field-switch-knob" />
+        <span className="nw-default-dom-node__field-switch-knob" />
       </label>
     </>
   )
@@ -423,7 +423,7 @@ function TextControl({ field, controls }: FieldProps): ReactElement {
   return (
     <input
       ref={inputRef}
-      className="ne-default-dom-node__field-input"
+      className="nw-default-dom-node__field-input"
       type="text"
       value={resolveDomFieldStringValue(field)}
       placeholder={field.placeholder}
@@ -445,7 +445,7 @@ function NumberControl(props: FieldProps): ReactElement {
       <NumberStep {...props} direction={-1} />
       <input
         ref={inputRef}
-        className="ne-default-dom-node__field-input ne-default-dom-node__field-input--number"
+        className="nw-default-dom-node__field-input nw-default-dom-node__field-input--number"
         type="text"
         inputMode="decimal"
         value={resolveDomNumberDraft(state, field)}
@@ -472,10 +472,10 @@ function NumberStep({
     <button
       ref={stepRef}
       type="button"
-      className="ne-default-dom-node__field-number-step"
+      className="nw-default-dom-node__field-number-step"
       disabled={field.driven}
     >
-      <span className="ne-default-dom-node__field-number-step-icon">
+      <span className="nw-default-dom-node__field-number-step-icon">
         <Chevron points={direction < 0 ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} strokeWidth={3} />
       </span>
     </button>

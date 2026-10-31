@@ -1,9 +1,9 @@
 import type { XYPosition } from '../../protocol/index.js'
 import type {
-  NodeEngineBounds,
-  NodeEngineResolvedDomNodeField,
-  NodeEngineResolvedDomNodeLayout,
-  NodeEngineResolvedDomNodeModel,
+  NodeWrightBounds,
+  NodeWrightResolvedDomNodeField,
+  NodeWrightResolvedDomNodeLayout,
+  NodeWrightResolvedDomNodeModel,
   PortSide,
 } from '../types/index.js'
 import { resolveDomNodePortTop } from './layout.js'
@@ -13,8 +13,8 @@ import { resolveDomNodePortTop } from './layout.js'
  * attach exactly where the DOM port dots are drawn. Top/bottom ports keep their canvas layout.
  */
 export function resolveDomPortAnchorPoints(
-  bounds: Pick<NodeEngineBounds, 'x' | 'y' | 'width'>,
-  model: NodeEngineResolvedDomNodeModel,
+  bounds: Pick<NodeWrightBounds, 'x' | 'y' | 'width'>,
+  model: NodeWrightResolvedDomNodeModel,
 ): Map<string, XYPosition> {
   const points = new Map<string, XYPosition>()
 
@@ -44,10 +44,10 @@ export function resolveDomPortAnchorPoints(
 }
 
 function resolveDomSidePortPoint(
-  bounds: Pick<NodeEngineBounds, 'x' | 'y' | 'width'>,
+  bounds: Pick<NodeWrightBounds, 'x' | 'y' | 'width'>,
   side: PortSide,
   index: number,
-  layout: NodeEngineResolvedDomNodeLayout,
+  layout: NodeWrightResolvedDomNodeLayout,
 ): XYPosition | null {
   if (side !== 'left' && side !== 'right') {
     return null
@@ -63,9 +63,9 @@ function resolveDomSidePortPoint(
 }
 
 function resolveDomFieldInputPortPoint(
-  bounds: Pick<NodeEngineBounds, 'x' | 'y'>,
-  field: NodeEngineResolvedDomNodeField,
-  layout: NodeEngineResolvedDomNodeLayout,
+  bounds: Pick<NodeWrightBounds, 'x' | 'y'>,
+  field: NodeWrightResolvedDomNodeField,
+  layout: NodeWrightResolvedDomNodeLayout,
 ): XYPosition {
   return {
     x: bounds.x + layout.portInset,

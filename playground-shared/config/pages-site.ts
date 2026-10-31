@@ -28,7 +28,7 @@ const appLabels: Readonly<Record<PlaygroundApp, string>> = {
 
 /**
  * Resolves the build base and the companion link of an app. `pagesBase` is the root path of the
- * GitHub Pages site, for example `/node-engine-sdk/` (the `PAGES_BASE` environment variable of the
+ * GitHub Pages site, for example `/node-wright/` (the `PAGES_BASE` environment variable of the
  * Pages workflow); without it the app is served from `/` on its own.
  */
 export function resolvePlaygroundSite(

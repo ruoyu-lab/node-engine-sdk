@@ -1,6 +1,6 @@
 import type { GraphSnapshot } from '../../protocol/index.js'
 import type { GraphStore } from '../../store/index.js'
-import type { NodeEngineDomNodeApi } from '../types/index.js'
+import type { NodeWrightDomNodeApi } from '../types/index.js'
 import type { CanvasGestures } from './canvas-gestures.js'
 import type { DomLayer } from './dom-layer.js'
 import type { EditorExtensions } from './extensions.js'
@@ -17,7 +17,7 @@ import type { ViewportCommands } from './viewport-commands.js'
  * node id is kept so components receive a stable reference.
  */
 export interface DomNodeApis {
-  get: (nodeId: string) => NodeEngineDomNodeApi
+  get: (nodeId: string) => NodeWrightDomNodeApi
   prune: (graph: GraphSnapshot) => void
 }
 
@@ -34,9 +34,9 @@ export function createDomNodeApis(options: {
   nodeEditor: NodeEditorModel
   resizePreview: ResizePreview
 }): DomNodeApis {
-  const apis = new Map<string, NodeEngineDomNodeApi>()
+  const apis = new Map<string, NodeWrightDomNodeApi>()
 
-  function create(nodeId: string): NodeEngineDomNodeApi {
+  function create(nodeId: string): NodeWrightDomNodeApi {
     const store = options.getStore
 
     return {

@@ -6,9 +6,9 @@ import { basename, join } from 'node:path'
 const root = process.cwd()
 const packagesDir = join(root, 'packages')
 const packedDir = join(root, 'packed')
-const consumersDir = await mkdtemp(join(tmpdir(), 'node-engine-consumer-'))
+const consumersDir = await mkdtemp(join(tmpdir(), 'node-wright-consumer-'))
 
-/** The lowest React major allowed by the `@node-engine-sdk/react` peer ranges. */
+/** The lowest React major allowed by the `@node-wright/react` peer ranges. */
 const react18Dependencies = {
   react: '~18.3.1',
   'react-dom': '~18.3.1',
@@ -17,9 +17,9 @@ const react18Dependencies = {
 
 /** Editor controller options under strict NodeNext resolution. */
 const coreTypedUsageSource = `
-import type { NodeEngineEditorOptions } from '@node-engine-sdk/core/view'
+import type { NodeWrightEditorOptions } from '@node-wright/core/view'
 
-const editorOptions: NodeEngineEditorOptions = {
+const editorOptions: NodeWrightEditorOptions = {
   onEvent: (name) => void name,
 }
 
@@ -28,14 +28,14 @@ void editorOptions
 
 /** Props, ref and render-prop types of the React adapter under strict NodeNext resolution. */
 const reactTypedUsageSource = `
-import type { NodeEngineHandle, NodeEngineProps } from '@node-engine-sdk/react'
+import type { NodeWrightHandle, NodeWrightProps } from '@node-wright/react'
 
-const reactProps: NodeEngineProps = {
+const reactProps: NodeWrightProps = {
   onGraphChange: (graph) => void graph.nodes,
   onSelectionChange: (selection, graph, source) => void [selection.nodes, graph.edges, source],
   renderOverlay: ({ api, contextMenuState }) => (contextMenuState ? api.graph.get().nodes.length : null),
 }
-const reactHandle: NodeEngineHandle | null = null
+const reactHandle: NodeWrightHandle | null = null
 
 void reactProps
 void reactHandle
@@ -45,8 +45,8 @@ void reactHandle
 const reactServerRenderSource = `
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import { NodeEngine } from '@node-engine-sdk/react'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import { NodeWright } from '@node-wright/react'
 
 const reported = []
 const reportError = console.error
@@ -56,18 +56,18 @@ console.error = (...args) => {
 }
 
 const html = renderToString(
-  createElement(NodeEngine, {
-    graph: { schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION, nodes: [], edges: [], groups: [], meta: {} },
+  createElement(NodeWright, {
+    graph: { schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION, nodes: [], edges: [], groups: [], meta: {} },
     ariaLabel: 'Packed editor',
   }),
 )
 
-if (!html.includes('ne-root') || !html.includes('aria-label="Packed editor"')) {
-  throw new Error('@node-engine-sdk/react did not render the NodeEngine root element.')
+if (!html.includes('nw-root') || !html.includes('aria-label="Packed editor"')) {
+  throw new Error('@node-wright/react did not render the NodeWright root element.')
 }
 
 if (reported.length) {
-  throw new Error('@node-engine-sdk/react reported errors while rendering on the server.')
+  throw new Error('@node-wright/react reported errors while rendering on the server.')
 }
 `
 
@@ -87,8 +87,7 @@ try {
   // The React adapter on React 18.
   const reactArchives = archives.filter(
     (archive) =>
-      archive.package.name === '@node-engine-sdk/core' ||
-      archive.package.name === '@node-engine-sdk/react',
+      archive.package.name === '@node-wright/core' || archive.package.name === '@node-wright/react',
   )
   const react18Dir = join(consumersDir, 'react-18')
 
@@ -206,7 +205,7 @@ async function createConsumerPackage(consumerDir, archives, externalDependencies
     ...packageDependencies,
   }
   const manifest = {
-    name: 'node-engine-packed-consumer',
+    name: 'node-wright-packed-consumer',
     private: true,
     type: 'module',
     dependencies,
@@ -288,7 +287,7 @@ async function runConsumerTypeChecks(consumerDir, packages) {
   const usages = specifiers.map((_, index) => `void packageModule${index}`).join('\n')
   const typedUsages = [
     coreTypedUsageSource,
-    packages.some((pkg) => pkg.name === '@node-engine-sdk/react') ? reactTypedUsageSource : '',
+    packages.some((pkg) => pkg.name === '@node-wright/react') ? reactTypedUsageSource : '',
   ].join('\n')
   const source = `${imports}\n\n${usages}\n${typedUsages}`
   const config = {
@@ -328,27 +327,27 @@ for (const specifier of specifiers) {
   await import(specifier)
 }
 
-const { NODE_ENGINE_GRAPH_SCHEMA_VERSION } = await import('@node-engine-sdk/core/protocol')
-const { NodeEngine } = await import('@node-engine-sdk/vue')
+const { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } = await import('@node-wright/core/protocol')
+const { NodeWright } = await import('@node-wright/vue')
 
-if (!NodeEngine) {
-  throw new Error('@node-engine-sdk/vue does not export NodeEngine.')
+if (!NodeWright) {
+  throw new Error('@node-wright/vue does not export NodeWright.')
 }
 
 const graph = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [],
   edges: [],
   groups: [],
   meta: {},
 }
 const app = createSSRApp({
-  render: () => h(NodeEngine, { graph }),
+  render: () => h(NodeWright, { graph }),
 })
 const html = await renderToString(app)
 
-if (!html.includes('ne-root')) {
-  throw new Error('@node-engine-sdk/vue did not render the NodeEngine root element.')
+if (!html.includes('nw-root')) {
+  throw new Error('@node-wright/vue did not render the NodeWright root element.')
 }
 `
 

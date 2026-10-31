@@ -1,5 +1,5 @@
-import type { GraphPlugin } from '@node-engine-sdk/core/protocol'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
+import type { GraphPlugin } from '@node-wright/core/protocol'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 
 export const DATA_SOURCE_NODE_TYPE = 'data:source'
 export const DATA_TRANSFORM_NODE_TYPE = 'data:transform'
@@ -144,7 +144,7 @@ export const dataflowNodeDefinitions: SemanticNodeDefinition[] = [
 
 export function createDataflowNodesPlugin(options: DataflowNodesOptions = {}): GraphPlugin {
   return {
-    name: '@node-engine-sdk/presets/nodes/dataflow',
+    name: '@node-wright/presets/nodes/dataflow',
     contributes: {
       nodeDefinitions: filterDataflowNodeDefinitions(options),
     },

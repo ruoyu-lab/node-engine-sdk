@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import type { GraphSnapshot, GraphStoreEvent } from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import type { GraphSnapshot, GraphStoreEvent } from '@node-wright/core/protocol'
 import { GraphStore } from '../../src/store/index'
 
 function createStore(): { store: GraphStore; events: GraphStoreEvent['type'][] } {
   const store = new GraphStore({
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [{ id: 'a', type: 'demo', x: 0, y: 0 }],
     edges: [],
     groups: [],
@@ -22,7 +22,7 @@ function nodeIds(snapshot: GraphSnapshot): string[] {
   return snapshot.nodes.map((node) => node.id)
 }
 
-describe('@node-engine-sdk/core/store transactions', () => {
+describe('@node-wright/core/store transactions', () => {
   it('commits one undoable entry with the transaction label and source', () => {
     const { store, events } = createStore()
     const commits: GraphStoreEvent[] = []

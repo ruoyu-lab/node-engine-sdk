@@ -29,9 +29,9 @@ import {
 } from '../rendering/minimap-geometry.js'
 import type { ResolvedNodeView } from '../rendering/node-layout.js'
 import type {
-  NodeEngineMinimapHost,
-  NodeEngineMinimapState,
-  NodeEngineStyleDeclaration,
+  NodeWrightMinimapHost,
+  NodeWrightMinimapState,
+  NodeWrightStyleDeclaration,
   NodeTypeRegistry,
   ViewportState,
 } from '../types/index.js'
@@ -70,8 +70,8 @@ const ARROW_DIRECTIONS: ReadonlyMap<string, XYPosition> = new Map([
  * world only moves the viewport rectangle. While the option is off nothing is computed.
  */
 export interface Minimap {
-  readonly state: ReadonlySignal<NodeEngineMinimapState | null>
-  mount: (host: NodeEngineMinimapHost) => () => void
+  readonly state: ReadonlySignal<NodeWrightMinimapState | null>
+  mount: (host: NodeWrightMinimapHost) => () => void
   /** Detaches the attached minimap, if any. */
   unmount: () => void
 }
@@ -160,7 +160,7 @@ export function createMinimap(options: {
 
     return world ? fitMinimapTransform(world, size, size.padding) : null
   }, minimapTransformEquals)
-  const viewportStyle = computed<NodeEngineStyleDeclaration | null>(() => {
+  const viewportStyle = computed<NodeWrightStyleDeclaration | null>(() => {
     const area = visibleArea.value
     const current = area ? transform.value : null
 
@@ -176,13 +176,13 @@ export function createMinimap(options: {
       height: `${round(box.height)}px`,
     }
   }, sameStyle)
-  const containerStyle = computed<NodeEngineStyleDeclaration | null>(() => {
+  const containerStyle = computed<NodeWrightStyleDeclaration | null>(() => {
     const size = settings.value
 
     return size ? { width: `${size.width}px`, height: `${size.height}px` } : null
   })
   const dragging = signal(false)
-  const state = computed<NodeEngineMinimapState | null>(() => {
+  const state = computed<NodeWrightMinimapState | null>(() => {
     const style = containerStyle.value
 
     return style ? { style, viewportStyle: viewportStyle.value, dragging: dragging.value } : null
@@ -211,11 +211,11 @@ export function createMinimap(options: {
   })
   let detach: (() => void) | null = null
 
-  function attach(host: NodeEngineMinimapHost): () => void {
+  function attach(host: NodeWrightMinimapHost): () => void {
     const view = host.canvas.ownerDocument.defaultView
 
     if (!view) {
-      throw new Error('NodeEngine minimap host must belong to a document with a window.')
+      throw new Error('NodeWright minimap host must belong to a document with a window.')
     }
 
     // Hoisted handlers below do not see the narrowing of `view`.
@@ -521,7 +521,7 @@ export function createMinimap(options: {
     state,
     mount(host) {
       if (detach) {
-        throw new Error('NodeEngine minimap is already mounted.')
+        throw new Error('NodeWright minimap is already mounted.')
       }
 
       const current = batch(() => attach(host))
@@ -623,8 +623,8 @@ function sameMinimapOptions(
 }
 
 function sameStyle(
-  left: NodeEngineStyleDeclaration | null,
-  right: NodeEngineStyleDeclaration | null,
+  left: NodeWrightStyleDeclaration | null,
+  right: NodeWrightStyleDeclaration | null,
 ): boolean {
   return left === right || (left !== null && right !== null && sameEntries(left, right))
 }

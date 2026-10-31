@@ -3,9 +3,9 @@ import type { GraphStore } from '../../store/index.js'
 import type { ReadonlySignal } from '../reactive.js'
 import { getGraphBounds, endpointKey } from '../rendering/node-layout.js'
 import type {
-  NodeEngineBounds,
-  NodeEngineCoordinateSpace,
-  NodeEnginePortAnchor,
+  NodeWrightBounds,
+  NodeWrightCoordinateSpace,
+  NodeWrightPortAnchor,
 } from '../types/index.js'
 import type { EditorCoordinates } from './coordinates.js'
 import type { EndpointStyles } from './endpoint-styles.js'
@@ -16,16 +16,16 @@ import type { NodeViews } from './node-views.js'
 
 /** Live bounds and port anchors in graph or screen space, including gesture previews. */
 export interface GeometryQueries {
-  nodeBounds: (nodeId: string, space?: NodeEngineCoordinateSpace) => NodeEngineBounds | null
-  groupBounds: (groupId: string, space?: NodeEngineCoordinateSpace) => NodeEngineBounds | null
+  nodeBounds: (nodeId: string, space?: NodeWrightCoordinateSpace) => NodeWrightBounds | null
+  groupBounds: (groupId: string, space?: NodeWrightCoordinateSpace) => NodeWrightBounds | null
   portAnchor: (
     endpoint: GraphEndpoint,
-    space?: NodeEngineCoordinateSpace,
-  ) => NodeEnginePortAnchor | null
+    space?: NodeWrightCoordinateSpace,
+  ) => NodeWrightPortAnchor | null
   /** Bounding box of the given nodes (all nodes when omitted). */
-  nodesBounds: (nodeIds?: readonly string[]) => NodeEngineBounds | null
+  nodesBounds: (nodeIds?: readonly string[]) => NodeWrightBounds | null
   /** Bounding box of every node and group. */
-  graphBounds: () => NodeEngineBounds | null
+  graphBounds: () => NodeWrightBounds | null
 }
 
 export function createGeometryQueries(options: {

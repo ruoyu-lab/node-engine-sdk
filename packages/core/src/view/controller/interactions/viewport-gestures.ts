@@ -1,8 +1,8 @@
 import type { XYPosition } from '../../../protocol/index.js'
 import type { Signal } from '../../reactive.js'
 import type {
-  NodeEngineEventSink,
-  NodeEngineViewportInteractionEvent,
+  NodeWrightEventSink,
+  NodeWrightViewportInteractionEvent,
   SelectionState,
   ViewportState,
 } from '../../types/index.js'
@@ -23,8 +23,8 @@ export interface ViewportInteraction {
 
 export function createViewportInteraction(options: {
   source: Signal<string | null>
-  emit: NodeEngineEventSink
-  buildEvent: (source: string) => NodeEngineViewportInteractionEvent
+  emit: NodeWrightEventSink
+  buildEvent: (source: string) => NodeWrightViewportInteractionEvent
 }): ViewportInteraction {
   function begin(source: string): void {
     const active = options.source.peek()

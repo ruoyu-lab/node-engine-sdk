@@ -16,7 +16,7 @@ function createRegistry() {
   return { registry, events }
 }
 
-describe('@node-engine-sdk/core/store LayeredRegistry', () => {
+describe('@node-wright/core/store LayeredRegistry', () => {
   it('shadows earlier registrations and reveals them again when the top one is removed', () => {
     const { registry, events } = createRegistry()
     const removeFirst = registry.register('demo', { type: 'demo', label: 'First' })

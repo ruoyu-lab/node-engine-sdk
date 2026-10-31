@@ -2,8 +2,8 @@ import { cloneValue, type GraphSnapshot } from '../../protocol/index.js'
 import type { GraphStore } from '../../store/index.js'
 import { computed, signal, type ReadonlySignal } from '../reactive.js'
 import type {
-  NodeEngineEventSink,
-  NodeEngineSelectionMode,
+  NodeWrightEventSink,
+  NodeWrightSelectionMode,
   SelectionState,
 } from '../types/index.js'
 
@@ -30,7 +30,7 @@ export function createSelectionModel(options: {
   initial: Partial<SelectionState> | undefined
   graph: GraphSnapshot
   getStore: () => GraphStore
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): SelectionModel {
   const selection = signal(normalizeSelection(options.initial, options.graph), selectionEquals)
   const selectedNodeIds = computed<ReadonlySet<string>>(() => new Set(selection.value.nodes))
@@ -114,7 +114,7 @@ function selectionEquals(left: SelectionState, right: SelectionState): boolean {
 export function applySelectionMode(
   current: string[],
   next: string[],
-  mode: NodeEngineSelectionMode,
+  mode: NodeWrightSelectionMode,
 ): string[] {
   if (mode === 'replace') {
     return [...next]

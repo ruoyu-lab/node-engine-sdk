@@ -1,4 +1,4 @@
-import type { NodeEngineDomNodeProps } from '@node-engine-sdk/core/view'
+import type { NodeWrightDomNodeProps } from '@node-wright/core/view'
 import { createRef, useState, type ReactElement } from 'react'
 import {
   contractNodeDefinitions,
@@ -7,10 +7,10 @@ import {
   type AdapterContractProps,
   type AdapterDriver,
 } from '../../core/test/view/adapter-contract'
-import { NodeEngine, type NodeEngineHandle } from '../src/index'
+import { NodeWright, type NodeWrightHandle } from '../src/index'
 import { render } from './harness'
 
-function ContractNode(props: NodeEngineDomNodeProps): ReactElement {
+function ContractNode(props: NodeWrightDomNodeProps): ReactElement {
   return <span className="contract-node">{props.node.id}</span>
 }
 
@@ -18,7 +18,7 @@ const domComponents = { 'contract-node': ContractNode }
 
 const reactDriver: AdapterDriver = {
   async mount(initial) {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
     const events = new Map<AdapterContractEvent, unknown[][]>()
     const record = (name: AdapterContractEvent, args: unknown[]) => {
       events.set(name, [...(events.get(name) ?? []), args])
@@ -33,7 +33,7 @@ const reactDriver: AdapterDriver = {
       setHostProps = setProps
 
       return (
-        <NodeEngine
+        <NodeWright
           ref={editor}
           {...props}
           nodeDefinitions={contractNodeDefinitions}
@@ -55,7 +55,7 @@ const reactDriver: AdapterDriver = {
       host: rendered.host,
       api: () => {
         if (!editor.current) {
-          throw new Error('The React NodeEngine ref is empty.')
+          throw new Error('The React NodeWright ref is empty.')
         }
 
         return editor.current

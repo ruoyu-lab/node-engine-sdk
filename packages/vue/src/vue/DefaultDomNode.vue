@@ -4,29 +4,29 @@ import {
   resolveDomNodeClass,
   resolveDomNodeHeaderStyle,
   resolveDomNodeStatusClass,
-  type NodeEngineDomNodeProps,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightDomNodeProps,
+} from '@node-wright/core/view'
 import DefaultDomNodeFields from './DefaultDomNodeFields.vue'
 import DefaultDomNodePort from './DefaultDomNodePort.vue'
 import DefaultDomNodeResizeHandles from './DefaultDomNodeResizeHandles.vue'
 import { useDomNodeControls } from './use-dom-node-controls'
 
-const props = defineProps<NodeEngineDomNodeProps>()
+const props = defineProps<NodeWrightDomNodeProps>()
 const { controls, state } = useDomNodeControls(props)
 </script>
 
 <template>
   <article
-    class="ne-default-dom-node"
+    class="nw-default-dom-node"
     :class="resolveDomNodeClass(props)"
     :style="resolveDomNodeAccentStyle(domModel)"
     @pointerdown="controls.nodePointerDown"
   >
-    <header class="ne-default-dom-node__header" :style="resolveDomNodeHeaderStyle(domModel)">
-      <span class="ne-default-dom-node__accent" aria-hidden="true" />
-      <div class="ne-default-dom-node__title-container">
-        <strong class="ne-default-dom-node__title">{{ domModel.title }}</strong>
-        <span v-if="domModel.subtitle" class="ne-default-dom-node__subtitle">
+    <header class="nw-default-dom-node__header" :style="resolveDomNodeHeaderStyle(domModel)">
+      <span class="nw-default-dom-node__accent" aria-hidden="true" />
+      <div class="nw-default-dom-node__title-container">
+        <strong class="nw-default-dom-node__title">{{ domModel.title }}</strong>
+        <span v-if="domModel.subtitle" class="nw-default-dom-node__subtitle">
           {{ domModel.subtitle }}
         </span>
       </div>
@@ -37,7 +37,7 @@ const { controls, state } = useDomNodeControls(props)
       />
     </header>
 
-    <div class="ne-default-dom-node__ports">
+    <div class="nw-default-dom-node__ports">
       <DefaultDomNodePort
         v-for="port in domModel.inputs"
         :key="port.key"

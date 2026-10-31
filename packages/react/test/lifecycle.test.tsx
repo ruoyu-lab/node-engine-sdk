@@ -1,24 +1,21 @@
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { createGraphStore } from '@node-engine-sdk/core/store'
-import type { NodeEngineEditorController } from '@node-engine-sdk/core/view'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import { createGraphStore } from '@node-wright/core/store'
+import type { NodeWrightEditorController } from '@node-wright/core/view'
 import { createRef, StrictMode, useState, type ReactElement } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { NodeEngine, type NodeEngineHandle, type NodeEngineProps } from '../src/index'
+import { NodeWright, type NodeWrightHandle, type NodeWrightProps } from '../src/index'
 import { render, type Rendered } from './harness'
 
 interface ControllerRecord {
-  controller: NodeEngineEditorController
+  controller: NodeWrightEditorController
   calls: string[]
   destroyed: boolean
 }
 
 const tracked = vi.hoisted(() => ({ controllers: [] as ControllerRecord[] }))
 
-vi.mock('@node-engine-sdk/core/view', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@node-engine-sdk/core/view')>()
+vi.mock('@node-wright/core/view', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@node-wright/core/view')>()
   const methods = ['update', 'mount', 'unmount', 'destroy', 'subscribe', 'getSnapshot'] as const
 
   return {
@@ -50,11 +47,11 @@ vi.mock('@node-engine-sdk/core/view', async (importOriginal) => {
   }
 })
 
-const { resolveDomNodeHeaderStyle } = await import('@node-engine-sdk/core/view')
+const { resolveDomNodeHeaderStyle } = await import('@node-wright/core/view')
 
 function createGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'prompt', type: 'prompt', x: 0, y: 0, data: { params: { text: 'a' } } },
       { id: 'second', type: 'prompt', x: 300, y: 0, data: { params: { text: 'b' } } },
@@ -99,9 +96,9 @@ function rootListenerBalance(add: { mock: { contexts: unknown[] } }, remove: typ
     remove.mock.contexts.filter((target) => target === root).length
 }
 
-describe('React NodeEngine lifecycle', () => {
+describe('React NodeWright lifecycle', () => {
   it('creates, mounts and destroys one controller per mount', async () => {
-    rendered = await render(<NodeEngine graph={createGraph()} nodeDefinitions={nodeDefinitions} />)
+    rendered = await render(<NodeWright graph={createGraph()} nodeDefinitions={nodeDefinitions} />)
 
     expect(tracked.controllers).toHaveLength(1)
     expect(tracked.controllers[0]!.calls).toContain('mount')
@@ -117,12 +114,12 @@ describe('React NodeEngine lifecycle', () => {
     const add = vi.spyOn(HTMLElement.prototype, 'addEventListener')
     const remove = vi.spyOn(HTMLElement.prototype, 'removeEventListener')
     const balance = rootListenerBalance(add, remove)
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
     const onGraphChange = vi.fn()
     const graph = createGraph()
     const element = (readonly: boolean) => (
       <StrictMode>
-        <NodeEngine
+        <NodeWright
           ref={editor}
           graph={graph}
           nodeDefinitions={nodeDefinitions}
@@ -135,14 +132,14 @@ describe('React NodeEngine lifecycle', () => {
     rendered = await render(element(false))
 
     const [first, second] = tracked.controllers
-    const root = rendered.host.querySelector('.ne-root')!
+    const root = rendered.host.querySelector('.nw-root')!
 
     expect(tracked.controllers).toHaveLength(2)
     expect(first!.calls).toEqual(['mount', 'destroy'])
     expect(second!.destroyed).toBe(false)
     expect(editor.current).toBe(second!.controller.api)
     expect(balance(root)).toBe(4)
-    expect(rendered.host.querySelectorAll('.ne-default-dom-node')).toHaveLength(2)
+    expect(rendered.host.querySelectorAll('.nw-default-dom-node')).toHaveLength(2)
 
     await rendered.rerender(element(true))
     await rendered.act(() => editor.current!.nodes.params.update('prompt', 'text', 'b'))
@@ -180,7 +177,7 @@ describe('React NodeEngine lifecycle', () => {
 
     rendered = await render(
       <StrictMode>
-        <NodeEngine store={store} onGraphChange={onGraphChange} />
+        <NodeWright store={store} onGraphChange={onGraphChange} />
       </StrictMode>,
     )
 
@@ -191,7 +188,7 @@ describe('React NodeEngine lifecycle', () => {
     })
 
     expect(onGraphChange).toHaveBeenCalledOnce()
-    expect(rendered.host.querySelector<HTMLElement>('.ne-dom-node')!.style.transform).toContain(
+    expect(rendered.host.querySelector<HTMLElement>('.nw-dom-node')!.style.transform).toContain(
       'translate3d(50px, 0px, 0)',
     )
 
@@ -205,8 +202,8 @@ describe('React NodeEngine lifecycle', () => {
   it('updates the controller only when an option changes identity', async () => {
     const graph = createGraph()
     const theme = { background: '#101010' }
-    const element = (props: Partial<NodeEngineProps>) => (
-      <NodeEngine graph={graph} nodeDefinitions={nodeDefinitions} theme={theme} {...props} />
+    const element = (props: Partial<NodeWrightProps>) => (
+      <NodeWright graph={graph} nodeDefinitions={nodeDefinitions} theme={theme} {...props} />
     )
 
     rendered = await render(element({}))
@@ -220,17 +217,17 @@ describe('React NodeEngine lifecycle', () => {
 
     await rendered.rerender(element({ theme: { background: '#202020' } }))
     expect(updates()).toBe(1)
-    expect(rendered.host.querySelector('.ne-root')!.getAttribute('style')).toContain('#202020')
+    expect(rendered.host.querySelector('.nw-root')!.getAttribute('style')).toContain('#202020')
   })
 
   it('keeps undo history while a controlled parent echoes the emitted graph', async () => {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
 
     function Parent(): ReactElement {
       const [graph, setGraph] = useState(createGraph)
 
       return (
-        <NodeEngine
+        <NodeWright
           ref={editor}
           graph={graph}
           nodeDefinitions={nodeDefinitions}
@@ -261,15 +258,15 @@ describe('React NodeEngine lifecycle', () => {
   })
 
   it('re-renders the default DOM node only when its own props change', async () => {
-    const editor = createRef<NodeEngineHandle>()
+    const editor = createRef<NodeWrightHandle>()
     const renders = () => vi.mocked(resolveDomNodeHeaderStyle).mock.calls.length
 
     rendered = await render(
-      <NodeEngine ref={editor} graph={createGraph()} nodeDefinitions={nodeDefinitions} />,
+      <NodeWright ref={editor} graph={createGraph()} nodeDefinitions={nodeDefinitions} />,
     )
 
     const initial = renders()
-    const layer = rendered.host.querySelector<HTMLElement>('.ne-dom-node-layer')!
+    const layer = rendered.host.querySelector<HTMLElement>('.nw-dom-node-layer')!
 
     expect(initial).toBe(2)
 
@@ -286,20 +283,20 @@ describe('React NodeEngine lifecycle', () => {
   it('remounts the default node controls under StrictMode', async () => {
     rendered = await render(
       <StrictMode>
-        <NodeEngine graph={createGraph()} nodeDefinitions={nodeDefinitions} />
+        <NodeWright graph={createGraph()} nodeDefinitions={nodeDefinitions} />
       </StrictMode>,
     )
 
     const trigger = rendered.host.querySelector<HTMLButtonElement>(
-      '.ne-default-dom-node__field-select-trigger',
+      '.nw-default-dom-node__field-select-trigger',
     )!
 
     await rendered.act(() => trigger.click())
-    expect(rendered.host.querySelector('.ne-default-dom-node__field-select-menu')).toBeTruthy()
+    expect(rendered.host.querySelector('.nw-default-dom-node__field-select-menu')).toBeTruthy()
 
     await rendered.act(() => {
       document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))
     })
-    expect(rendered.host.querySelector('.ne-default-dom-node__field-select-menu')).toBeNull()
+    expect(rendered.host.querySelector('.nw-default-dom-node__field-select-menu')).toBeNull()
   })
 })

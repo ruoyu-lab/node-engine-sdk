@@ -1,14 +1,14 @@
-# Presets API（`@node-engine-sdk/presets`）
+# Presets API（`@node-wright/presets`）
 
-`@node-engine-sdk/presets` 是官方预设节点包，也是标准完整组合的唯一入口：把原语节点定义、框架无关的 DOM 渲染配置（`@node-engine-sdk/core/view` 类型）、语义插件、Runtime definitions、布局策略与初始视口组合成一个对象，两个官方适配层都可以直接使用。它只依赖 `@node-engine-sdk/core`，不依赖任何 UI 框架；创建 preset 不会实例化 Runtime，只使用编辑器时没有运行时成本。
+`@node-wright/presets` 是官方预设节点包，也是标准完整组合的唯一入口：把原语节点定义、框架无关的 DOM 渲染配置（`@node-wright/core/view` 类型）、语义插件、Runtime definitions、布局策略与初始视口组合成一个对象，两个官方适配层都可以直接使用。它只依赖 `@node-wright/core`，不依赖任何 UI 框架；创建 preset 不会实例化 Runtime，只使用编辑器时没有运行时成本。
 
-| 入口                                      | 内容                                                                |
-| ----------------------------------------- | ------------------------------------------------------------------- |
-| `@node-engine-sdk/presets`                | 5 个 preset 工厂、`createPresetLayout`、各节点系统的定义与 DOM 配置 |
-| `@node-engine-sdk/presets/nodes/dataflow` | 数据流原语节点                                                      |
-| `@node-engine-sdk/presets/nodes/execflow` | 执行流原语节点                                                      |
-| `@node-engine-sdk/presets/nodes/function` | 函数调用节点                                                        |
-| `@node-engine-sdk/presets/nodes/subgraph` | 子图调用与边界节点                                                  |
+| 入口                                  | 内容                                                                |
+| ------------------------------------- | ------------------------------------------------------------------- |
+| `@node-wright/presets`                | 5 个 preset 工厂、`createPresetLayout`、各节点系统的定义与 DOM 配置 |
+| `@node-wright/presets/nodes/dataflow` | 数据流原语节点                                                      |
+| `@node-wright/presets/nodes/execflow` | 执行流原语节点                                                      |
+| `@node-wright/presets/nodes/function` | 函数调用节点                                                        |
+| `@node-wright/presets/nodes/subgraph` | 子图调用与边界节点                                                  |
 
 `nodes/*` 子路径的内容见 [node-systems.md](./node-systems.md)。
 
@@ -28,22 +28,22 @@
 
 ## 返回内容
 
-`NodeEnginePreset`：
+`NodeWrightPreset`：
 
 | 字段                                                                                                   | 是否必有 | 说明                                                              |
 | ------------------------------------------------------------------------------------------------------ | -------- | ----------------------------------------------------------------- |
 | `nodeDefinitions`                                                                                      | 是       | `SemanticNodeDefinition[]`                                        |
-| `runtimeDefinitions`                                                                                   | 是       | `NodeEngineRuntimeNodeDefinition[]`                               |
-| `layout`                                                                                               | 是       | `NodeEnginePresetLayout`：`options`、`run(graph)`、`apply(graph)` |
+| `runtimeDefinitions`                                                                                   | 是       | `NodeWrightRuntimeNodeDefinition[]`                               |
+| `layout`                                                                                               | 是       | `NodeWrightPresetLayout`：`options`、`run(graph)`、`apply(graph)` |
 | `nodeTypes`                                                                                            | 否       | DOM 渲染配置（`NodeTypeRegistry`）                                |
-| `plugins`                                                                                              | 否       | 语义插件等（`NodeEnginePlugin[]`）                                |
+| `plugins`                                                                                              | 否       | 语义插件等（`NodeWrightPlugin[]`）                                |
 | `initialViewport`                                                                                      | 否       | 初始视口                                                          |
 | `edgeDefinitions`、`edgeTypes`、`commands`、`connectionValidator`、`theme`、`behaviors`、`performance` | 否       | 标准 preset 当前不提供，保留给自定义 preset                       |
 
 字段名与编辑器选项一一对应，可以直接展开到组件 props 上：
 
 ```vue
-<NodeEngine
+<NodeWright
   v-model:graph="graph"
   :node-definitions="preset.nodeDefinitions"
   :node-types="preset.nodeTypes"
@@ -53,7 +53,7 @@
 ```
 
 ```tsx
-<NodeEngine
+<NodeWright
   graph={graph}
   onGraphChange={setGraph}
   nodeDefinitions={preset.nodeDefinitions}
@@ -66,14 +66,14 @@
 Runtime 单独接入：
 
 ```ts
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { NodeEngineRuntime } from '@node-engine-sdk/core/runtime'
-import { createHybridFlowPreset } from '@node-engine-sdk/presets'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { NodeWrightRuntime } from '@node-wright/core/runtime'
+import { createHybridFlowPreset } from '@node-wright/presets'
 
 const preset = createHybridFlowPreset()
 
-export function createRuntime(graph: GraphSnapshot): NodeEngineRuntime {
-  return new NodeEngineRuntime({
+export function createRuntime(graph: GraphSnapshot): NodeWrightRuntime {
+  return new NodeWrightRuntime({
     graph,
     definitions: preset.nodeDefinitions,
     runtimeDefinitions: preset.runtimeDefinitions,
@@ -86,18 +86,18 @@ export function createRuntime(graph: GraphSnapshot): NodeEngineRuntime {
 preset 是普通对象，业务节点直接展开合并即可：
 
 ```ts
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
-import type { NodeEngineRuntimeNodeDefinition } from '@node-engine-sdk/core/runtime'
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
-import { createDataflowPreset, type NodeEnginePreset } from '@node-engine-sdk/presets'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
+import type { NodeWrightRuntimeNodeDefinition } from '@node-wright/core/runtime'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
+import { createDataflowPreset, type NodeWrightPreset } from '@node-wright/presets'
 
 declare const businessNodeDefinitions: SemanticNodeDefinition[]
 declare const businessNodeTypes: NodeTypeRegistry
-declare const businessRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[]
+declare const businessRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[]
 
 const base = createDataflowPreset()
 
-export const preset: NodeEnginePreset = {
+export const preset: NodeWrightPreset = {
   ...base,
   nodeDefinitions: [...base.nodeDefinitions, ...businessNodeDefinitions],
   nodeTypes: { ...base.nodeTypes, ...businessNodeTypes },
@@ -110,7 +110,7 @@ playground 的 AI 图片场景以同样方式合并节点定义与节点类型�
 ## 布局
 
 ```ts
-import { createPresetLayout } from '@node-engine-sdk/presets'
+import { createPresetLayout } from '@node-wright/presets'
 
 export const layout = createPresetLayout({ direction: 'TB', edgeKinds: ['exec'], rankSpacing: 200 })
 ```
@@ -119,16 +119,16 @@ export const layout = createPresetLayout({ direction: 'TB', edgeKinds: ['exec'],
 
 ## 节点系统导出
 
-根入口同时导出各节点系统的常量、定义、DOM 配置与调用节点的端口生成函数，便于只依赖 `@node-engine-sdk/presets` 一个入口：
+根入口同时导出各节点系统的常量、定义、DOM 配置与调用节点的端口生成函数，便于只依赖 `@node-wright/presets` 一个入口：
 
 - 数据流：`DATA_SOURCE_NODE_TYPE`、`DATA_TRANSFORM_NODE_TYPE`、`DATA_MERGE_NODE_TYPE`、`DATA_PREVIEW_NODE_TYPE`、`dataflowNodeDefinitions`、`dataflowRuntimeDefinitions`、`dataflowNodeTypes`
 - 执行流：`EXEC_EVENT_NODE_TYPE`、`EXEC_SEQUENCE_NODE_TYPE`、`EXEC_BRANCH_NODE_TYPE`、`EXEC_DELAY_NODE_TYPE`、`EXEC_LOG_NODE_TYPE`、`EXEC_SET_VARIABLE_NODE_TYPE`、`EXEC_GET_VARIABLE_NODE_TYPE`、`execflowNodeDefinitions`、`execflowRuntimeDefinitions`、`execflowNodeTypes`
 - 函数：`FUNCTION_CALL_NODE_TYPE`、`functionCallNodeDefinitions`、`functionCallRuntimeDefinitions`、`functionNodeTypes`、`createFunctionCallPorts`（及其选项类型 `FunctionCallPortOptions`）
 - 子图：`SUBGRAPH_CALL_NODE_TYPE`、`SUBGRAPH_INPUT_NODE_TYPE`、`SUBGRAPH_OUTPUT_NODE_TYPE`、`subgraphNodeDefinitions`、`subgraphRuntimeDefinitions`、`subgraphNodeTypes`、`createSubgraphCallPorts`、`createSubgraphInputPorts`、`createSubgraphOutputPorts`
 - 强调色：`PRESET_NODE_ACCENTS`（`dataflow` 蓝、`execflow` 橙、`function` 紫、`subgraph` 青），四类节点的 `*NodeTypes` 都把它设为 `accent`，默认 DOM 节点的标题栏色标、小地图与无类型端口的连线颜色据此区分节点类别；每种颜色在深浅两套调色板下都保持至少 3:1 的对比度。业务节点可以在自己的 `NodeTypeDefinition` 上设置另一种 `accent`
-- 类型：`NodeEnginePreset`、`NodeEnginePresetLayout`、`DataflowPresetOptions`、`ExecflowPresetOptions`、`FunctionPresetOptions`、`SubgraphPresetOptions`、`HybridFlowPresetOptions`
+- 类型：`NodeWrightPreset`、`NodeWrightPresetLayout`、`DataflowPresetOptions`、`ExecflowPresetOptions`、`FunctionPresetOptions`、`SubgraphPresetOptions`、`HybridFlowPresetOptions`
 
-节点插件工厂（`createDataflowNodesPlugin` 等）与 runtime handler map 只在对应的 `nodes/*` 子路径中导出；端口生成函数是同一个函数，在根入口与 `nodes/function`、`nodes/subgraph` 子路径中都可导入。执行端口 id 常量（`EXEC_IN_PORT_ID`、`EXEC_THEN_PORT_ID` 等）由 `@node-engine-sdk/core/semantics` 提供，`nodes/execflow` 子路径也再导出它们，根入口不导出。
+节点插件工厂（`createDataflowNodesPlugin` 等）与 runtime handler map 只在对应的 `nodes/*` 子路径中导出；端口生成函数是同一个函数，在根入口与 `nodes/function`、`nodes/subgraph` 子路径中都可导入。执行端口 id 常量（`EXEC_IN_PORT_ID`、`EXEC_THEN_PORT_ID` 等）由 `@node-wright/core/semantics` 提供，`nodes/execflow` 子路径也再导出它们，根入口不导出。
 
 ## DOM 字段
 
@@ -149,4 +149,4 @@ export const layout = createPresetLayout({ direction: 'TB', edgeKinds: ['exec'],
 ## 边界与已知限制
 
 - presets 只组合正式定义与配置：不创建 Runtime 实例，不持有业务 handler 或应用状态，也不包含 AI、HTTP、文件等业务领域节点。
-- Runtime definition 的实现归属各节点系统；presets 只把它们组合进 `runtimeDefinitions`。具体业务函数与子图由应用通过 `NodeEngineRuntime` 的 `functionDefinitions` / `subgraphDefinitions` 注册。
+- Runtime definition 的实现归属各节点系统；presets 只把它们组合进 `runtimeDefinitions`。具体业务函数与子图由应用通过 `NodeWrightRuntime` 的 `functionDefinitions` / `subgraphDefinitions` 注册。

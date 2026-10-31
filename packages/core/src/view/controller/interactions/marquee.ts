@@ -2,9 +2,9 @@ import type { GraphSnapshot, XYPosition } from '../../../protocol/index.js'
 import type { Signal } from '../../reactive.js'
 import { normalizeRect, rectIntersects, type GraphRect } from '../../rendering/geometry.js'
 import type {
-  NodeEngineEventSink,
-  NodeEngineMarqueeGesture,
-  NodeEngineSelectionMode,
+  NodeWrightEventSink,
+  NodeWrightMarqueeGesture,
+  NodeWrightSelectionMode,
   SelectionState,
 } from '../../types/index.js'
 import type { MarqueeState } from '../interaction-state.js'
@@ -21,21 +21,21 @@ export interface MarqueeGesture {
   finish: (commit: boolean) => void
   selectInRect: (
     bounds: GraphRect,
-    config?: { mode?: NodeEngineSelectionMode; includeEdges?: boolean },
+    config?: { mode?: NodeWrightSelectionMode; includeEdges?: boolean },
   ) => GraphSnapshot
 }
 
 export function createMarqueeGesture(options: {
   marquee: Signal<MarqueeState | null>
-  getGestures: () => NodeEngineMarqueeGesture[]
-  getDefaultMode: () => NodeEngineSelectionMode
+  getGestures: () => NodeWrightMarqueeGesture[]
+  getDefaultMode: () => NodeWrightSelectionMode
   isSpacePressed: () => boolean
   getGraph: () => GraphSnapshot
   getSelection: () => SelectionState
   getNodes: () => Array<GraphRect & { id: string }>
   getEdgeIdsInRect: (bounds: GraphRect) => string[]
   setSelection: (selection: Partial<SelectionState>, source: string) => GraphSnapshot
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): MarqueeGesture {
   function emit(event: 'marquee-start' | 'marquee' | 'marquee-end', state: MarqueeState): void {
     options.emit(event, {
@@ -53,7 +53,7 @@ export function createMarqueeGesture(options: {
       .map((node) => node.id)
   }
 
-  function resolveMode(event: PointerEvent): NodeEngineSelectionMode {
+  function resolveMode(event: PointerEvent): NodeWrightSelectionMode {
     if (event.altKey) {
       return 'subtract'
     }

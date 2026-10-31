@@ -10,34 +10,34 @@ const fixturePath = fileURLToPath(new URL('./event-listener.fixture.ts', import.
  * must fail; TypeScript reports an unused `@ts-expect-error` as an error itself.
  */
 const fixture = `
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
 import type {
-  NodeEngineEditorOptions,
-  NodeEngineEventListener,
-  NodeEngineEventName,
-  NodeEngineEventSink,
+  NodeWrightEditorOptions,
+  NodeWrightEventListener,
+  NodeWrightEventName,
+  NodeWrightEventSink,
   SelectionState,
   ViewportState,
-} from '@node-engine-sdk/core/view'
+} from '@node-wright/core/view'
 
 declare const graph: GraphSnapshot
 declare const selection: SelectionState
 declare const viewport: ViewportState
 
-export const withoutParameters: NodeEngineEditorOptions = { onEvent: () => undefined }
-export const nameOnly: NodeEngineEditorOptions = {
+export const withoutParameters: NodeWrightEditorOptions = { onEvent: () => undefined }
+export const nameOnly: NodeWrightEditorOptions = {
   onEvent: (name) => {
-    const event: NodeEngineEventName = name
+    const event: NodeWrightEventName = name
     void event
   },
 }
-export const firstPayload: NodeEngineEditorOptions = { onEvent: (name, payload) => void [name, payload] }
-export const everyPayload: NodeEngineEditorOptions = { onEvent: (name, ...args) => void [name, args] }
+export const firstPayload: NodeWrightEditorOptions = { onEvent: (name, payload) => void [name, payload] }
+export const everyPayload: NodeWrightEditorOptions = { onEvent: (name, ...args) => void [name, args] }
 
-declare const sink: NodeEngineEventSink
-export const forwardingSink: NodeEngineEventListener = sink
+declare const sink: NodeWrightEventSink
+export const forwardingSink: NodeWrightEventListener = sink
 
-export const notAnyName: NodeEngineEditorOptions = {
+export const notAnyName: NodeWrightEditorOptions = {
   onEvent: (name) => {
     // @ts-expect-error the listener receives event names
     const count: number = name
@@ -45,7 +45,7 @@ export const notAnyName: NodeEngineEditorOptions = {
   },
 }
 
-declare const listener: NodeEngineEventListener
+declare const listener: NodeWrightEventListener
 listener('graph-change', graph)
 listener('selection-change', selection, graph)
 listener('selection-change', selection, graph, 'api')
@@ -70,8 +70,8 @@ function typeCheckFixture(): string[] {
     types: [],
     baseUrl: sourceRoot,
     paths: {
-      '@node-engine-sdk/core/protocol': ['protocol/index.ts'],
-      '@node-engine-sdk/core/view': ['view/index.ts'],
+      '@node-wright/core/protocol': ['protocol/index.ts'],
+      '@node-wright/core/view': ['view/index.ts'],
     },
   }
   const host = ts.createCompilerHost(options)

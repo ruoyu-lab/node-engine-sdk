@@ -1,15 +1,15 @@
 import type { GraphNode } from '../../protocol/index.js'
 import type {
-  NodeEngineDomFieldDefinition,
-  NodeEngineDomNodeDefinition,
-  NodeEngineDomNodeRenderContext,
+  NodeWrightDomFieldDefinition,
+  NodeWrightDomNodeDefinition,
+  NodeWrightDomNodeRenderContext,
   NodeTypeDefinition,
 } from '../types/index.js'
 
 /** Resolves the effective DOM description of a node from its renderer `defaults`. */
 export function resolveDomNodeDefinition(
-  context: NodeEngineDomNodeRenderContext,
-): NodeEngineDomNodeDefinition {
+  context: NodeWrightDomNodeRenderContext,
+): NodeWrightDomNodeDefinition {
   const rendererDefinition =
     context.definition?.dom && typeof context.definition.dom === 'object'
       ? context.definition.dom
@@ -29,8 +29,8 @@ export function resolveDomNodeDefinition(
 }
 
 export function resolveDomNodeTitle(
-  context: Pick<NodeEngineDomNodeRenderContext, 'node' | 'schema' | 'definition'>,
-  domDefinition?: NodeEngineDomNodeDefinition,
+  context: Pick<NodeWrightDomNodeRenderContext, 'node' | 'schema' | 'definition'>,
+  domDefinition?: NodeWrightDomNodeDefinition,
 ): string {
   return (
     readString(context.node.data?.title) ??
@@ -43,21 +43,21 @@ export function resolveDomNodeTitle(
 }
 
 export function resolveDomNodeSubtitle(
-  context: Pick<NodeEngineDomNodeRenderContext, 'node'>,
-  domDefinition?: NodeEngineDomNodeDefinition,
+  context: Pick<NodeWrightDomNodeRenderContext, 'node'>,
+  domDefinition?: NodeWrightDomNodeDefinition,
 ): string | undefined {
   return readString(context.node.data?.subtitle) ?? domDefinition?.subtitle ?? undefined
 }
 
 function resolveDomRendererDefaults(
   value:
-    | Partial<NodeEngineDomNodeDefinition>
+    | Partial<NodeWrightDomNodeDefinition>
     | ((
-        context: NodeEngineDomNodeRenderContext,
-      ) => Partial<NodeEngineDomNodeDefinition> | undefined | void)
+        context: NodeWrightDomNodeRenderContext,
+      ) => Partial<NodeWrightDomNodeDefinition> | undefined | void)
     | undefined,
-  context: NodeEngineDomNodeRenderContext,
-): Partial<NodeEngineDomNodeDefinition> | undefined {
+  context: NodeWrightDomNodeRenderContext,
+): Partial<NodeWrightDomNodeDefinition> | undefined {
   if (!value) {
     return undefined
   }
@@ -65,7 +65,7 @@ function resolveDomRendererDefaults(
   return typeof value === 'function' ? (value(context) ?? undefined) : value
 }
 
-function copyField(field: NodeEngineDomFieldDefinition): NodeEngineDomFieldDefinition {
+function copyField(field: NodeWrightDomFieldDefinition): NodeWrightDomFieldDefinition {
   return { ...field }
 }
 

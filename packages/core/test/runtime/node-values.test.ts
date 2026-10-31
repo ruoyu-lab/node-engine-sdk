@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { GraphNode, GraphPort } from '@node-engine-sdk/core/protocol'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
+import type { GraphNode, GraphPort } from '@node-wright/core/protocol'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 import {
   readStoredPortValue,
   readSubgraphInputValues,
@@ -22,7 +22,7 @@ function node(data: GraphNode['data']): GraphNode {
   return { id: 'node', type: 'demo', x: 0, y: 0, data }
 }
 
-describe('@node-engine-sdk/core/runtime node values', () => {
+describe('@node-wright/core/runtime node values', () => {
   it('reads parameters from params, data paths, and data, and lets connected inputs win', () => {
     const params = { prompt: 'stored prompt', steps: 4, extra: { nested: true } }
     const source = node({ params, settings: { seed: 7 }, mode: 'fast' })

@@ -1,23 +1,23 @@
 import { toRunResult, type RunSession } from './run-session.js'
 import { cloneRuntimeValue, deepFreeze } from './snapshot.js'
-import type { NodeEngineRuntimeEvent, NodeEngineRuntimeOptions } from './types.js'
+import type { NodeWrightRuntimeEvent, NodeWrightRuntimeOptions } from './types.js'
 
 /** A runtime event about a live run, before it is copied for listeners. */
-export type RunEvent = NodeEngineRuntimeEvent & { run: RunSession }
+export type RunEvent = NodeWrightRuntimeEvent & { run: RunSession }
 
 /**
  * Delivers runtime events to `options.onEvent`. Listeners receive frozen copies, and a listener
  * that throws is recorded in the run's `listenerErrors` instead of failing the run.
  */
 export class RuntimeEventDispatcher {
-  constructor(private readonly options: Pick<NodeEngineRuntimeOptions, 'onEvent'>) {}
+  constructor(private readonly options: Pick<NodeWrightRuntimeOptions, 'onEvent'>) {}
 
   emit(event: RunEvent): void {
     if (!this.options.onEvent) {
       return
     }
 
-    const publicEvent: NodeEngineRuntimeEvent = {
+    const publicEvent: NodeWrightRuntimeEvent = {
       type: event.type,
       run: {
         ...toRunResult(event.run),

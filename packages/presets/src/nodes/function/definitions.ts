@@ -1,15 +1,15 @@
-import type { GraphPlugin, GraphPort } from '@node-engine-sdk/core/protocol'
+import type { GraphPlugin, GraphPort } from '@node-wright/core/protocol'
 import type {
   FunctionDefinition,
   FunctionParameter,
   FunctionReturn,
   SemanticNodeDefinition,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 import {
   EXEC_IN_PORT_ID,
   EXEC_THEN_PORT_ID,
   createFunctionDefinition,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 import { compactPort } from '../ports.js'
 
 export const FUNCTION_CALL_NODE_TYPE = 'function:call'
@@ -77,7 +77,7 @@ export function createFunctionCallPorts(
 
 export function createFunctionNodesPlugin(options: FunctionNodesOptions = {}): GraphPlugin {
   return {
-    name: '@node-engine-sdk/presets/nodes/function',
+    name: '@node-wright/presets/nodes/function',
     contributes: {
       nodeDefinitions: options.includeCall === false ? [] : functionCallNodeDefinitions,
     },

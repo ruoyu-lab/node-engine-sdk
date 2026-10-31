@@ -1,4 +1,4 @@
-import type { GraphPlugin, GraphPort } from '@node-engine-sdk/core/protocol'
+import type { GraphPlugin, GraphPort } from '@node-wright/core/protocol'
 import {
   SUBGRAPH_CALL_NODE_TYPE,
   SUBGRAPH_INPUT_NODE_TYPE,
@@ -8,14 +8,14 @@ import {
   type SubgraphBoundaryPort,
   type SubgraphDefinition,
   type SemanticNodeDefinition,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 import { compactPort } from '../ports.js'
 
 export {
   SUBGRAPH_CALL_NODE_TYPE,
   SUBGRAPH_INPUT_NODE_TYPE,
   SUBGRAPH_OUTPUT_NODE_TYPE,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 
 export interface SubgraphNodesOptions {
   includeCall?: boolean
@@ -87,7 +87,7 @@ export function createSubgraphNodesPlugin(options: SubgraphNodesOptions = {}): G
   }
 
   return {
-    name: '@node-engine-sdk/presets/nodes/subgraph',
+    name: '@node-wright/presets/nodes/subgraph',
     contributes: {
       nodeDefinitions: subgraphNodeDefinitions.filter((definition) => enabled.has(definition.type)),
     },

@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import {
-  NODE_ENGINE_DEFAULT_DOM_COMPONENT,
-  type NodeEngineApi,
-  type NodeEngineEventSink,
-} from '@node-engine-sdk/core/view'
+  NODE_WRIGHT_DEFAULT_DOM_COMPONENT,
+  type NodeWrightApi,
+  type NodeWrightEventSink,
+} from '@node-wright/core/view'
 import { ref, type Component } from 'vue'
-import type { NodeEngineEmitMap, NodeEngineProps } from '../types'
+import type { NodeWrightEmitMap, NodeWrightProps } from '../types'
 import DefaultDomNode from './DefaultDomNode.vue'
-import NodeEngineMinimap from './NodeEngineMinimap.vue'
-import { useNodeEngineEditor } from './use-node-engine-editor'
+import NodeWrightMinimap from './NodeWrightMinimap.vue'
+import { useNodeWrightEditor } from './use-node-wright-editor'
 
 defineOptions({
-  name: 'NodeEngine',
+  name: 'NodeWright',
 })
 
-const props = withDefaults(defineProps<NodeEngineProps>(), {
+const props = withDefaults(defineProps<NodeWrightProps>(), {
   ariaLabel: 'Node graph editor',
   readonly: undefined,
   gridVisible: undefined,
@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<NodeEngineProps>(), {
   minimap: undefined,
 })
 
-const emit = defineEmits<NodeEngineEmitMap>()
+const emit = defineEmits<NodeWrightEmitMap>()
 
 const rootRef = ref<HTMLElement | null>(null)
 const gridCanvasRef = ref<HTMLCanvasElement | null>(null)
@@ -32,11 +32,11 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 
 /** Vue emits graph changes as `update:graph`; every other editor event keeps its name. */
 const emitEvent = emit as (event: string, ...args: unknown[]) => void
-const forwardEvent: NodeEngineEventSink = (event, ...args) => {
+const forwardEvent: NodeWrightEventSink = (event, ...args) => {
   emitEvent(event === 'graph-change' ? 'update:graph' : event, ...args)
 }
 
-const { controller, view } = useNodeEngineEditor(props, forwardEvent, {
+const { controller, view } = useNodeWrightEditor(props, forwardEvent, {
   root: rootRef,
   canvas: canvasRef,
   gridCanvas: gridCanvasRef,
@@ -44,26 +44,26 @@ const { controller, view } = useNodeEngineEditor(props, forwardEvent, {
 const api = controller.api
 
 function resolveDomComponent(key: string): Component {
-  if (key === NODE_ENGINE_DEFAULT_DOM_COMPONENT) {
+  if (key === NODE_WRIGHT_DEFAULT_DOM_COMPONENT) {
     return DefaultDomNode
   }
 
   const component = props.domComponents?.[key]
 
   if (!component) {
-    throw new Error(`NodeEngine has no DOM node component registered as "${key}".`)
+    throw new Error(`NodeWright has no DOM node component registered as "${key}".`)
   }
 
   return component
 }
 
-defineExpose<NodeEngineApi>(api)
+defineExpose<NodeWrightApi>(api)
 </script>
 
 <template>
   <div
     ref="rootRef"
-    class="ne-root"
+    class="nw-root"
     :data-color-scheme="view.colorScheme"
     :style="view.rootStyle"
     role="application"
@@ -73,12 +73,12 @@ defineExpose<NodeEngineApi>(api)
     <canvas
       v-show="view.gridState.visible"
       ref="gridCanvasRef"
-      class="ne-grid-surface"
+      class="nw-grid-surface"
       aria-hidden="true"
     />
     <canvas
       ref="canvasRef"
-      class="ne-canvas-surface"
+      class="nw-canvas-surface"
       :style="{ cursor: view.canvasCursor }"
       aria-hidden="true"
     />
@@ -97,14 +97,14 @@ defineExpose<NodeEngineApi>(api)
 
     <div
       v-if="view.domLayer.nodes.length"
-      class="ne-dom-node-layer"
-      :class="{ 'ne-dom-node-layer--composited': view.domLayer.composited }"
+      class="nw-dom-node-layer"
+      :class="{ 'nw-dom-node-layer--composited': view.domLayer.composited }"
       :style="view.domLayer.style"
     >
       <div
         v-for="entry in view.domLayer.nodes"
         :key="entry.id"
-        class="ne-dom-node"
+        class="nw-dom-node"
         :class="entry.className"
         :style="entry.style"
       >
@@ -112,10 +112,10 @@ defineExpose<NodeEngineApi>(api)
       </div>
     </div>
 
-    <ul v-if="view.accessibleNodes.length" class="ne-accessible-nodes" aria-label="Canvas nodes">
+    <ul v-if="view.accessibleNodes.length" class="nw-accessible-nodes" aria-label="Canvas nodes">
       <li v-for="node in view.accessibleNodes" :key="node.id">
         <button
-          class="ne-accessible-node"
+          class="nw-accessible-node"
           type="button"
           :aria-pressed="node.selected"
           @click="controller.selectAccessibleNode(node.id)"
@@ -125,11 +125,11 @@ defineExpose<NodeEngineApi>(api)
       </li>
     </ul>
 
-    <div v-if="view.marqueeStyle" class="ne-marquee" :style="view.marqueeStyle" />
-    <div v-if="view.performance.visible && view.performance.sample" class="ne-performance">
+    <div v-if="view.marqueeStyle" class="nw-marquee" :style="view.marqueeStyle" />
+    <div v-if="view.performance.visible && view.performance.sample" class="nw-performance">
       <button
         v-if="view.performance.dismissible"
-        class="ne-performance__close"
+        class="nw-performance__close"
         type="button"
         aria-label="Close performance monitor"
         @click="controller.hidePerformanceOverlay()"
@@ -151,7 +151,7 @@ defineExpose<NodeEngineApi>(api)
       </div>
     </div>
 
-    <NodeEngineMinimap v-if="view.minimap" :controller="controller" :state="view.minimap" />
+    <NodeWrightMinimap v-if="view.minimap" :controller="controller" :state="view.minimap" />
 
     <slot
       name="overlay"

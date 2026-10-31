@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { NodeEngineDomNodeProps } from '@node-engine-sdk/core/view'
-import { DefaultDomNode } from '@node-engine-sdk/vue'
+import type { NodeWrightDomNodeProps } from '@node-wright/core/view'
+import { DefaultDomNode } from '@node-wright/vue'
 import { summarizeAiImageResult } from '@playground/shared/business/ai-image'
 
-const props = defineProps<NodeEngineDomNodeProps>()
+const props = defineProps<NodeWrightDomNodeProps>()
 const summary = computed(() => summarizeAiImageResult(props.node))
 </script>
 

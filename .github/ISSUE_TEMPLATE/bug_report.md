@@ -19,7 +19,7 @@ labels: bug
 
 ## 环境
 
-- 包与版本：<!-- 例如 @node-engine-sdk/vue 0.1.0-beta.3 -->
+- 包与版本：<!-- 例如 @node-wright/vue 0.1.0-beta.3 -->
 - 框架：<!-- Vue 3.5 / React 19 / 无界面（Node.js） -->
 - 浏览器或 Node.js 版本：
 - 操作系统：

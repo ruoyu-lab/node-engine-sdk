@@ -1,6 +1,6 @@
 name: Pages
 
-# Publishes the Node Engine SDK playground: the Vue app at the site root and the React app under /react/.
+# Publishes the Node Wright playground: the Vue app at the site root and the React app under /react/.
 on:
   push:
     branches: [main]
@@ -30,7 +30,7 @@ jobs:
       - run: npm ci
       - id: pages
         uses: actions/configure-pages@v5
-      # PAGES_BASE is the site root path (for example /node-engine-sdk/); each playground config
+      # PAGES_BASE is the site root path (for example /node-wright/); each playground config
       # derives its own base and the link to the other app from it.
       - run: npm run build
         env:

@@ -1,14 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import { GraphState } from '../../src/store/graph-state'
 import { GraphHistory } from '../../src/store/history'
 
 function graphWith(...nodeIds: string[]): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: nodeIds.map((id, index) => ({ id, type: 'demo', x: index * 100, y: 0 })),
     edges: [],
     groups: [],
@@ -24,7 +21,7 @@ function commit(history: GraphHistory, state: GraphState, id: string, ...ids: st
   history.commit(state.current, graphWith(...ids), { id, label: id, diagnostics: [] })
 }
 
-describe('@node-engine-sdk/core/store GraphHistory', () => {
+describe('@node-wright/core/store GraphHistory', () => {
   it('moves the committed graph through commit, undo, and redo', () => {
     const state = new GraphState(graphWith('a'))
     const history = new GraphHistory(state, 10)

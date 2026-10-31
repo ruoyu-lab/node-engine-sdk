@@ -1,8 +1,8 @@
 name: Release
 
-# Publishes the four Node Engine SDK packages to npm. Run it by hand from the Actions tab.
+# Publishes the four Node Wright packages to npm. Run it by hand from the Actions tab.
 # Requires the repository secret NPM_TOKEN (an npm granular access token with
-# read and write access to the @node-engine-sdk scope).
+# read and write access to the @node-wright scope).
 on:
   workflow_dispatch:
     inputs:

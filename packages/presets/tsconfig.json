@@ -6,13 +6,13 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@node-engine-sdk/core/layout": ["../core/src/layout/index.ts"],
-      "@node-engine-sdk/core/protocol": ["../core/src/protocol/index.ts"],
-      "@node-engine-sdk/core/runtime": ["../core/src/runtime/index.ts"],
-      "@node-engine-sdk/core/semantics": ["../core/src/semantics/index.ts"],
-      "@node-engine-sdk/core/view": ["../core/src/view/index.ts"]
+      "@node-wright/core/layout": ["../core/src/layout/index.ts"],
+      "@node-wright/core/protocol": ["../core/src/protocol/index.ts"],
+      "@node-wright/core/runtime": ["../core/src/runtime/index.ts"],
+      "@node-wright/core/semantics": ["../core/src/semantics/index.ts"],
+      "@node-wright/core/view": ["../core/src/view/index.ts"]
     },
-    "tsBuildInfoFile": "../../node_modules/.cache/node-engine/presets.tsbuildinfo"
+    "tsBuildInfoFile": "../../node_modules/.cache/node-wright/presets.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
   "references": [

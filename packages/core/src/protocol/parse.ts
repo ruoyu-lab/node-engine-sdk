@@ -1,5 +1,5 @@
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   type GraphDiagnostic,
   type GraphEdge,
   type GraphEndpoint,
@@ -50,10 +50,10 @@ function parseGraphSnapshot(input: unknown): GraphSnapshot {
   assertAllowedKeys(graph, 'graph', ['schemaVersion', 'nodes', 'edges', 'groups', 'meta'])
   const schemaVersion = readString(graph.schemaVersion, 'schemaVersion')
 
-  if (schemaVersion !== NODE_ENGINE_GRAPH_SCHEMA_VERSION) {
+  if (schemaVersion !== NODE_WRIGHT_GRAPH_SCHEMA_VERSION) {
     throw new GraphParseError(
       'schemaVersion',
-      `unsupported schemaVersion "${schemaVersion}"; expected "${NODE_ENGINE_GRAPH_SCHEMA_VERSION}".`,
+      `unsupported schemaVersion "${schemaVersion}"; expected "${NODE_WRIGHT_GRAPH_SCHEMA_VERSION}".`,
     )
   }
 

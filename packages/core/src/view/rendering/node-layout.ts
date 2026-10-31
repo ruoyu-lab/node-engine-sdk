@@ -6,8 +6,8 @@ import type {
   XYPosition,
 } from '../../protocol/index.js'
 import type {
-  NodeEngineCanvasNodeLayoutContext,
-  NodeEngineCanvasPortLayout,
+  NodeWrightCanvasNodeLayoutContext,
+  NodeWrightCanvasPortLayout,
   NodeTypeDefinition,
   PortSide,
 } from '../types/index.js'
@@ -75,7 +75,7 @@ export function resolveNodeView(
 
 export function createPortLayouts(
   node: ResolvedNodeView,
-  canvasContext: NodeEngineCanvasNodeLayoutContext,
+  canvasContext: NodeWrightCanvasNodeLayoutContext,
 ): PortLayout[] {
   const customLayouts = resolveCustomPortLayouts(node, canvasContext)
 
@@ -167,8 +167,8 @@ function resolvePortSide(port: GraphPort): NonNullable<GraphPort['side']> {
 
 function resolveCustomPortLayouts(
   node: ResolvedNodeView,
-  canvasContext: NodeEngineCanvasNodeLayoutContext,
-): Map<string, NodeEngineCanvasPortLayout> | null {
+  canvasContext: NodeWrightCanvasNodeLayoutContext,
+): Map<string, NodeWrightCanvasPortLayout> | null {
   const getPortLayout = node.definition?.canvas?.getPortLayout
 
   if (!getPortLayout) {

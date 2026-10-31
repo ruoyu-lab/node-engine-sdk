@@ -1,40 +1,40 @@
 import {
-  NODE_ENGINE_DEFAULT_DOM_COMPONENT,
+  NODE_WRIGHT_DEFAULT_DOM_COMPONENT,
   resolveColorScheme,
-  type NodeEngineEditorController,
-  type NodeEngineViewSnapshot,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightEditorController,
+  type NodeWrightViewSnapshot,
+} from '@node-wright/core/view'
 import {
   forwardRef,
   type ForwardRefExoticComponent,
   type ReactElement,
   type RefAttributes,
 } from 'react'
-import type { NodeEngineDomComponent, NodeEngineHandle, NodeEngineProps } from '../types.js'
+import type { NodeWrightDomComponent, NodeWrightHandle, NodeWrightProps } from '../types.js'
 import { DefaultDomNode } from './DefaultDomNode.js'
-import { NodeEngineMinimap } from './NodeEngineMinimap.js'
+import { NodeWrightMinimap } from './NodeWrightMinimap.js'
 import { toClassName } from './class-names.js'
-import { NodeEngineApiContext } from './node-engine-context.js'
-import { useNodeEngineEditor } from './use-node-engine-editor.js'
+import { NodeWrightApiContext } from './node-wright-context.js'
+import { useNodeWrightEditor } from './use-node-wright-editor.js'
 
 const DEFAULT_ARIA_LABEL = 'Node graph editor'
 const HIDDEN = { display: 'none' } as const
 
 /**
  * The node graph editor. Renders the controller snapshot, registers DOM node components through
- * `domComponents` and exposes `NodeEngineApi` through its ref. Until the controller exists (the
+ * `domComponents` and exposes `NodeWrightApi` through its ref. Until the controller exists (the
  * first commit, or while rendering on the server) only the root and its canvases render.
  */
-export const NodeEngine: ForwardRefExoticComponent<
-  NodeEngineProps & RefAttributes<NodeEngineHandle>
-> = forwardRef<NodeEngineHandle, NodeEngineProps>(function NodeEngine(props, ref): ReactElement {
-  const { controller, view, rootRef, canvasRef, gridCanvasRef } = useNodeEngineEditor(props, ref)
+export const NodeWright: ForwardRefExoticComponent<
+  NodeWrightProps & RefAttributes<NodeWrightHandle>
+> = forwardRef<NodeWrightHandle, NodeWrightProps>(function NodeWright(props, ref): ReactElement {
+  const { controller, view, rootRef, canvasRef, gridCanvasRef } = useNodeWrightEditor(props, ref)
   const gridVisible = view ? view.gridState.visible : props.gridVisible !== false
 
   return (
     <div
       ref={rootRef}
-      className={toClassName(['ne-root', props.className])}
+      className={toClassName(['nw-root', props.className])}
       data-color-scheme={view ? view.colorScheme : resolveColorScheme(props.theme)}
       style={view ? { ...view.rootStyle, ...props.style } : props.style}
       role="application"
@@ -43,18 +43,18 @@ export const NodeEngine: ForwardRefExoticComponent<
     >
       <canvas
         ref={gridCanvasRef}
-        className="ne-grid-surface"
+        className="nw-grid-surface"
         style={gridVisible ? undefined : HIDDEN}
         aria-hidden="true"
       />
       <canvas
         ref={canvasRef}
-        className="ne-canvas-surface"
+        className="nw-canvas-surface"
         style={view ? { cursor: view.canvasCursor } : undefined}
         aria-hidden="true"
       />
       {controller && view ? (
-        <NodeEngineLayers
+        <NodeWrightLayers
           controller={controller}
           view={view}
           domComponents={props.domComponents}
@@ -66,32 +66,32 @@ export const NodeEngine: ForwardRefExoticComponent<
   )
 })
 
-function NodeEngineLayers(
+function NodeWrightLayers(
   props: {
-    controller: NodeEngineEditorController
-    view: NodeEngineViewSnapshot
-  } & Pick<NodeEngineProps, 'domComponents' | 'renderBackground' | 'renderOverlay'>,
+    controller: NodeWrightEditorController
+    view: NodeWrightViewSnapshot
+  } & Pick<NodeWrightProps, 'domComponents' | 'renderBackground' | 'renderOverlay'>,
 ): ReactElement {
   const { controller, view } = props
   const { api } = controller
   const { domLayer, performance } = view
 
-  function resolveDomComponent(key: string): NodeEngineDomComponent {
-    if (key === NODE_ENGINE_DEFAULT_DOM_COMPONENT) {
+  function resolveDomComponent(key: string): NodeWrightDomComponent {
+    if (key === NODE_WRIGHT_DEFAULT_DOM_COMPONENT) {
       return DefaultDomNode
     }
 
     const component = props.domComponents?.[key]
 
     if (!component) {
-      throw new Error(`NodeEngine has no DOM node component registered as "${key}".`)
+      throw new Error(`NodeWright has no DOM node component registered as "${key}".`)
     }
 
     return component
   }
 
   return (
-    <NodeEngineApiContext.Provider value={api}>
+    <NodeWrightApiContext.Provider value={api}>
       {props.renderBackground?.({
         api,
         graph: view.graph,
@@ -106,8 +106,8 @@ function NodeEngineLayers(
       {domLayer.nodes.length > 0 ? (
         <div
           className={toClassName([
-            'ne-dom-node-layer',
-            { 'ne-dom-node-layer--composited': domLayer.composited },
+            'nw-dom-node-layer',
+            { 'nw-dom-node-layer--composited': domLayer.composited },
           ])}
           style={domLayer.style}
         >
@@ -117,7 +117,7 @@ function NodeEngineLayers(
             return (
               <div
                 key={entry.id}
-                className={toClassName(['ne-dom-node', entry.className])}
+                className={toClassName(['nw-dom-node', entry.className])}
                 style={entry.style}
               >
                 <Component {...entry.props} />
@@ -128,11 +128,11 @@ function NodeEngineLayers(
       ) : null}
 
       {view.accessibleNodes.length > 0 ? (
-        <ul className="ne-accessible-nodes" aria-label="Canvas nodes">
+        <ul className="nw-accessible-nodes" aria-label="Canvas nodes">
           {view.accessibleNodes.map((node) => (
             <li key={node.id}>
               <button
-                className="ne-accessible-node"
+                className="nw-accessible-node"
                 type="button"
                 aria-pressed={node.selected}
                 onClick={() => controller.selectAccessibleNode(node.id)}
@@ -144,13 +144,13 @@ function NodeEngineLayers(
         </ul>
       ) : null}
 
-      {view.marqueeStyle ? <div className="ne-marquee" style={view.marqueeStyle} /> : null}
+      {view.marqueeStyle ? <div className="nw-marquee" style={view.marqueeStyle} /> : null}
 
       {performance.visible && performance.sample ? (
-        <div className="ne-performance">
+        <div className="nw-performance">
           {performance.dismissible ? (
             <button
-              className="ne-performance__close"
+              className="nw-performance__close"
               type="button"
               aria-label="Close performance monitor"
               onClick={() => controller.hidePerformanceOverlay()}
@@ -176,7 +176,7 @@ function NodeEngineLayers(
         </div>
       ) : null}
 
-      {view.minimap ? <NodeEngineMinimap controller={controller} state={view.minimap} /> : null}
+      {view.minimap ? <NodeWrightMinimap controller={controller} state={view.minimap} /> : null}
 
       {props.renderOverlay?.({
         api,
@@ -187,6 +187,6 @@ function NodeEngineLayers(
         nodeEditorState: view.nodeEditor,
         contextMenuState: view.contextMenu,
       })}
-    </NodeEngineApiContext.Provider>
+    </NodeWrightApiContext.Provider>
   )
 }

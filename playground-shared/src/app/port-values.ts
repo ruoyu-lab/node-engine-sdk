@@ -1,10 +1,7 @@
-import type { GraphNode } from '@node-engine-sdk/core/protocol'
-import {
-  createRuntimeVariableSnapshot,
-  type NodeEngineRunResult,
-} from '@node-engine-sdk/core/runtime'
-import type { NodeEngineResolvePortValueContext } from '@node-engine-sdk/core/view'
-import { EXEC_GET_VARIABLE_NODE_TYPE } from '@node-engine-sdk/presets'
+import type { GraphNode } from '@node-wright/core/protocol'
+import { createRuntimeVariableSnapshot, type NodeWrightRunResult } from '@node-wright/core/runtime'
+import type { NodeWrightResolvePortValueContext } from '@node-wright/core/view'
+import { EXEC_GET_VARIABLE_NODE_TYPE } from '@node-wright/presets'
 import type { DemoScenario } from '../demo/scenarios'
 
 /**
@@ -12,8 +9,8 @@ import type { DemoScenario } from '../demo/scenarios'
  * node, then its parameter of the same name, then its `value` parameter.
  */
 export function resolveDemoPortValue(
-  context: Pick<NodeEngineResolvePortValueContext, 'graph' | 'endpoint' | 'node' | 'port'>,
-  result: NodeEngineRunResult | null,
+  context: Pick<NodeWrightResolvePortValueContext, 'graph' | 'endpoint' | 'node' | 'port'>,
+  result: NodeWrightRunResult | null,
   scenario: DemoScenario,
 ): unknown {
   const node =
@@ -44,7 +41,7 @@ export function resolveDemoPortValue(
 function resolveRuntimePortValue(
   node: GraphNode | undefined,
   key: string,
-  result: NodeEngineRunResult | null,
+  result: NodeWrightRunResult | null,
   scenario: DemoScenario,
 ): unknown {
   if (!node) {

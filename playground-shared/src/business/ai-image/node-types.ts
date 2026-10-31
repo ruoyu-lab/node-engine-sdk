@@ -1,4 +1,4 @@
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 import {
   AI_IMAGE_DISPLAY_NODE_TYPE,
   AI_IMAGE_GENERATE_NODE_TYPE,

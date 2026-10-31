@@ -6,7 +6,7 @@ import type {
 } from '../../../protocol/index.js'
 import type { GraphStore } from '../../../store/index.js'
 import type { PortLayout } from '../../rendering/node-layout.js'
-import type { NodeEngineEventSink } from '../../types/index.js'
+import type { NodeWrightEventSink } from '../../types/index.js'
 import type { InteractionState } from '../interaction-state.js'
 import { findCreatedEdge } from '../store-binding.js'
 
@@ -43,7 +43,7 @@ export function createConnectionGesture(options: {
   getStore: () => GraphStore
   readonly: () => boolean
   beginPointerSession: (event: PointerEvent) => void
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): ConnectionGesture {
   const { connection, connectionTarget } = options.state
 

@@ -10,8 +10,8 @@ interface PackageManifest {
 const packagesRoot = new URL('./packages/', import.meta.url)
 
 /**
- * Maps every published `@node-engine-sdk/*` entry, including subpath exports such as
- * `@node-engine-sdk/core/protocol`, to its TypeScript source so tests never depend on build output.
+ * Maps every published `@node-wright/*` entry, including subpath exports such as
+ * `@node-wright/core/protocol`, to its TypeScript source so tests never depend on build output.
  */
 const alias = readdirSync(packagesRoot, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())

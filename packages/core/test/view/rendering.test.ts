@@ -1,4 +1,4 @@
-import type { GraphPort } from '@node-engine-sdk/core/protocol'
+import type { GraphPort } from '@node-wright/core/protocol'
 import { describe, expect, it, vi } from 'vitest'
 import {
   getBezierCurve,

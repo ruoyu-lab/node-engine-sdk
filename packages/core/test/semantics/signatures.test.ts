@@ -1,18 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { compileGraph } from '@node-engine-sdk/core/runtime'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import { compileGraph } from '@node-wright/core/runtime'
 import {
   createFunctionDefinition,
   createSubgraphDefinition,
   validateFunctionSignature,
   validateSubgraphSignature,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 
 const emptyGraph: GraphSnapshot = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [],
   edges: [],
   groups: [],

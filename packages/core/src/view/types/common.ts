@@ -8,8 +8,8 @@ import type {
   XYPosition,
 } from '../../protocol/index.js'
 
-import type { NodeEngineApi } from './api.js'
-import type { NodeEngineCanvasGroupHitAreaKind } from './render.js'
+import type { NodeWrightApi } from './api.js'
+import type { NodeWrightCanvasGroupHitAreaKind } from './render.js'
 
 export type PortSide = 'top' | 'right' | 'bottom' | 'left'
 
@@ -17,7 +17,7 @@ export type PortSide = 'top' | 'right' | 'bottom' | 'left'
  * Framework-neutral inline style declaration. Keys are camelCase CSS properties or `--custom`
  * properties; both the Vue and React adapters accept this shape for element styles.
  */
-export type NodeEngineStyleDeclaration = Record<string, string | number>
+export type NodeWrightStyleDeclaration = Record<string, string | number>
 
 export interface ViewportState {
   x: number
@@ -32,9 +32,9 @@ export interface SelectionState {
   edges: string[]
 }
 
-export type NodeEngineCoordinateSpace = 'graph' | 'screen'
+export type NodeWrightCoordinateSpace = 'graph' | 'screen'
 
-export interface NodeEngineBounds {
+export interface NodeWrightBounds {
   x: number
   y: number
   width: number
@@ -42,7 +42,7 @@ export interface NodeEngineBounds {
 }
 
 /** Distances from the edges of the editor, in screen pixels. */
-export interface NodeEngineInsets {
+export interface NodeWrightInsets {
   top?: number
   right?: number
   bottom?: number
@@ -50,48 +50,48 @@ export interface NodeEngineInsets {
 }
 
 /** Free space around fitted content: one value for every side, or per side. */
-export type NodeEngineFitPadding = number | NodeEngineInsets
+export type NodeWrightFitPadding = number | NodeWrightInsets
 
-export interface NodeEngineHistoryState {
+export interface NodeWrightHistoryState {
   canUndo: boolean
   canRedo: boolean
 }
 
-export interface NodeEngineClipboard {
+export interface NodeWrightClipboard {
   nodes: GraphNode[]
   edges: GraphEdge[]
   groups: GraphGroup[]
   selection: SelectionState
 }
 
-export interface NodeEngineContextTargetCanvas {
+export interface NodeWrightContextTargetCanvas {
   kind: 'canvas'
 }
 
-export interface NodeEngineContextTargetNode {
+export interface NodeWrightContextTargetNode {
   kind: 'node'
   node: GraphNode
 }
 
-export interface NodeEngineContextTargetEdge {
+export interface NodeWrightContextTargetEdge {
   kind: 'edge'
   edge: GraphEdge
 }
 
-export interface NodeEngineContextTargetGroup {
+export interface NodeWrightContextTargetGroup {
   kind: 'group'
   group: GraphGroup
   areaId?: string
-  areaKind?: NodeEngineCanvasGroupHitAreaKind
+  areaKind?: NodeWrightCanvasGroupHitAreaKind
 }
 
-export type NodeEngineContextTarget =
-  | NodeEngineContextTargetCanvas
-  | NodeEngineContextTargetNode
-  | NodeEngineContextTargetEdge
-  | NodeEngineContextTargetGroup
+export type NodeWrightContextTarget =
+  | NodeWrightContextTargetCanvas
+  | NodeWrightContextTargetNode
+  | NodeWrightContextTargetEdge
+  | NodeWrightContextTargetGroup
 
-export interface NodeEnginePortAnchor {
+export interface NodeWrightPortAnchor {
   endpoint: GraphEndpoint
   x: number
   y: number
@@ -102,13 +102,13 @@ export interface NodeEnginePortAnchor {
   connectionColor?: string
 }
 
-export interface NodeEngineRenderContext {
+export interface NodeWrightRenderContext {
   graph: GraphSnapshot
   selection: SelectionState
   viewport: ViewportState
   readonly: boolean
-  api: NodeEngineApi
-  history: NodeEngineHistoryState
+  api: NodeWrightApi
+  history: NodeWrightHistoryState
   rootElement: HTMLElement | null
   screenToGraph: (point: XYPosition) => XYPosition
   clientToGraph: (point: XYPosition) => XYPosition
@@ -116,14 +116,14 @@ export interface NodeEngineRenderContext {
 }
 
 /** Built-in palette of the editor; the root renders it as its `data-color-scheme` attribute. */
-export type NodeEngineColorScheme = 'dark' | 'light'
+export type NodeWrightColorScheme = 'dark' | 'light'
 
 /**
  * Editor colours. `colorScheme` picks the built-in dark (default) or light palette for the canvas
  * and the stylesheet; every other key overrides one canvas colour of that palette.
  */
-export interface NodeEngineTheme {
-  colorScheme?: NodeEngineColorScheme
+export interface NodeWrightTheme {
+  colorScheme?: NodeWrightColorScheme
   background?: string
   gridColor?: string
   gridMajorColor?: string
@@ -162,38 +162,38 @@ export interface NodeEngineTheme {
  * Execution status a host shows on a node (see the `nodeStatus` editor option). The values match
  * the runtime's node statuses, so a run result maps onto the editor without translation.
  */
-export type NodeEngineNodeStatus = 'idle' | 'running' | 'paused' | 'success' | 'error' | 'cancelled'
+export type NodeWrightNodeStatus = 'idle' | 'running' | 'paused' | 'success' | 'error' | 'cancelled'
 
-export type NodeEngineRenderMode = 'canvas' | 'dom' | 'hybrid'
+export type NodeWrightRenderMode = 'canvas' | 'dom' | 'hybrid'
 
-export type NodeEnginePerformanceMode = 'idle' | 'drag' | 'pan' | 'zoom' | 'connect' | 'marquee'
+export type NodeWrightPerformanceMode = 'idle' | 'drag' | 'pan' | 'zoom' | 'connect' | 'marquee'
 
-export type NodeEngineMarqueeGesture = 'space-left' | 'middle' | 'shift-left'
+export type NodeWrightMarqueeGesture = 'space-left' | 'middle' | 'shift-left'
 
-export type NodeEngineSelectionMode = 'replace' | 'add' | 'subtract'
+export type NodeWrightSelectionMode = 'replace' | 'add' | 'subtract'
 
-export type NodeEngineEdgeRightClickAction = 'disconnect' | 'context-menu' | 'select' | 'none'
+export type NodeWrightEdgeRightClickAction = 'disconnect' | 'context-menu' | 'select' | 'none'
 
-export type NodeEngineNodeEditorActivateOn = 'selected' | 'double-click' | 'manual'
+export type NodeWrightNodeEditorActivateOn = 'selected' | 'double-click' | 'manual'
 
-export type NodeEngineNodeEditorFieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'select'
+export type NodeWrightNodeEditorFieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'select'
 
-export type NodeEngineWheelBehavior = 'zoom' | 'pan' | 'mixed'
+export type NodeWrightWheelBehavior = 'zoom' | 'pan' | 'mixed'
 
-export interface NodeEngineMarqueeBehaviorOptions {
-  gestures?: NodeEngineMarqueeGesture[]
-  selectionMode?: NodeEngineSelectionMode
+export interface NodeWrightMarqueeBehaviorOptions {
+  gestures?: NodeWrightMarqueeGesture[]
+  selectionMode?: NodeWrightSelectionMode
 }
 
-export interface NodeEngineEdgeBehaviorOptions {
-  rightClickAction?: NodeEngineEdgeRightClickAction
+export interface NodeWrightEdgeBehaviorOptions {
+  rightClickAction?: NodeWrightEdgeRightClickAction
 }
 
-export type NodeEngineGroupDragHandleMode = 'header' | 'body'
-export type NodeEngineGridPatternStyle = 'line' | 'dash' | 'dot'
+export type NodeWrightGroupDragHandleMode = 'header' | 'body'
+export type NodeWrightGridPatternStyle = 'line' | 'dash' | 'dot'
 
-export interface NodeEngineGroupBehaviorOptions {
-  dragHandle?: NodeEngineGroupDragHandleMode
+export interface NodeWrightGroupBehaviorOptions {
+  dragHandle?: NodeWrightGroupDragHandleMode
   headerHeight?: number
   moveNodesOnDrag?: boolean
   resizable?: boolean
@@ -203,37 +203,37 @@ export interface NodeEngineGroupBehaviorOptions {
   showCollapseButton?: boolean
 }
 
-export interface NodeEngineGridBehaviorOptions {
+export interface NodeWrightGridBehaviorOptions {
   adaptive?: boolean
   minPixelStep?: number
   maxPixelStep?: number
   majorEvery?: number
-  style?: NodeEngineGridPatternStyle
+  style?: NodeWrightGridPatternStyle
 }
 
-export interface NodeEngineNodeEditorInset {
+export interface NodeWrightNodeEditorInset {
   top: number
   right: number
   bottom: number
   left: number
 }
 
-export interface NodeEngineNodeEditorBehaviorOptions {
+export interface NodeWrightNodeEditorBehaviorOptions {
   enabled?: boolean
-  defaultActivateOn?: NodeEngineNodeEditorActivateOn
-  defaultInset?: Partial<NodeEngineNodeEditorInset>
+  defaultActivateOn?: NodeWrightNodeEditorActivateOn
+  defaultInset?: Partial<NodeWrightNodeEditorInset>
   defaultMaxFields?: number
 }
 
-export interface NodeEngineBehaviors {
-  marquee?: NodeEngineMarqueeBehaviorOptions
-  edge?: NodeEngineEdgeBehaviorOptions
-  group?: NodeEngineGroupBehaviorOptions
-  grid?: NodeEngineGridBehaviorOptions
-  editor?: NodeEngineNodeEditorBehaviorOptions
+export interface NodeWrightBehaviors {
+  marquee?: NodeWrightMarqueeBehaviorOptions
+  edge?: NodeWrightEdgeBehaviorOptions
+  group?: NodeWrightGroupBehaviorOptions
+  grid?: NodeWrightGridBehaviorOptions
+  editor?: NodeWrightNodeEditorBehaviorOptions
 }
 
-export interface NodeEngineGridState {
+export interface NodeWrightGridState {
   visible: boolean
   adaptive: boolean
   baseStep: number
@@ -242,11 +242,11 @@ export interface NodeEngineGridState {
   majorEvery: number
   majorStep: number
   majorPixelStep: number
-  style: NodeEngineGridPatternStyle
+  style: NodeWrightGridPatternStyle
 }
 
-export interface NodeEngineInteractionState {
-  mode: NodeEnginePerformanceMode
+export interface NodeWrightInteractionState {
+  mode: NodeWrightPerformanceMode
   spacePressed: boolean
   marqueeActive: boolean
   draggingNodeIds: string[]
@@ -259,7 +259,7 @@ export interface NodeEngineInteractionState {
   dragDelta: XYPosition | null
 }
 
-export interface NodeEnginePerformanceOptions {
+export interface NodeWrightPerformanceOptions {
   enabled?: boolean
   overlay?: boolean
   overlayMinWidth?: number
@@ -268,10 +268,10 @@ export interface NodeEnginePerformanceOptions {
   cullPadding?: number
 }
 
-export interface NodeEnginePerformanceSample {
+export interface NodeWrightPerformanceSample {
   timestamp: number
-  renderMode: NodeEngineRenderMode
-  mode: NodeEnginePerformanceMode
+  renderMode: NodeWrightRenderMode
+  mode: NodeWrightPerformanceMode
   frameMs: number
   avgFrameMs: number
   drawMs: number

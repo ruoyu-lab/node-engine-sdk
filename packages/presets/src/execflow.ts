@@ -9,10 +9,10 @@ import {
   execflowNodeDefinitions,
   execflowRuntimeDefinitions,
 } from './nodes/execflow/index.js'
-import { createExecflowPlugin } from '@node-engine-sdk/core/semantics'
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import { createExecflowPlugin } from '@node-wright/core/semantics'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 import { PRESET_NODE_ACCENTS } from './accents.js'
-import type { ExecflowPresetOptions, NodeEnginePreset } from './types.js'
+import type { ExecflowPresetOptions, NodeWrightPreset } from './types.js'
 import { createPresetLayout } from './layout.js'
 
 export {
@@ -101,7 +101,7 @@ export const execflowNodeTypes: NodeTypeRegistry = {
   },
 }
 
-export function createExecflowPreset(options: ExecflowPresetOptions = {}): NodeEnginePreset {
+export function createExecflowPreset(options: ExecflowPresetOptions = {}): NodeWrightPreset {
   const includeDefaultNodes = options.includeDefaultNodes !== false
 
   return {

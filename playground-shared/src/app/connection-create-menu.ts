@@ -5,9 +5,9 @@ import {
   type GraphPort,
   type GraphValue,
   type XYPosition,
-} from '@node-engine-sdk/core/protocol'
-import type { NodeEngineApi, NodeEngineConnectionCancelEvent } from '@node-engine-sdk/core/view'
-import { DATA_PREVIEW_NODE_TYPE, DATA_SOURCE_NODE_TYPE } from '@node-engine-sdk/presets'
+} from '@node-wright/core/protocol'
+import type { NodeWrightApi, NodeWrightConnectionCancelEvent } from '@node-wright/core/view'
+import { DATA_PREVIEW_NODE_TYPE, DATA_SOURCE_NODE_TYPE } from '@node-wright/presets'
 import {
   AI_IMAGE_DISPLAY_NODE_TYPE,
   AI_IMAGE_GENERATE_NODE_TYPE,
@@ -56,7 +56,7 @@ export type ConnectionCreateResult = { nodeId: string } | { error: string }
  * or a port no offered node can connect to, opens nothing.
  */
 export function openConnectionCreateMenu(
-  event: NodeEngineConnectionCancelEvent,
+  event: NodeWrightConnectionCancelEvent,
   screen: ScreenSize,
   scenario: DemoScenario,
 ): ConnectionCreateMenu | null {
@@ -102,7 +102,7 @@ export function resolveConnectionCreateMenuStyle(menu: ConnectionCreateMenu): {
  * that cannot be connected is removed again and the validation reason is returned.
  */
 export function createNodeFromConnectionMenu(
-  api: NodeEngineApi,
+  api: NodeWrightApi,
   menu: ConnectionCreateMenu,
   option: ConnectionCreateOption,
 ): ConnectionCreateResult {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createRuntimeVariableApi, createRuntimeVariableSnapshot } from '../../src/runtime/index'
 
-describe('@node-engine-sdk/core/runtime variables', () => {
+describe('@node-wright/core/runtime variables', () => {
   it('defaults writes to run scope', () => {
     const snapshot = createRuntimeVariableSnapshot()
     const api = createRuntimeVariableApi(snapshot)

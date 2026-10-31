@@ -1,5 +1,5 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { resolveColorScheme, resolveNodeAccent } from '@node-engine-sdk/core/view'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { resolveColorScheme, resolveNodeAccent } from '@node-wright/core/view'
 import { afterEach, describe, expect, it } from 'vitest'
 import {
   resolveCanvasNodeTheme,
@@ -94,9 +94,9 @@ describe('editor themes', () => {
     ).toBe('#123456')
     expect(resolveCanvasNodeTheme({ colorScheme: 'light' }).exec).toBe(light.execEdgeColor)
     expect(resolveRootStyle({ canvasBackground: '', theme: { colorScheme: 'light' } })).toEqual({
-      '--ne-background': '#f5f6f8',
-      '--ne-marquee': expect.any(String),
-      '--ne-marquee-border': expect.any(String),
+      '--nw-background': '#f5f6f8',
+      '--nw-marquee': expect.any(String),
+      '--nw-marquee-border': expect.any(String),
     })
     expect(resolveGridColors({ gridColor: '', theme: { colorScheme: 'light' } })).toEqual({
       minor: '#dcdfe5',
@@ -125,7 +125,7 @@ describe('editor themes', () => {
 
     expect(controller.getSnapshot()).toMatchObject({
       colorScheme: 'light',
-      rootStyle: { '--ne-background': '#f5f6f8' },
+      rootStyle: { '--nw-background': '#f5f6f8' },
     })
     expect(anchor()).toBe(resolveGraphCanvasTheme({ colorScheme: 'light' }).execEdgeColor)
   })

@@ -1,4 +1,4 @@
-import type { NodeEngineApi } from './api.js'
+import type { NodeWrightApi } from './api.js'
 import type {
   ConnectionValidationResult,
   GraphEdge,
@@ -13,62 +13,62 @@ import type {
 } from '../../protocol/index.js'
 
 import type {
-  NodeEngineBounds,
-  NodeEngineContextTarget,
-  NodeEngineEdgeRightClickAction,
-  NodeEngineInteractionState,
-  NodeEnginePerformanceSample,
-  NodeEngineSelectionMode,
+  NodeWrightBounds,
+  NodeWrightContextTarget,
+  NodeWrightEdgeRightClickAction,
+  NodeWrightInteractionState,
+  NodeWrightPerformanceSample,
+  NodeWrightSelectionMode,
   SelectionState,
   ViewportState,
 } from './common.js'
-import type { NodeEngineCanvasGroupHitAreaKind } from './render.js'
-import type { NodeEngineNodeEditorState } from './editor.js'
-import type { NodeEngineContextMenuItem } from './extensions.js'
+import type { NodeWrightCanvasGroupHitAreaKind } from './render.js'
+import type { NodeWrightNodeEditorState } from './editor.js'
+import type { NodeWrightContextMenuItem } from './extensions.js'
 
-export interface NodeEngineContextMenuState {
+export interface NodeWrightContextMenuState {
   graphPosition: XYPosition
   position: XYPosition
-  items: NodeEngineContextMenuItem[]
-  target: NodeEngineContextTarget
+  items: NodeWrightContextMenuItem[]
+  target: NodeWrightContextTarget
 }
 
-export interface NodeEngineNodeClickEvent {
+export interface NodeWrightNodeClickEvent {
   node: GraphNode
   event: PointerEvent
 }
 
-export interface NodeEngineNodeDoubleClickEvent {
+export interface NodeWrightNodeDoubleClickEvent {
   node: GraphNode
   event: PointerEvent
 }
 
-export interface NodeEngineEdgeClickEvent {
+export interface NodeWrightEdgeClickEvent {
   edge: GraphEdge
   event: PointerEvent
 }
 
-export interface NodeEngineEdgeRightClickEvent {
+export interface NodeWrightEdgeRightClickEvent {
   edge: GraphEdge
   event: MouseEvent
-  action: NodeEngineEdgeRightClickAction
+  action: NodeWrightEdgeRightClickAction
   graph: GraphSnapshot
 }
 
-export interface NodeEngineEdgeDisconnectEvent {
+export interface NodeWrightEdgeDisconnectEvent {
   edge: GraphEdge
   graph: GraphSnapshot
   reason: string
 }
 
-export interface NodeEngineGroupClickEvent {
+export interface NodeWrightGroupClickEvent {
   group: GraphGroup
   event: PointerEvent
   areaId?: string
-  areaKind?: NodeEngineCanvasGroupHitAreaKind
+  areaKind?: NodeWrightCanvasGroupHitAreaKind
 }
 
-export interface NodeEngineGroupDragEvent {
+export interface NodeWrightGroupDragEvent {
   groupIds: string[]
   groups: GraphGroup[]
   nodeIds: string[]
@@ -76,11 +76,11 @@ export interface NodeEngineGroupDragEvent {
   delta: XYPosition
   graph: GraphSnapshot
   viewport: ViewportState
-  interaction: NodeEngineInteractionState
+  interaction: NodeWrightInteractionState
   liveGraph: GraphSnapshot
 }
 
-export interface NodeEngineGroupResizeEvent {
+export interface NodeWrightGroupResizeEvent {
   groupId: string
   group: GraphGroup
   size: {
@@ -89,50 +89,50 @@ export interface NodeEngineGroupResizeEvent {
   }
   graph: GraphSnapshot
   viewport: ViewportState
-  interaction: NodeEngineInteractionState
+  interaction: NodeWrightInteractionState
   liveGraph: GraphSnapshot
 }
 
-export interface NodeEngineNodeDragEvent {
+export interface NodeWrightNodeDragEvent {
   nodeIds: string[]
   nodes: GraphNode[]
   delta: XYPosition
   graph: GraphSnapshot
   viewport: ViewportState
-  interaction: NodeEngineInteractionState
+  interaction: NodeWrightInteractionState
   liveGraph: GraphSnapshot
 }
 
-export interface NodeEngineNodeResizeEvent {
+export interface NodeWrightNodeResizeEvent {
   nodeId: string
   node: GraphNode
   size: {
     width: number
     height: number
   }
-  bounds: NodeEngineBounds
+  bounds: NodeWrightBounds
   graph: GraphSnapshot
   viewport: ViewportState
-  interaction: NodeEngineInteractionState
+  interaction: NodeWrightInteractionState
   liveGraph: GraphSnapshot
 }
 
-export interface NodeEngineMarqueeEvent {
+export interface NodeWrightMarqueeEvent {
   start: XYPosition
   current: XYPosition
-  mode: NodeEngineSelectionMode
+  mode: NodeWrightSelectionMode
   graph: GraphSnapshot
 }
 
-export interface NodeEngineViewportInteractionEvent {
+export interface NodeWrightViewportInteractionEvent {
   viewport: ViewportState
   source: string
   graph: GraphSnapshot
-  interaction: NodeEngineInteractionState
+  interaction: NodeWrightInteractionState
   liveGraph: GraphSnapshot
 }
 
-export interface NodeEngineConnectStartEvent {
+export interface NodeWrightConnectStartEvent {
   source: GraphEndpoint
   sourceNode?: GraphNode
   sourcePort?: GraphPort
@@ -142,7 +142,7 @@ export interface NodeEngineConnectStartEvent {
   graph: GraphSnapshot
 }
 
-export interface NodeEngineConnectPreviewEvent {
+export interface NodeWrightConnectPreviewEvent {
   source: GraphEndpoint
   target?: GraphEndpoint
   originDirection: GraphPort['direction']
@@ -152,7 +152,7 @@ export interface NodeEngineConnectPreviewEvent {
   graph: GraphSnapshot
 }
 
-export interface NodeEngineConnectEndEvent {
+export interface NodeWrightConnectEndEvent {
   source: GraphEndpoint
   target: GraphEndpoint
   edge?: GraphEdge
@@ -160,7 +160,7 @@ export interface NodeEngineConnectEndEvent {
   graph: GraphSnapshot
 }
 
-export interface NodeEngineConnectionCancelEvent {
+export interface NodeWrightConnectionCancelEvent {
   source: GraphEndpoint
   sourceNode?: GraphNode
   sourcePort?: GraphPort
@@ -173,14 +173,14 @@ export interface NodeEngineConnectionCancelEvent {
   graph: GraphSnapshot
 }
 
-export interface NodeEngineConnectionInvalidEvent {
+export interface NodeWrightConnectionInvalidEvent {
   source: GraphEndpoint
   target: GraphEndpoint
   validation: ConnectionValidationResult
   graph: GraphSnapshot
 }
 
-export interface NodeEngineCommandErrorEvent {
+export interface NodeWrightCommandErrorEvent {
   commandId: string
   payload?: unknown
   reason?: string
@@ -188,7 +188,7 @@ export interface NodeEngineCommandErrorEvent {
   snapshot: GraphSnapshot
 }
 
-export interface NodeEngineNodeParamChangeEvent {
+export interface NodeWrightNodeParamChangeEvent {
   nodeId: string
   key: string
   value: GraphValue
@@ -197,71 +197,71 @@ export interface NodeEngineNodeParamChangeEvent {
   graph: GraphSnapshot
 }
 
-export interface NodeEngineImportEvent {
+export interface NodeWrightImportEvent {
   input: unknown
   graph: GraphSnapshot
 }
 
-export interface NodeEngineConnectEvent {
+export interface NodeWrightConnectEvent {
   edge: GraphEdge
 }
 
-export interface NodeEngineEventMap {
+export interface NodeWrightEventMap {
   'graph-change': [graph: GraphSnapshot]
-  'node-click': [event: NodeEngineNodeClickEvent]
-  'node-double-click': [event: NodeEngineNodeDoubleClickEvent]
-  'edge-click': [event: NodeEngineEdgeClickEvent]
-  'edge-right-click': [event: NodeEngineEdgeRightClickEvent]
-  'edge-disconnect': [event: NodeEngineEdgeDisconnectEvent]
-  'group-click': [event: NodeEngineGroupClickEvent]
-  'group-drag-start': [event: NodeEngineGroupDragEvent]
-  'group-drag': [event: NodeEngineGroupDragEvent]
-  'group-drag-end': [event: NodeEngineGroupDragEvent]
-  'group-resize-start': [event: NodeEngineGroupResizeEvent]
-  'group-resize': [event: NodeEngineGroupResizeEvent]
-  'group-resize-end': [event: NodeEngineGroupResizeEvent]
-  'node-resize-start': [event: NodeEngineNodeResizeEvent]
-  'node-resize': [event: NodeEngineNodeResizeEvent]
-  'node-resize-end': [event: NodeEngineNodeResizeEvent]
-  connect: [event: NodeEngineConnectEvent]
-  'node-drag-start': [event: NodeEngineNodeDragEvent]
-  'node-drag': [event: NodeEngineNodeDragEvent]
-  'node-drag-end': [event: NodeEngineNodeDragEvent]
-  'connection-start': [event: NodeEngineConnectStartEvent]
-  'connection-preview': [event: NodeEngineConnectPreviewEvent]
-  'connection-end': [event: NodeEngineConnectEndEvent]
-  'connection-cancel': [event: NodeEngineConnectionCancelEvent]
-  'connection-invalid': [event: NodeEngineConnectionInvalidEvent]
-  'marquee-start': [event: NodeEngineMarqueeEvent]
-  marquee: [event: NodeEngineMarqueeEvent]
-  'marquee-end': [event: NodeEngineMarqueeEvent]
-  'viewport-interaction-start': [event: NodeEngineViewportInteractionEvent]
-  'viewport-interaction': [event: NodeEngineViewportInteractionEvent]
-  'viewport-interaction-end': [event: NodeEngineViewportInteractionEvent]
-  'context-menu-open': [state: NodeEngineContextMenuState]
-  'context-menu-close': [state: NodeEngineContextMenuState | null]
+  'node-click': [event: NodeWrightNodeClickEvent]
+  'node-double-click': [event: NodeWrightNodeDoubleClickEvent]
+  'edge-click': [event: NodeWrightEdgeClickEvent]
+  'edge-right-click': [event: NodeWrightEdgeRightClickEvent]
+  'edge-disconnect': [event: NodeWrightEdgeDisconnectEvent]
+  'group-click': [event: NodeWrightGroupClickEvent]
+  'group-drag-start': [event: NodeWrightGroupDragEvent]
+  'group-drag': [event: NodeWrightGroupDragEvent]
+  'group-drag-end': [event: NodeWrightGroupDragEvent]
+  'group-resize-start': [event: NodeWrightGroupResizeEvent]
+  'group-resize': [event: NodeWrightGroupResizeEvent]
+  'group-resize-end': [event: NodeWrightGroupResizeEvent]
+  'node-resize-start': [event: NodeWrightNodeResizeEvent]
+  'node-resize': [event: NodeWrightNodeResizeEvent]
+  'node-resize-end': [event: NodeWrightNodeResizeEvent]
+  connect: [event: NodeWrightConnectEvent]
+  'node-drag-start': [event: NodeWrightNodeDragEvent]
+  'node-drag': [event: NodeWrightNodeDragEvent]
+  'node-drag-end': [event: NodeWrightNodeDragEvent]
+  'connection-start': [event: NodeWrightConnectStartEvent]
+  'connection-preview': [event: NodeWrightConnectPreviewEvent]
+  'connection-end': [event: NodeWrightConnectEndEvent]
+  'connection-cancel': [event: NodeWrightConnectionCancelEvent]
+  'connection-invalid': [event: NodeWrightConnectionInvalidEvent]
+  'marquee-start': [event: NodeWrightMarqueeEvent]
+  marquee: [event: NodeWrightMarqueeEvent]
+  'marquee-end': [event: NodeWrightMarqueeEvent]
+  'viewport-interaction-start': [event: NodeWrightViewportInteractionEvent]
+  'viewport-interaction': [event: NodeWrightViewportInteractionEvent]
+  'viewport-interaction-end': [event: NodeWrightViewportInteractionEvent]
+  'context-menu-open': [state: NodeWrightContextMenuState]
+  'context-menu-close': [state: NodeWrightContextMenuState | null]
   'selection-change': [selection: SelectionState, graph: GraphSnapshot, source?: string]
   'viewport-change': [viewport: ViewportState, source?: string]
-  'command-error': [event: NodeEngineCommandErrorEvent]
-  imported: [event: NodeEngineImportEvent]
-  'node-editor-open': [state: NodeEngineNodeEditorState]
-  'node-editor-close': [state: NodeEngineNodeEditorState]
-  'node-param-change': [event: NodeEngineNodeParamChangeEvent]
-  'performance-sample': [sample: NodeEnginePerformanceSample]
+  'command-error': [event: NodeWrightCommandErrorEvent]
+  imported: [event: NodeWrightImportEvent]
+  'node-editor-open': [state: NodeWrightNodeEditorState]
+  'node-editor-close': [state: NodeWrightNodeEditorState]
+  'node-param-change': [event: NodeWrightNodeParamChangeEvent]
+  'performance-sample': [sample: NodeWrightPerformanceSample]
   command: [event: GraphStoreEvent]
   /**
    * The editor attached to its host elements (`controller.mount()`), so viewport commands such
    * as `api.view.fit.graph()` can measure it. Emitted on every mount, with the editor's API.
    */
-  mount: [api: NodeEngineApi]
+  mount: [api: NodeWrightApi]
 }
 
-export type NodeEngineEventName = keyof NodeEngineEventMap
+export type NodeWrightEventName = keyof NodeWrightEventMap
 
 /** Emits one editor event with its exact payload; the controller emits and adapters forward. */
-export type NodeEngineEventSink = <Event extends NodeEngineEventName>(
+export type NodeWrightEventSink = <Event extends NodeWrightEventName>(
   event: Event,
-  ...args: NodeEngineEventMap[Event]
+  ...args: NodeWrightEventMap[Event]
 ) => void
 
 type UnionToIntersection<Union> = (Union extends unknown ? (value: Union) => void : never) extends (
@@ -273,11 +273,11 @@ type UnionToIntersection<Union> = (Union extends unknown ? (value: Union) => voi
 /**
  * Receives every editor event (`onEvent`). It has one call signature per event, so a listener may
  * declare fewer parameters than an event carries (`(name) => ...`, `(name, payload) => ...`), and
- * every `NodeEngineEventSink` is a listener. A single generic signature cannot allow that: the
+ * every `NodeWrightEventSink` is a listener. A single generic signature cannot allow that: the
  * payload is a generic rest tuple, which TypeScript only matches against a rest parameter.
  */
-export type NodeEngineEventListener = UnionToIntersection<
+export type NodeWrightEventListener = UnionToIntersection<
   {
-    [Event in NodeEngineEventName]: (event: Event, ...args: NodeEngineEventMap[Event]) => void
-  }[NodeEngineEventName]
+    [Event in NodeWrightEventName]: (event: Event, ...args: NodeWrightEventMap[Event]) => void
+  }[NodeWrightEventName]
 >

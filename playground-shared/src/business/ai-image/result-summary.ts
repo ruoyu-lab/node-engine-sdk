@@ -1,4 +1,4 @@
-import type { GraphNode } from '@node-engine-sdk/core/protocol'
+import type { GraphNode } from '@node-wright/core/protocol'
 
 export type AiImageResultState = 'empty' | 'ready' | 'invalid'
 

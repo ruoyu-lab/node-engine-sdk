@@ -1,4 +1,4 @@
-import type { GraphNode, NodeDefinition } from '@node-engine-sdk/core/protocol'
+import type { GraphNode, NodeDefinition } from '@node-wright/core/protocol'
 import {
   applyDomConnectionState,
   applyDomFieldDriveState,
@@ -7,15 +7,15 @@ import {
   resolveDomNodeModel,
   resolveDomNodeSizeConstraints,
   resolveDomPortAnchorPoints,
-  type NodeEngineCanvasNodeTheme,
-  type NodeEngineDomNodeRenderContext,
-  type NodeEnginePortAnchor,
+  type NodeWrightCanvasNodeTheme,
+  type NodeWrightDomNodeRenderContext,
+  type NodeWrightPortAnchor,
   type NodeTypeDefinition,
-} from '@node-engine-sdk/core/view'
+} from '@node-wright/core/view'
 import { describe, expect, it } from 'vitest'
 import { createGraph } from './editor-harness'
 
-const theme = { portStroke: '#484F58' } as NodeEngineCanvasNodeTheme
+const theme = { portStroke: '#484F58' } as NodeWrightCanvasNodeTheme
 
 const schema: NodeDefinition = {
   type: 'generate',
@@ -48,10 +48,10 @@ function anchor(node: GraphNode, portId: string, direction: 'input' | 'output', 
     y: node.y + y,
     side: direction === 'input' ? 'left' : 'right',
     port: { id: portId, direction },
-  } satisfies NodeEnginePortAnchor
+  } satisfies NodeWrightPortAnchor
 }
 
-function createContext(height = 420): NodeEngineDomNodeRenderContext {
+function createContext(height = 420): NodeWrightDomNodeRenderContext {
   const node: GraphNode = {
     id: 'node',
     type: 'generate',
@@ -73,7 +73,7 @@ function createContext(height = 420): NodeEngineDomNodeRenderContext {
     inputs: [anchor(node, 'prompt', 'input'), anchor(node, 'seed', 'input')],
     outputs: [anchor(node, 'image', 'output')],
     theme,
-    context: {} as NodeEngineDomNodeRenderContext['context'],
+    context: {} as NodeWrightDomNodeRenderContext['context'],
   }
 }
 

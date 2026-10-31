@@ -1,5 +1,5 @@
 import { cloneValue } from '../protocol/index.js'
-import type { GraphSnapshot, NodeEngineExecutionPlan } from '../protocol/index.js'
+import type { GraphSnapshot, NodeWrightExecutionPlan } from '../protocol/index.js'
 import { compileGraph } from './compiler.js'
 import { RuntimeDebugger } from './debugger.js'
 import { RuntimeDefinitions } from './definitions.js'
@@ -10,9 +10,9 @@ import { createRunSession, toRunResult, type RunSession } from './run-session.js
 import { createSequentialScheduler } from './scheduler.js'
 import { deepFreeze } from './snapshot.js'
 import type {
-  NodeEngineBreakpoint,
-  NodeEngineRunResult,
-  NodeEngineRuntimeOptions,
+  NodeWrightBreakpoint,
+  NodeWrightRunResult,
+  NodeWrightRuntimeOptions,
 } from './types.js'
 
 /**
@@ -21,14 +21,14 @@ import type {
  * wires its collaborators together: definitions, the executor, the run recorder, the debugger,
  * and event delivery.
  */
-export class NodeEngineRuntime {
-  private readonly options: NodeEngineRuntimeOptions
+export class NodeWrightRuntime {
+  private readonly options: NodeWrightRuntimeOptions
   private readonly definitions: RuntimeDefinitions
   private readonly debugger: RuntimeDebugger
   private readonly executor: GraphExecutor
   private readonly runs = new Map<string, RunSession>()
 
-  constructor(options: NodeEngineRuntimeOptions) {
+  constructor(options: NodeWrightRuntimeOptions) {
     const events = new RuntimeEventDispatcher(options)
 
     this.options = options
@@ -48,7 +48,7 @@ export class NodeEngineRuntime {
     return compileGraph({ graph, entryNodeId, ...this.definitions.compileOptions() })
   }
 
-  async run(plan: NodeEngineExecutionPlan, input?: unknown): Promise<NodeEngineRunResult> {
+  async run(plan: NodeWrightExecutionPlan, input?: unknown): Promise<NodeWrightRunResult> {
     const graph = deepFreeze(cloneValue(plan.graph))
     const entryNode = graph.nodes.find((node) => node.id === plan.entryNodeId)
 
@@ -96,7 +96,7 @@ export class NodeEngineRuntime {
     this.debugger.cancel(this.ensureRun(runId))
   }
 
-  setBreakpoint(target: NodeEngineBreakpoint): void {
+  setBreakpoint(target: NodeWrightBreakpoint): void {
     this.debugger.setBreakpoint(target)
   }
 
@@ -104,7 +104,7 @@ export class NodeEngineRuntime {
     this.debugger.clearBreakpoint(id)
   }
 
-  getRun(runId: string): NodeEngineRunResult | undefined {
+  getRun(runId: string): NodeWrightRunResult | undefined {
     const run = this.runs.get(runId)
 
     return run ? toRunResult(run) : undefined

@@ -1,10 +1,10 @@
 import {
   createEditorController,
-  type NodeEngineEditorController,
-  type NodeEngineEditorOptions,
-  type NodeEngineEventSink,
-  type NodeEngineViewSnapshot,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightEditorController,
+  type NodeWrightEditorOptions,
+  type NodeWrightEventSink,
+  type NodeWrightViewSnapshot,
+} from '@node-wright/core/view'
 import {
   onBeforeUnmount,
   onMounted,
@@ -14,9 +14,9 @@ import {
   type Ref,
   type ShallowRef,
 } from 'vue'
-import type { NodeEngineProps } from '../types'
+import type { NodeWrightProps } from '../types'
 
-export interface NodeEngineElements {
+export interface NodeWrightElements {
   root: Ref<HTMLElement | null>
   canvas: Ref<HTMLCanvasElement | null>
   gridCanvas: Ref<HTMLCanvasElement | null>
@@ -26,11 +26,11 @@ export interface NodeEngineElements {
  * Binds a framework-independent editor controller to a Vue component: props flow into
  * `update()`, controller snapshots into a shallow ref, and the rendered elements into `mount()`.
  */
-export function useNodeEngineEditor(
-  props: NodeEngineProps,
-  forward: NodeEngineEventSink,
-  elements: NodeEngineElements,
-): { controller: NodeEngineEditorController; view: ShallowRef<NodeEngineViewSnapshot> } {
+export function useNodeWrightEditor(
+  props: NodeWrightProps,
+  forward: NodeWrightEventSink,
+  elements: NodeWrightElements,
+): { controller: NodeWrightEditorController; view: ShallowRef<NodeWrightViewSnapshot> } {
   const controller = createEditorController(resolveOptions(props, forward))
   const view = shallowRef(controller.getSnapshot())
   const unsubscribe = controller.subscribe(() => {
@@ -46,7 +46,7 @@ export function useNodeEngineEditor(
     const { root, canvas, gridCanvas } = elements
 
     if (!root.value || !canvas.value || !gridCanvas.value) {
-      throw new Error('NodeEngine rendered without its root and canvas elements.')
+      throw new Error('NodeWright rendered without its root and canvas elements.')
     }
 
     controller.mount({ root: root.value, canvas: canvas.value, gridCanvas: gridCanvas.value })
@@ -61,9 +61,9 @@ export function useNodeEngineEditor(
 }
 
 function resolveOptions(
-  props: NodeEngineProps,
-  forward: NodeEngineEventSink,
-): NodeEngineEditorOptions {
+  props: NodeWrightProps,
+  forward: NodeWrightEventSink,
+): NodeWrightEditorOptions {
   const { ariaLabel: _ariaLabel, domComponents: _domComponents, ...options } = props
 
   return { ...unwrapProxies(options), onEvent: forward }

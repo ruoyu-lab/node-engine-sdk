@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import '@node-engine-sdk/react/style.css'
+import '@node-wright/react/style.css'
 import '@playground/shared/styles/index.css'
 import { App } from '../app/App'
 

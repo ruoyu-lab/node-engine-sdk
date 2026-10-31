@@ -1,22 +1,22 @@
 /** Declarative description of a DOM node: how its parameter fields look and how rows are laid out. */
 
-export type NodeEngineDomNodeFieldSource = 'auto' | 'params' | 'data' | 'none'
+export type NodeWrightDomNodeFieldSource = 'auto' | 'params' | 'data' | 'none'
 
-export type NodeEngineDomFieldKind =
+export type NodeWrightDomFieldKind =
   'value' | 'text' | 'textarea' | 'number' | 'boolean' | 'select' | 'range' | 'time' | 'image'
 
-export type NodeEngineDomImageFieldFit = 'cover' | 'contain'
+export type NodeWrightDomImageFieldFit = 'cover' | 'contain'
 
 /**
  * Display hint for the field of the node parameter with the same `key`. Hints never declare
  * fields: a hint without a matching `NodeDefinition.parameters` entry is ignored, and the value
  * domain (`options`) always comes from the parameter itself.
  */
-export interface NodeEngineDomFieldDefinition {
+export interface NodeWrightDomFieldDefinition {
   key: string
   label?: string
   description?: string
-  kind?: NodeEngineDomFieldKind
+  kind?: NodeWrightDomFieldKind
   order?: number
   highlighted?: boolean
   placeholder?: string
@@ -29,7 +29,7 @@ export interface NodeEngineDomFieldDefinition {
    */
   aspectRatio?: number
   /** Image field: how the image fits its container. Defaults to 'cover'. */
-  fit?: NodeEngineDomImageFieldFit
+  fit?: NodeWrightDomImageFieldFit
   /** Image field: render a download button. */
   downloadable?: boolean
   /** Image field: render an "open in new tab" button. */
@@ -38,7 +38,7 @@ export interface NodeEngineDomFieldDefinition {
   emptyHint?: string
 }
 
-export interface NodeEngineDomNodeLayoutDefinition {
+export interface NodeWrightDomNodeLayoutDefinition {
   headerHeight?: number
   portTop?: number
   portGap?: number
@@ -53,11 +53,11 @@ export interface NodeEngineDomNodeLayoutDefinition {
   minHeight?: number
 }
 
-export interface NodeEngineDomNodeDefinition {
+export interface NodeWrightDomNodeDefinition {
   title?: string
   subtitle?: string
-  fieldSource?: NodeEngineDomNodeFieldSource
-  fields?: NodeEngineDomFieldDefinition[]
+  fieldSource?: NodeWrightDomNodeFieldSource
+  fields?: NodeWrightDomFieldDefinition[]
   maxVisibleFields?: number
-  layout?: NodeEngineDomNodeLayoutDefinition
+  layout?: NodeWrightDomNodeLayoutDefinition
 }

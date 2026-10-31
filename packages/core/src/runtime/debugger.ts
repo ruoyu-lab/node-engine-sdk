@@ -3,9 +3,9 @@ import type { FunctionDefinition, SubgraphDefinition } from '../semantics/index.
 import type { RuntimeEventDispatcher } from './events.js'
 import { toRunResult, type RunPauseMode, type RunSession } from './run-session.js'
 import type {
-  NodeEngineBreakpoint,
-  NodeEngineRuntimeCallFrame,
-  NodeEngineRuntimeStepMode,
+  NodeWrightBreakpoint,
+  NodeWrightRuntimeCallFrame,
+  NodeWrightRuntimeStepMode,
 } from './types.js'
 
 /** What a breakpoint is matched against. */
@@ -13,7 +13,7 @@ export interface BreakpointTarget {
   node?: GraphNode
   functionDefinition?: FunctionDefinition
   subgraphDefinition?: SubgraphDefinition
-  frame?: NodeEngineRuntimeCallFrame
+  frame?: NodeWrightRuntimeCallFrame
 }
 
 /**
@@ -22,11 +22,11 @@ export interface BreakpointTarget {
  * waits inside the hook until it is resumed, stepped, or cancelled.
  */
 export class RuntimeDebugger {
-  private readonly breakpoints = new Map<string, NodeEngineBreakpoint>()
+  private readonly breakpoints = new Map<string, NodeWrightBreakpoint>()
 
   constructor(private readonly events: RuntimeEventDispatcher) {}
 
-  setBreakpoint(target: NodeEngineBreakpoint): void {
+  setBreakpoint(target: NodeWrightBreakpoint): void {
     const id = target.id ?? target.nodeId ?? target.functionId ?? target.subgraphId
 
     if (!id) {
@@ -60,7 +60,7 @@ export class RuntimeDebugger {
    * Resumes a run until the next step boundary: the next node (`into`), the next node at the
    * paused depth or above (`over`), or the next node above the paused depth (`out`).
    */
-  step(run: RunSession, mode: NodeEngineRuntimeStepMode): void {
+  step(run: RunSession, mode: NodeWrightRuntimeStepMode): void {
     run.stepRequested = true
     run.stepMode = mode
     run.stepTargetDepth =
@@ -86,7 +86,7 @@ export class RuntimeDebugger {
   async beforeNode(
     run: RunSession,
     node: GraphNode,
-    callStack: NodeEngineRuntimeCallFrame[],
+    callStack: NodeWrightRuntimeCallFrame[],
   ): Promise<void> {
     const shouldPause = run.pauseMode === 'manual' || (await this.matchesBreakpoint(run, { node }))
 
@@ -105,7 +105,7 @@ export class RuntimeDebugger {
   async afterNode(
     run: RunSession,
     node: GraphNode,
-    callStack: NodeEngineRuntimeCallFrame[],
+    callStack: NodeWrightRuntimeCallFrame[],
   ): Promise<void> {
     if (!run.stepRequested || run.status === 'cancelled') {
       return
@@ -128,7 +128,7 @@ export class RuntimeDebugger {
   async beforeCall(
     run: RunSession,
     target: BreakpointTarget,
-    callStack: NodeEngineRuntimeCallFrame[],
+    callStack: NodeWrightRuntimeCallFrame[],
   ): Promise<void> {
     if (await this.matchesBreakpoint(run, target)) {
       await this.pauseRun(run, { reason: 'breakpoint', callStack })
@@ -175,7 +175,7 @@ export class RuntimeDebugger {
     pause: {
       node?: GraphNode
       reason: RunPauseMode
-      callStack: NodeEngineRuntimeCallFrame[]
+      callStack: NodeWrightRuntimeCallFrame[]
     },
   ): Promise<void> {
     run.status = 'paused'

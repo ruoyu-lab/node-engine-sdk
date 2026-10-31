@@ -6,7 +6,7 @@ import type { HybridFlowPluginOptions, PortKind } from './types.js'
 
 export function createHybridFlowPlugin(options: HybridFlowPluginOptions = {}): GraphPlugin {
   return createConnectionRulesPlugin(createHybridFlowConnectionRules(options), {
-    name: 'node-engine:hybrid-flow',
+    name: 'node-wright:hybrid-flow',
     validateRequiredInputs: true,
   })
 }

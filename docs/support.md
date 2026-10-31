@@ -1,25 +1,25 @@
 # 运行环境与兼容范围
 
-Node Engine SDK 只发布一套严格的 ESM / ES2022 产物，不提供 CommonJS、旧浏览器转译包、polyfill 或双轨兼容入口。
+Node Wright 只发布一套严格的 ESM / ES2022 产物，不提供 CommonJS、旧浏览器转译包、polyfill 或双轨兼容入口。
 
 ## 工具链
 
-| 项目       | 最低版本 / 契约                 | 验证方式                                                                                                                                                                            |
-| ---------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node.js    | `>=20.19.0`                     | CI 使用 Node.js 22 执行安装、质量检查、构建、测试、打包与消费者测试                                                                                                                 |
-| npm        | `>=10.0.0`                      | 使用 lockfile 与 `npm ci` 做可重复安装                                                                                                                                              |
-| TypeScript | 声明文件按 ES2022、严格模式生成 | 仓库使用 TypeScript 5.8+；打包消费者测试以 NodeNext 解析做类型检查                                                                                                                  |
-| Vue        | `^3.5.13`                       | `@node-engine-sdk/vue` 将 `vue` 声明为 peer dependency，不打包 Vue；消费者测试覆盖 Vue SSR                                                                                          |
-| React      | `^18.3.0 \|\| ^19.0.0`          | `@node-engine-sdk/react` 将 `react`、`react-dom` 声明为 peer（`@types/react` 为可选 peer）；组件测试运行在 React 19，打包消费者测试覆盖 React 19 与 React 18 的类型检查和服务端渲染 |
+| 项目       | 最低版本 / 契约                 | 验证方式                                                                                                                                                                        |
+| ---------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js    | `>=20.19.0`                     | CI 使用 Node.js 22 执行安装、质量检查、构建、测试、打包与消费者测试                                                                                                             |
+| npm        | `>=10.0.0`                      | 使用 lockfile 与 `npm ci` 做可重复安装                                                                                                                                          |
+| TypeScript | 声明文件按 ES2022、严格模式生成 | 仓库使用 TypeScript 5.8+；打包消费者测试以 NodeNext 解析做类型检查                                                                                                              |
+| Vue        | `^3.5.13`                       | `@node-wright/vue` 将 `vue` 声明为 peer dependency，不打包 Vue；消费者测试覆盖 Vue SSR                                                                                          |
+| React      | `^18.3.0 \|\| ^19.0.0`          | `@node-wright/react` 将 `react`、`react-dom` 声明为 peer（`@types/react` 为可选 peer）；组件测试运行在 React 19，打包消费者测试覆盖 React 19 与 React 18 的类型检查和服务端渲染 |
 
-只有 `@node-engine-sdk/vue` 需要宿主提供 Vue，只有 `@node-engine-sdk/react` 需要宿主提供 React；`@node-engine-sdk/presets` 只依赖 `@node-engine-sdk/core`。core 的 protocol、store、semantics、runtime、layout、debug 子路径以及 `@node-engine-sdk/presets` 都不依赖 DOM 与 UI 框架，可在 Node.js、Worker 等无界面环境运行；只有 `@node-engine-sdk/core/view` 使用 DOM API，且不依赖任何 UI 框架。
+只有 `@node-wright/vue` 需要宿主提供 Vue，只有 `@node-wright/react` 需要宿主提供 React；`@node-wright/presets` 只依赖 `@node-wright/core`。core 的 protocol、store、semantics、runtime、layout、debug 子路径以及 `@node-wright/presets` 都不依赖 DOM 与 UI 框架，可在 Node.js、Worker 等无界面环境运行；只有 `@node-wright/core/view` 使用 DOM API，且不依赖任何 UI 框架。
 
 ## 模块格式
 
 - 发布包为 ESM-only（`"type": "module"`），使用标准 `exports`、`main`、`module`、`types` 入口；不发布 CommonJS，不做 `require()` 回退。
 - JavaScript 构建目标为 ES2022。
 - 包内相对 ESM 引用带 `.js` 扩展名；发布 tarball 只包含 `package.json`、`README.md`、`LICENSE` 与 `dist`，并在隔离消费者项目中完成 NodeNext 类型检查与运行时导入。
-- 样式是显式的副作用导入：`@node-engine-sdk/vue/style.css`、`@node-engine-sdk/react/style.css` 或 `@node-engine-sdk/core/view/style.css`；各包 `sideEffects` 只声明这些样式文件。
+- 样式是显式的副作用导入：`@node-wright/vue/style.css`、`@node-wright/react/style.css` 或 `@node-wright/core/view/style.css`；各包 `sideEffects` 只声明这些样式文件。
 
 ## 浏览器
 

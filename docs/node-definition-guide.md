@@ -2,19 +2,19 @@
 
 一个可复用的业务节点由四层组成，按需实现其中几层即可：
 
-| 层         | 归属                                                                | 职责                                                    |
-| ---------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
-| 协议定义   | `@node-engine-sdk/core/protocol`、`@node-engine-sdk/core/semantics` | 节点 type、端口、参数 schema、默认尺寸与数据、能力      |
-| 编辑器渲染 | `@node-engine-sdk/core/view` 类型 + 适配层组件                      | DOM 节点字段与布局、自定义组件、Canvas 渲染、节点编辑器 |
-| 语义规则   | `@node-engine-sdk/core/semantics`                                   | 端口 kind、数据类型、容量、必填输入、环路约束、业务规则 |
-| 运行行为   | `@node-engine-sdk/core/runtime`                                     | handler、变量、函数与子图调用、异步与取消               |
+| 层         | 归属                                                        | 职责                                                    |
+| ---------- | ----------------------------------------------------------- | ------------------------------------------------------- |
+| 协议定义   | `@node-wright/core/protocol`、`@node-wright/core/semantics` | 节点 type、端口、参数 schema、默认尺寸与数据、能力      |
+| 编辑器渲染 | `@node-wright/core/view` 类型 + 适配层组件                  | DOM 节点字段与布局、自定义组件、Canvas 渲染、节点编辑器 |
+| 语义规则   | `@node-wright/core/semantics`                               | 端口 kind、数据类型、容量、必填输入、环路约束、业务规则 |
+| 运行行为   | `@node-wright/core/runtime`                                 | handler、变量、函数与子图调用、异步与取消               |
 
 下面以一个“格式化工单”节点为例。
 
 ## 1. 协议定义
 
 ```ts
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 
 export const TICKET_FORMAT_NODE_TYPE = 'ticket:format'
 
@@ -76,7 +76,7 @@ export const ticketFormatNode: SemanticNodeDefinition = {
 ### 默认 DOM 节点
 
 ```ts
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 
 export const ticketNodeTypes: NodeTypeRegistry = {
   'ticket:format': {
@@ -99,7 +99,7 @@ export const ticketNodeTypes: NodeTypeRegistry = {
 ### 自定义 DOM 组件
 
 ```ts
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 
 declare const ticketApi: { get(id: string): Promise<unknown> }
 declare function openTicketPicker(): void
@@ -120,7 +120,7 @@ export const ticketCardNodeTypes: NodeTypeRegistry = {
 ### Canvas 节点
 
 ```ts
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 
 export const badgeNodeTypes: NodeTypeRegistry = {
   'ticket:badge': {
@@ -148,7 +148,7 @@ export const badgeNodeTypes: NodeTypeRegistry = {
 原语流程插件已经覆盖方向、kind、数据类型、容量、环路与必填输入。业务规则可以做成一个额外的规则插件，与 preset 自带的流程插件并存（插件名必须唯一）：
 
 ```ts
-import { createConnectionRulesPlugin, defineConnectionRule } from '@node-engine-sdk/core/semantics'
+import { createConnectionRulesPlugin, defineConnectionRule } from '@node-wright/core/semantics'
 
 export const ticketRules = createConnectionRulesPlugin(
   [
@@ -162,14 +162,14 @@ export const ticketRules = createConnectionRulesPlugin(
 )
 ```
 
-也可以把规则交给 `createDataflowPlugin({ rules })`，但它与 preset 中的数据流插件同名（`node-engine:dataflow`），此时应替换而不是追加 preset 的 `plugins`。同一套规则同时用于拖线校验与整图诊断，见 [semantics-api.md](./semantics-api.md)。
+也可以把规则交给 `createDataflowPlugin({ rules })`，但它与 preset 中的数据流插件同名（`node-wright:dataflow`），此时应替换而不是追加 preset 的 `plugins`。同一套规则同时用于拖线校验与整图诊断，见 [semantics-api.md](./semantics-api.md)。
 
 ## 4. Runtime handler
 
 ```ts
-import type { NodeEngineRuntimeNodeDefinition } from '@node-engine-sdk/core/runtime'
+import type { NodeWrightRuntimeNodeDefinition } from '@node-wright/core/runtime'
 
-export const ticketFormatRuntime: NodeEngineRuntimeNodeDefinition = {
+export const ticketFormatRuntime: NodeWrightRuntimeNodeDefinition = {
   type: 'ticket:format',
   handler({ values, params }) {
     const template = String(params.template ?? '{{title}}')
@@ -187,12 +187,12 @@ handler 只处理运行行为，不读取 DOM、视口、选区或组件状态�
 ## 5. 打包
 
 ```ts
-import type { GraphPlugin } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineRuntimeNodeDefinition } from '@node-engine-sdk/core/runtime'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
+import type { GraphPlugin } from '@node-wright/core/protocol'
+import type { NodeWrightRuntimeNodeDefinition } from '@node-wright/core/runtime'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 
 declare const ticketFormatNode: SemanticNodeDefinition
-declare const ticketFormatRuntime: NodeEngineRuntimeNodeDefinition
+declare const ticketFormatRuntime: NodeWrightRuntimeNodeDefinition
 
 export const ticketNodeDefinitions = [ticketFormatNode]
 export const ticketRuntimeDefinitions = [ticketFormatRuntime]
@@ -205,26 +205,23 @@ export function createTicketNodesPlugin(): GraphPlugin {
 }
 ```
 
-节点定义与 handler 不依赖任何 UI 框架，可以在服务端执行；DOM 渲染配置只依赖 `@node-engine-sdk/core/view` 的类型，Vue 与 React 共用。只有自定义 DOM 组件需要按框架分别实现。
+节点定义与 handler 不依赖任何 UI 框架，可以在服务端执行；DOM 渲染配置只依赖 `@node-wright/core/view` 的类型，Vue 与 React 共用。只有自定义 DOM 组件需要按框架分别实现。
 
 ## 6. 在编辑器与 Runtime 中使用
 
 把业务定义与 preset 合并一次（模块级），再交给编辑器与 Runtime：
 
 ```ts
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import {
-  NodeEngineRuntime,
-  type NodeEngineRuntimeNodeDefinition,
-} from '@node-engine-sdk/core/runtime'
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
-import type { NodeEnginePlugin, NodeTypeRegistry } from '@node-engine-sdk/core/view'
-import { createDataflowPreset } from '@node-engine-sdk/presets'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { NodeWrightRuntime, type NodeWrightRuntimeNodeDefinition } from '@node-wright/core/runtime'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
+import type { NodeWrightPlugin, NodeTypeRegistry } from '@node-wright/core/view'
+import { createDataflowPreset } from '@node-wright/presets'
 
 declare const ticketNodeDefinitions: SemanticNodeDefinition[]
-declare const ticketRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[]
+declare const ticketRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[]
 declare const ticketNodeTypes: NodeTypeRegistry
-declare const ticketRules: NodeEnginePlugin
+declare const ticketRules: NodeWrightPlugin
 
 const base = createDataflowPreset()
 
@@ -234,8 +231,8 @@ export const editorConfig = {
   plugins: [...(base.plugins ?? []), ticketRules],
 }
 
-export function createTicketRuntime(graph: GraphSnapshot): NodeEngineRuntime {
-  return new NodeEngineRuntime({
+export function createTicketRuntime(graph: GraphSnapshot): NodeWrightRuntime {
+  return new NodeWrightRuntime({
     graph,
     definitions: editorConfig.nodeDefinitions,
     runtimeDefinitions: [...base.runtimeDefinitions, ...ticketRuntimeDefinitions],
@@ -243,11 +240,11 @@ export function createTicketRuntime(graph: GraphSnapshot): NodeEngineRuntime {
 }
 ```
 
-Vue：`<NodeEngine v-model:graph="graph" v-bind="editorConfig" />`；React：`<NodeEngine graph={graph} onGraphChange={setGraph} {...editorConfig} />`。
+Vue：`<NodeWright v-model:graph="graph" v-bind="editorConfig" />`；React：`<NodeWright graph={graph} onGraphChange={setGraph} {...editorConfig} />`。
 
 ## 设计建议
 
 - 节点 type 使用稳定命名空间（如 `ticket:format`），端口 id 稳定且不使用显示文本。
 - 协议定义只放图结构、参数 schema、默认数据与能力；DOM 字段只负责编辑体验；handler 不依赖 UI。
 - 语义规则按需组合，不要把某个业务流程写成通用的硬规则。
-- 一组节点形成稳定领域后，在业务方自己的命名空间下拆成独立包；SDK 不为业务领域预留包名。
+- 一组节点形成稳定领域后，在业务方自己的命名空间下拆成独立包；Node Wright 不为业务领域预留包名。

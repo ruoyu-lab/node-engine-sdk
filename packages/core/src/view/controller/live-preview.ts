@@ -9,12 +9,12 @@ import type { GraphStore } from '../../store/index.js'
 import type { ReadonlySignal } from '../reactive.js'
 import type { PortLayout } from '../rendering/node-layout.js'
 import type {
-  NodeEngineGroupDragEvent,
-  NodeEngineGroupResizeEvent,
-  NodeEngineInteractionState,
-  NodeEngineNodeDragEvent,
-  NodeEngineNodeResizeEvent,
-  NodeEngineViewportInteractionEvent,
+  NodeWrightGroupDragEvent,
+  NodeWrightGroupResizeEvent,
+  NodeWrightInteractionState,
+  NodeWrightNodeDragEvent,
+  NodeWrightNodeResizeEvent,
+  NodeWrightViewportInteractionEvent,
   ViewportState,
 } from '../types/index.js'
 import type { DragPreview } from './interactions/drag.js'
@@ -32,15 +32,15 @@ export interface LivePreview {
   getNode: (nodeId: string) => GraphNode | undefined
   getGroup: (groupId: string) => GraphGroup | undefined
   getViewport: () => ViewportState
-  nodeDragEvent: (nodeIds: string[], delta: XYPosition) => NodeEngineNodeDragEvent
+  nodeDragEvent: (nodeIds: string[], delta: XYPosition) => NodeWrightNodeDragEvent
   groupDragEvent: (
     groupIds: string[],
     nodeIds: string[],
     delta: XYPosition,
-  ) => NodeEngineGroupDragEvent
-  nodeResizeEvent: (nodeId: string) => NodeEngineNodeResizeEvent
-  groupResizeEvent: (groupId: string) => NodeEngineGroupResizeEvent
-  viewportEvent: (source: string) => NodeEngineViewportInteractionEvent
+  ) => NodeWrightGroupDragEvent
+  nodeResizeEvent: (nodeId: string) => NodeWrightNodeResizeEvent
+  groupResizeEvent: (groupId: string) => NodeWrightGroupResizeEvent
+  viewportEvent: (source: string) => NodeWrightViewportInteractionEvent
 }
 
 export function createLivePreview(options: {
@@ -48,7 +48,7 @@ export function createLivePreview(options: {
   liveViewport: ReadonlySignal<ViewportState>
   drag: DragPreview
   resize: ResizePreview
-  getInteractionState: () => NodeEngineInteractionState
+  getInteractionState: () => NodeWrightInteractionState
 }): LivePreview {
   function applyToNode(node: GraphNode): GraphNode {
     return options.resize.applyToNode(options.drag.applyToNode(node))

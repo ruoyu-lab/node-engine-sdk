@@ -1,4 +1,4 @@
-import type { GraphPlugin, NodeParameterDefinition } from '@node-engine-sdk/core/protocol'
+import type { GraphPlugin, NodeParameterDefinition } from '@node-wright/core/protocol'
 import {
   EXEC_IN_PORT_ID,
   EXEC_THEN_PORT_ID,
@@ -6,13 +6,9 @@ import {
   VARIABLE_SCOPE_NODE,
   VARIABLE_SCOPE_RUN,
   type SemanticNodeDefinition,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 
-export {
-  EXEC_ERROR_PORT_ID,
-  EXEC_IN_PORT_ID,
-  EXEC_THEN_PORT_ID,
-} from '@node-engine-sdk/core/semantics'
+export { EXEC_ERROR_PORT_ID, EXEC_IN_PORT_ID, EXEC_THEN_PORT_ID } from '@node-wright/core/semantics'
 
 export const EXEC_EVENT_NODE_TYPE = 'exec:event'
 export const EXEC_SEQUENCE_NODE_TYPE = 'exec:sequence'
@@ -170,7 +166,7 @@ export const execflowNodeDefinitions: SemanticNodeDefinition[] = [
 
 export function createExecflowNodesPlugin(options: ExecflowNodesOptions = {}): GraphPlugin {
   return {
-    name: '@node-engine-sdk/presets/nodes/execflow',
+    name: '@node-wright/presets/nodes/execflow',
     contributes: {
       nodeDefinitions: filterExecflowNodeDefinitions(options),
     },

@@ -1,6 +1,6 @@
-import type { GraphMetadata, GraphSnapshot, GraphValue } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
-import type { NodeEngineNodeStatus } from '@node-engine-sdk/core/view'
+import type { GraphMetadata, GraphSnapshot, GraphValue } from '@node-wright/core/protocol'
+import type { NodeWrightRunResult } from '@node-wright/core/runtime'
+import type { NodeWrightNodeStatus } from '@node-wright/core/view'
 import { AI_IMAGE_DISPLAY_NODE_TYPE } from '../business/ai-image'
 
 /**
@@ -9,7 +9,7 @@ import { AI_IMAGE_DISPLAY_NODE_TYPE } from '../business/ai-image'
  */
 export function applyRunResultToGraph(
   graph: GraphSnapshot,
-  result: NodeEngineRunResult,
+  result: NodeWrightRunResult,
 ): GraphSnapshot {
   const updates = new Map<string, string>()
 
@@ -52,12 +52,12 @@ function isMetadataRecord(value: GraphValue | undefined): value is GraphMetadata
   return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 
-export const NO_NODE_STATUS: Readonly<Record<string, NodeEngineNodeStatus>> = Object.freeze({})
+export const NO_NODE_STATUS: Readonly<Record<string, NodeWrightNodeStatus>> = Object.freeze({})
 
 /** The editor's `nodeStatus` for a run: every node the run reached, by its runtime status. */
 export function resolveRunNodeStatus(
-  result: NodeEngineRunResult | null,
-): Readonly<Record<string, NodeEngineNodeStatus>> {
+  result: NodeWrightRunResult | null,
+): Readonly<Record<string, NodeWrightNodeStatus>> {
   if (!result) {
     return NO_NODE_STATUS
   }

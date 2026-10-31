@@ -1,19 +1,19 @@
 import { describe, expect, it, vi } from 'vitest'
 import {
   GraphParseError,
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   parseGraph,
   repairGraph,
   validateGraph,
   type ConnectionContext,
   type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { GraphStore } from '@node-engine-sdk/core/store'
+} from '@node-wright/core/protocol'
+import { GraphStore } from '@node-wright/core/store'
 import {
   createHybridFlowPlugin,
   defineConnectionRule,
   type SemanticNodeDefinition,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 
 const nodeDefinitions: SemanticNodeDefinition[] = [
   {
@@ -29,7 +29,7 @@ const nodeDefinitions: SemanticNodeDefinition[] = [
 
 function createGraph(edges: GraphSnapshot['edges'] = []): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'a', type: 'step', x: 0, y: 0 },
       { id: 'b', type: 'step', x: 200, y: 0 },

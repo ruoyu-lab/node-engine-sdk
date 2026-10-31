@@ -3,11 +3,11 @@ import type { GraphStore } from '../../store/index.js'
 import { batch, type ReadonlySignal } from '../reactive.js'
 import type { PortLayout, ResolvedNodeView } from '../rendering/node-layout.js'
 import type {
-  NodeEngineCanvasGroupHitAreaKind,
-  NodeEngineContextTarget,
-  NodeEngineDomNodeResizeHandle,
-  NodeEngineEditorHost,
-  NodeEngineEventSink,
+  NodeWrightCanvasGroupHitAreaKind,
+  NodeWrightContextTarget,
+  NodeWrightDomNodeResizeHandle,
+  NodeWrightEditorHost,
+  NodeWrightEventSink,
 } from '../types/index.js'
 import type { ContextMenuModel } from './context-menu.js'
 import type { EdgeCommands } from './edge-commands.js'
@@ -28,7 +28,7 @@ import type { NodeEditorModel } from './node-editor.js'
 import type { NodeViews } from './node-views.js'
 import type { SelectionModel } from './selection.js'
 import type { NodeStackOrder } from './stack-order.js'
-import type { ResolvedNodeEngineBehaviors } from './theme.js'
+import type { ResolvedNodeWrightBehaviors } from './theme.js'
 
 /**
  * Routes canvas and DOM node pointer input to gestures: ports start connections, nodes select
@@ -44,7 +44,7 @@ export interface CanvasGestures {
   nodeResizePointerDown: (
     nodeId: string,
     event: PointerEvent,
-    handle: NodeEngineDomNodeResizeHandle,
+    handle: NodeWrightDomNodeResizeHandle,
   ) => boolean
   startPortConnection: (nodeId: string, portId: string, event: PointerEvent) => boolean
   finishPortConnection: (nodeId: string, portId: string, event: PointerEvent) => boolean
@@ -60,11 +60,11 @@ export interface CanvasGestures {
 }
 
 export function createCanvasGestures(options: {
-  host: ReadonlySignal<NodeEngineEditorHost | null>
+  host: ReadonlySignal<NodeWrightEditorHost | null>
   state: InteractionState
   getStore: () => GraphStore
   readonly: () => boolean
-  behaviors: ReadonlySignal<ResolvedNodeEngineBehaviors>
+  behaviors: ReadonlySignal<ResolvedNodeWrightBehaviors>
   getScreenPoint: (event: Pick<MouseEvent, 'clientX' | 'clientY'>) => XYPosition
   screenToGraph: (point: XYPosition) => XYPosition
   hitTester: CanvasHitTester
@@ -83,7 +83,7 @@ export function createCanvasGestures(options: {
   pan: PanGesture
   wheel: WheelGesture
   frame: InteractionFrame
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): CanvasGestures {
   const { state } = options
   let session: PointerSession | null = null
@@ -94,7 +94,7 @@ export function createCanvasGestures(options: {
 
   function beginPointerSession(event: PointerEvent): void {
     if (!session) {
-      throw new Error('NodeEngine editor gestures require a mounted host.')
+      throw new Error('NodeWright editor gestures require a mounted host.')
     }
 
     session.start(event)
@@ -182,7 +182,7 @@ export function createCanvasGestures(options: {
     group: GraphGroup,
     event: PointerEvent,
     areaId: string,
-    areaKind: NodeEngineCanvasGroupHitAreaKind,
+    areaKind: NodeWrightCanvasGroupHitAreaKind,
   ): void {
     prepare({ editor: true })
 
@@ -269,7 +269,7 @@ export function createCanvasGestures(options: {
     options.pan.start(options.getScreenPoint(event), clearSelectionSource)
   }
 
-  function openContextMenu(target: NodeEngineContextTarget, event: MouseEvent): void {
+  function openContextMenu(target: NodeWrightContextTarget, event: MouseEvent): void {
     options.contextMenu.open(target, options.getScreenPoint(event))
   }
 

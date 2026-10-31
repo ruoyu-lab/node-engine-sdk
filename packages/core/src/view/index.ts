@@ -1,5 +1,5 @@
 export { createEditorController } from './controller/editor-controller.js'
-export { NODE_ENGINE_DEFAULT_DOM_COMPONENT } from './controller/dom-layer.js'
+export { NODE_WRIGHT_DEFAULT_DOM_COMPONENT } from './controller/dom-layer.js'
 export { resolveColorScheme } from './controller/theme.js'
 export * from './dom-model/index.js'
 export * from './types/index.js'

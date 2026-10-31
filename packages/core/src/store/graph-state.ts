@@ -1,6 +1,6 @@
 import {
   GraphIndex,
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   cloneGraph,
   cloneValue,
   resolveNodePorts,
@@ -106,7 +106,7 @@ export function createSequentialIdFactory(
 
 function createEmptyGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],

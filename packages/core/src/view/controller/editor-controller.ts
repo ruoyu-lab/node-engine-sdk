@@ -2,12 +2,12 @@ import { resolveNodeAccent } from '../dom-model/definition.js'
 import { batch, computed, effect, signal } from '../reactive.js'
 import { getGraphBounds } from '../rendering/node-layout.js'
 import type {
-  NodeEngineApi,
-  NodeEngineEditorController,
-  NodeEngineEditorHost,
-  NodeEngineEditorOptions,
-  NodeEngineHistoryState,
-  NodeEngineRenderContext,
+  NodeWrightApi,
+  NodeWrightEditorController,
+  NodeWrightEditorHost,
+  NodeWrightEditorOptions,
+  NodeWrightHistoryState,
+  NodeWrightRenderContext,
 } from '../types/index.js'
 import { createEditorApi } from './api.js'
 import { createCanvasGestures } from './canvas-gestures.js'
@@ -57,14 +57,14 @@ import { createEditorVisibility, type RenderSurface } from './visibility.js'
  * `update()` and hand the rendered elements to `mount()`.
  */
 export function createEditorController(
-  input: NodeEngineEditorOptions = {},
-): NodeEngineEditorController {
+  input: NodeWrightEditorOptions = {},
+): NodeWrightEditorController {
   const settings = createEditorSettings(input)
   const { options, readonly, isReadonly, behaviors, groupBehaviors, getSnapping, getZoomRange } =
     settings
   const { graphTheme, nodeTheme, edgeTheme, groupTheme } = settings
   const emit = createEventEmitter(() => options.peek().onEvent)
-  const host = signal<NodeEngineEditorHost | null>(null)
+  const host = signal<NodeWrightEditorHost | null>(null)
   const getScheduler = () => hostBinding.scheduler()
 
   const binding = createStoreBinding({ initial: options.peek(), emit })
@@ -100,13 +100,13 @@ export function createEditorController(
     options,
     builtInHotkeys: createBuiltInHotkeys(clipboard.hasContent),
   })
-  const history = computed<NodeEngineHistoryState>(() => {
+  const history = computed<NodeWrightHistoryState>(() => {
     void binding.graph.value
     const store = getStore()
 
     return { canUndo: store.canUndo, canRedo: store.canRedo }
   })
-  const renderContext = computed<NodeEngineRenderContext>(() => ({
+  const renderContext = computed<NodeWrightRenderContext>(() => ({
     graph: binding.graph.value,
     selection: selection.selection.value,
     viewport: liveViewport.value,
@@ -222,7 +222,7 @@ export function createEditorController(
     const ctx = host.peek()?.canvas.getContext('2d')
 
     if (!ctx) {
-      throw new Error('NodeEngine canvas has no 2D rendering context.')
+      throw new Error('NodeWright canvas has no 2D rendering context.')
     }
 
     return ctx
@@ -397,7 +397,7 @@ export function createEditorController(
     },
     emit,
   })
-  const api: NodeEngineApi = createEditorApi({
+  const api: NodeWrightApi = createEditorApi({
     getStore,
     viewport,
     viewportCommands,
@@ -509,7 +509,7 @@ export function createEditorController(
 
   function assertUsable(action: string): void {
     if (destroyed) {
-      throw new Error(`Cannot ${action} a destroyed NodeEngine editor controller.`)
+      throw new Error(`Cannot ${action} a destroyed NodeWright editor controller.`)
     }
   }
 

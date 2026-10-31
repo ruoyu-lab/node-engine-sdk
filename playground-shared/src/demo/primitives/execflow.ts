@@ -1,5 +1,5 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { EXEC_IN_PORT_ID, EXEC_THEN_PORT_ID } from '@node-engine-sdk/core/semantics'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { EXEC_IN_PORT_ID, EXEC_THEN_PORT_ID } from '@node-wright/core/semantics'
 import {
   PRESET_NODE_ACCENTS,
   EXEC_BRANCH_NODE_TYPE,
@@ -10,7 +10,7 @@ import {
   EXEC_SEQUENCE_NODE_TYPE,
   EXEC_SET_VARIABLE_NODE_TYPE,
   createExecflowPreset,
-} from '@node-engine-sdk/presets'
+} from '@node-wright/presets'
 import type { DemoScenario } from '../scenarios'
 import { dataEdge, execEdge, groupOf, primitiveNode, snapshotOf } from './graph'
 

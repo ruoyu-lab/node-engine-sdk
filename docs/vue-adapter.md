@@ -1,35 +1,35 @@
-# Vue 适配层（`@node-engine-sdk/vue`）
+# Vue 适配层（`@node-wright/vue`）
 
-`@node-engine-sdk/vue` 是官方 Vue 3 适配层，把底层 SDK `@node-engine-sdk/core/view` 的编辑器控制器渲染为 Vue 3 组件。编辑器状态与交互全部在控制器中，本包只负责渲染快照、转发事件、通过组件 ref 暴露 `NodeEngineApi`，以及注册 DOM 节点组件。
+`@node-wright/vue` 是官方 Vue 3 适配层，把底层核心 `@node-wright/core/view` 的编辑器控制器渲染为 Vue 3 组件。编辑器状态与交互全部在控制器中，本包只负责渲染快照、转发事件、通过组件 ref 暴露 `NodeWrightApi`，以及注册 DOM 节点组件。
 
 ## 安装与导入
 
-- 依赖：`@node-engine-sdk/core`（随本包安装）。
+- 依赖：`@node-wright/core`（随本包安装）。
 - peer dependency：`vue ^3.5.13`，由宿主应用提供，本包不打包 Vue。
-- 样式：`@node-engine-sdk/vue/style.css`（已打包 `@node-engine-sdk/core/view/style.css`），需要显式导入一次。
+- 样式：`@node-wright/vue/style.css`（已打包 `@node-wright/core/view/style.css`），需要显式导入一次。
 
 ```ts
 import {
   DefaultDomNode,
-  NodeEngine,
-  type NodeEngineEmitMap,
-  type NodeEngineProps,
-} from '@node-engine-sdk/vue'
-import '@node-engine-sdk/vue/style.css'
+  NodeWright,
+  type NodeWrightEmitMap,
+  type NodeWrightProps,
+} from '@node-wright/vue'
+import '@node-wright/vue/style.css'
 ```
 
 | 导出                | 说明                                                                         |
 | ------------------- | ---------------------------------------------------------------------------- |
-| `NodeEngine`        | 编辑器组件                                                                   |
-| `DefaultDomNode`    | 默认 DOM 节点组件（props 为 `NodeEngineDomNodeProps`），可在自定义节点中复用 |
-| `NodeEngineProps`   | 组件 props 类型                                                              |
-| `NodeEngineEmitMap` | 组件事件类型                                                                 |
+| `NodeWright`        | 编辑器组件                                                                   |
+| `DefaultDomNode`    | 默认 DOM 节点组件（props 为 `NodeWrightDomNodeProps`），可在自定义节点中复用 |
+| `NodeWrightProps`   | 组件 props 类型                                                              |
+| `NodeWrightEmitMap` | 组件事件类型                                                                 |
 
-编辑器 API、事件 payload 与扩展类型从 `@node-engine-sdk/core/view` 导入，图类型从 `@node-engine-sdk/core/protocol` 导入。最小可运行示例见 [README](../README.zh-CN.md#vue-3) 与 [getting-started.md](./getting-started.md#2a-vue-编辑器)。
+编辑器 API、事件 payload 与扩展类型从 `@node-wright/core/view` 导入，图类型从 `@node-wright/core/protocol` 导入。最小可运行示例见 [README](../README.zh-CN.md#vue-3) 与 [getting-started.md](./getting-started.md#2a-vue-编辑器)。
 
 ## Props
 
-`NodeEngineProps` = `NodeEngineEditorOptions`（不含 `onEvent`）+ 以下 Vue 专属 props。全部编辑器选项的类型、默认值与语义见 [controller-api.md](./controller-api.md#编辑器选项)。
+`NodeWrightProps` = `NodeWrightEditorOptions`（不含 `onEvent`）+ 以下 Vue 专属 props。全部编辑器选项的类型、默认值与语义见 [controller-api.md](./controller-api.md#编辑器选项)。
 
 | Prop            | 类型                        | 默认                  | 说明                                              |
 | --------------- | --------------------------- | --------------------- | ------------------------------------------------- |
@@ -47,17 +47,17 @@ import '@node-engine-sdk/vue/style.css'
 ## `v-model:graph`
 
 ```vue
-<NodeEngine v-model:graph="graph" :node-definitions="nodeDefinitions" />
+<NodeWright v-model:graph="graph" :node-definitions="nodeDefinitions" />
 ```
 
 编辑器内每次图变化（对应 Store 的 `graph:changed`）发出 `update:graph`。父组件把收到的同一个图对象传回 `graph` 时被识别为回声，不会替换图，撤销历史得以保留；传入其他图对象（例如重置、加载）时替换图并清空历史。需要可撤销的整图替换时使用 `api.graph.apply(next)`。
 
 ## 事件
 
-除图变化改名为 `update:graph` 外，事件名与 [`NodeEngineEventMap`](./controller-api.md#事件) 完全一致（kebab-case），参数相同：
+除图变化改名为 `update:graph` 外，事件名与 [`NodeWrightEventMap`](./controller-api.md#事件) 完全一致（kebab-case），参数相同：
 
 ```vue
-<NodeEngine
+<NodeWright
   v-model:graph="graph"
   @selection-change="(selection, graph, source) => onSelection(selection)"
   @node-drag-end="(event) => save(event.graph)"
@@ -66,18 +66,18 @@ import '@node-engine-sdk/vue/style.css'
 />
 ```
 
-`NodeEngineEmitMap` 是 `defineEmits` 使用的完整类型映射，`vue-tsc` 会检查监听器的参数类型。
+`NodeWrightEmitMap` 是 `defineEmits` 使用的完整类型映射，`vue-tsc` 会检查监听器的参数类型。
 
 ## 组件 ref
 
-组件通过 `defineExpose` 暴露 [`NodeEngineApi`](./controller-api.md#nodeengineapi-全表)：
+组件通过 `defineExpose` 暴露 [`NodeWrightApi`](./controller-api.md#nodewrightapi-全表)：
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { NodeEngineApi } from '@node-engine-sdk/core/view'
+import type { NodeWrightApi } from '@node-wright/core/view'
 
-const editor = ref<NodeEngineApi | null>(null)
+const editor = ref<NodeWrightApi | null>(null)
 
 function fit(): void {
   editor.value?.view.fit.graph(72)
@@ -85,14 +85,14 @@ function fit(): void {
 </script>
 
 <template>
-  <NodeEngine ref="editor" />
+  <NodeWright ref="editor" />
 </template>
 ```
 
 API 在 `setup` 中创建；依赖宿主元素的方法（视口适配、坐标换算等）在组件挂载后才有意义。`@mount` 事件在编辑器挂载到渲染出的元素后发出并带上 API，是首次适配视口的位置（`:key` 变化重新挂载时也会再次发出）：
 
 ```vue
-<NodeEngine v-model:graph="graph" @mount="(api) => api.view.fit.graph(72)" />
+<NodeWright v-model:graph="graph" @mount="(api) => api.view.fit.graph(72)" />
 ```
 
 ## 插槽
@@ -105,7 +105,7 @@ API 在 `setup` 中创建；依赖宿主元素的方法（视口适配、坐标�
 `overlay` 适合放工具栏、右键菜单、内联节点编辑器等：
 
 ```vue
-<NodeEngine v-model:graph="graph" :context-menu-items="contextMenuItems">
+<NodeWright v-model:graph="graph" :context-menu-items="contextMenuItems">
   <template #overlay="{ api, contextMenuState }">
     <ul
       v-if="contextMenuState"
@@ -122,15 +122,15 @@ API 在 `setup` 中创建；依赖宿主元素的方法（视口适配、坐标�
       </li>
     </ul>
   </template>
-</NodeEngine>
+</NodeWright>
 ```
 
 ## 自定义 DOM 节点
 
-在节点类型中用 `dom.component` 指定组件键，并通过 `domComponents` 注册对应组件。未注册的键在渲染该节点时抛出 `NodeEngine has no DOM node component registered as "<key>".`。
+在节点类型中用 `dom.component` 指定组件键，并通过 `domComponents` 注册对应组件。未注册的键在渲染该节点时抛出 `NodeWright has no DOM node component registered as "<key>".`。
 
 ```ts
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 
 export const nodeTypes: NodeTypeRegistry = {
   task: {
@@ -145,20 +145,20 @@ export const nodeTypes: NodeTypeRegistry = {
 ```
 
 ```vue
-<NodeEngine
+<NodeWright
   v-model:graph="graph"
   :node-types="nodeTypes"
   :dom-components="{ 'task-node': TaskNode }"
 />
 ```
 
-组件以 `defineProps<NodeEngineDomNodeProps>()` 声明全部 props（契约见 [DOM 节点组件契约](./controller-api.md#dom-节点组件契约)）：
+组件以 `defineProps<NodeWrightDomNodeProps>()` 声明全部 props（契约见 [DOM 节点组件契约](./controller-api.md#dom-节点组件契约)）：
 
 ```vue
 <script setup lang="ts">
-import type { NodeEngineDomNodeProps } from '@node-engine-sdk/core/view'
+import type { NodeWrightDomNodeProps } from '@node-wright/core/view'
 
-const props = defineProps<NodeEngineDomNodeProps>()
+const props = defineProps<NodeWrightDomNodeProps>()
 
 function startDrag(event: PointerEvent): void {
   props.domApi.interaction.pointerDown(event)
@@ -199,7 +199,7 @@ function startDrag(event: PointerEvent): void {
 
 ## 默认 DOM 节点
 
-`DefaultDomNode` 渲染标题栏、输入/输出端口、参数字段（文本、多行文本、数字（含拖动调值）、开关、下拉、时间、滑块、图片）与四角尺寸手柄，交互由 `@node-engine-sdk/core/view` 的 `createDomNodeControls` 状态机驱动。字段来源、参数输入端口与驱动状态见 [controller-api.md](./controller-api.md#dom-节点渲染器)。
+`DefaultDomNode` 渲染标题栏、输入/输出端口、参数字段（文本、多行文本、数字（含拖动调值）、开关、下拉、时间、滑块、图片）与四角尺寸手柄，交互由 `@node-wright/core/view` 的 `createDomNodeControls` 状态机驱动。字段来源、参数输入端口与驱动状态见 [controller-api.md](./controller-api.md#dom-节点渲染器)。
 
 ## 主题与节点状态
 
@@ -208,14 +208,14 @@ function startDrag(event: PointerEvent): void {
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import type { NodeEngineNodeStatus } from '@node-engine-sdk/core/view'
+import type { NodeWrightNodeStatus } from '@node-wright/core/view'
 
 const light = { colorScheme: 'light' } as const
-const nodeStatus = shallowRef<Record<string, NodeEngineNodeStatus>>({})
+const nodeStatus = shallowRef<Record<string, NodeWrightNodeStatus>>({})
 </script>
 
 <template>
-  <NodeEngine v-model:graph="graph" :theme="light" :node-status="nodeStatus" />
+  <NodeWright v-model:graph="graph" :theme="light" :node-status="nodeStatus" />
 </template>
 ```
 
@@ -223,19 +223,19 @@ const nodeStatus = shallowRef<Record<string, NodeEngineNodeStatus>>({})
 
 ## 小地图
 
-`minimap` prop 打开小地图：`true`（或不带值的 `minimap` 属性）使用默认尺寸 200 × 136，也可以传入 `NodeEngineMinimapOptions`（`width`、`height`、`padding`）：
+`minimap` prop 打开小地图：`true`（或不带值的 `minimap` 属性）使用默认尺寸 200 × 136，也可以传入 `NodeWrightMinimapOptions`（`width`、`height`、`padding`）：
 
 ```vue
-<NodeEngine v-model:graph="graph" :node-definitions="nodeDefinitions" minimap />
+<NodeWright v-model:graph="graph" :node-definitions="nodeDefinitions" minimap />
 
-<NodeEngine
+<NodeWright
   v-model:graph="graph"
   :node-definitions="nodeDefinitions"
   :minimap="{ width: 240, height: 160 }"
 />
 ```
 
-小地图由内部组件渲染在根元素内、性能浮层之后、`overlay` 插槽之前（`.ne-minimap`，内含 `.ne-minimap__canvas` 与可见区域框 `.ne-minimap__viewport`，拖动时加 `.ne-minimap--dragging`），外观来自 `style.css`，可以在应用样式中覆盖这些类名。点击小地图把视口中心移到该处，拖动平移视口，获得焦点后方向键平移视口（Shift 加速）；平移结束时发出一次 `@viewport-change`（`source` 为 `'minimap'` 或 `'minimap.keyboard'`）。尺寸按值比较，模板中的对象字面量每次渲染都是新对象，也不会引起重算或重绘。完整行为见 [controller-api.md](./controller-api.md#小地图)。
+小地图由内部组件渲染在根元素内、性能浮层之后、`overlay` 插槽之前（`.nw-minimap`，内含 `.nw-minimap__canvas` 与可见区域框 `.nw-minimap__viewport`，拖动时加 `.nw-minimap--dragging`），外观来自 `style.css`，可以在应用样式中覆盖这些类名。点击小地图把视口中心移到该处，拖动平移视口，获得焦点后方向键平移视口（Shift 加速）；平移结束时发出一次 `@viewport-change`（`source` 为 `'minimap'` 或 `'minimap.keyboard'`）。尺寸按值比较，模板中的对象字面量每次渲染都是新对象，也不会引起重算或重绘。完整行为见 [controller-api.md](./controller-api.md#小地图)。
 
 小地图组件在自身 `onMounted` 时挂载到控制器（早于编辑器根元素的挂载），关闭 `minimap` 或卸载组件时解绑。
 
@@ -251,9 +251,9 @@ const nodeStatus = shallowRef<Record<string, NodeEngineNodeStatus>>({})
 | ----------------------------------------- | ----------------------------------------------- |
 | `v-model:graph`（`update:graph`）         | `graph` + `onGraphChange`                       |
 | `@selection-change` 等 kebab-case 事件    | `onSelectionChange` 等 `on` + 驼峰回调          |
-| 组件 ref（`defineExpose(NodeEngineApi)`） | `ref`（`NodeEngineHandle`，即 `NodeEngineApi`） |
+| 组件 ref（`defineExpose(NodeWrightApi)`） | `ref`（`NodeWrightHandle`，即 `NodeWrightApi`） |
 | `#background` / `#overlay` 插槽           | `renderBackground` / `renderOverlay`            |
 | 透传的 `class` / `style`                  | `className` / `style`                           |
-| 节点组件通过 `props.context.api` 取 API   | 另可使用 `useNodeEngineApi()`                   |
+| 节点组件通过 `props.context.api` 取 API   | 另可使用 `useNodeWrightApi()`                   |
 
 两个适配层运行同一份契约测试，行为一致；React 侧的专属约定见 [react-adapter.md](./react-adapter.md)。

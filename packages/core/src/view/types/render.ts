@@ -15,24 +15,24 @@ import type {
   XYPosition,
 } from '../../protocol/index.js'
 import type {
-  NodeEngineBounds,
-  NodeEngineCoordinateSpace,
-  NodeEngineNodeStatus,
-  NodeEnginePortAnchor,
-  NodeEngineRenderContext,
-  NodeEngineStyleDeclaration,
+  NodeWrightBounds,
+  NodeWrightCoordinateSpace,
+  NodeWrightNodeStatus,
+  NodeWrightPortAnchor,
+  NodeWrightRenderContext,
+  NodeWrightStyleDeclaration,
   PortSide,
 } from './common.js'
 import type {
-  NodeEngineDomFieldKind,
-  NodeEngineDomImageFieldFit,
-  NodeEngineDomNodeDefinition,
-  NodeEngineDomNodeFieldSource,
+  NodeWrightDomFieldKind,
+  NodeWrightDomImageFieldFit,
+  NodeWrightDomNodeDefinition,
+  NodeWrightDomNodeFieldSource,
 } from './dom.js'
 
 import type { EdgeTypeDefinition, NodeTypeDefinition } from './extensions.js'
 
-export interface NodeEngineCanvasNodeTheme {
+export interface NodeWrightCanvasNodeTheme {
   background: string
   border: string
   borderSelected: string
@@ -51,7 +51,7 @@ export interface NodeEngineCanvasNodeTheme {
   exec: string
 }
 
-export interface NodeEngineCanvasNodeLayoutContext {
+export interface NodeWrightCanvasNodeLayoutContext {
   node: GraphNode
   schema?: NodeDefinition
   definition?: NodeTypeDefinition
@@ -59,10 +59,10 @@ export interface NodeEngineCanvasNodeLayoutContext {
   selected: boolean
   dragging: boolean
   readonly: boolean
-  context: NodeEngineRenderContext
+  context: NodeWrightRenderContext
 }
 
-export interface NodeEngineCanvasPortLayout {
+export interface NodeWrightCanvasPortLayout {
   portId: string
   x: number
   y: number
@@ -70,69 +70,69 @@ export interface NodeEngineCanvasPortLayout {
   radius?: number
 }
 
-export interface NodeEngineCanvasNodeRenderContext {
+export interface NodeWrightCanvasNodeRenderContext {
   ctx: CanvasRenderingContext2D
   node: GraphNode
   schema?: NodeDefinition
   definition?: NodeTypeDefinition
-  bounds: NodeEngineBounds
+  bounds: NodeWrightBounds
   selected: boolean
   dragging: boolean
   readonly: boolean
   zoom: number
-  inputs: NodeEnginePortAnchor[]
-  outputs: NodeEnginePortAnchor[]
+  inputs: NodeWrightPortAnchor[]
+  outputs: NodeWrightPortAnchor[]
   connectionSource?: GraphEndpoint
   connectionTarget?: GraphEndpoint
-  theme: NodeEngineCanvasNodeTheme
-  context: NodeEngineRenderContext
+  theme: NodeWrightCanvasNodeTheme
+  context: NodeWrightRenderContext
 }
 
-export interface NodeEngineCanvasNodeHitTestContext extends NodeEngineCanvasNodeRenderContext {
+export interface NodeWrightCanvasNodeHitTestContext extends NodeWrightCanvasNodeRenderContext {
   point: XYPosition
 }
 
-export interface NodeEngineCanvasNodeRenderer {
+export interface NodeWrightCanvasNodeRenderer {
   measure?: (
-    context: NodeEngineCanvasNodeLayoutContext,
+    context: NodeWrightCanvasNodeLayoutContext,
   ) => { width?: number; height?: number } | void
   getPortLayout?: (
-    context: NodeEngineCanvasNodeLayoutContext,
-  ) => NodeEngineCanvasPortLayout[] | void
-  draw?: (context: NodeEngineCanvasNodeRenderContext) => void
-  hitTestNode?: (context: NodeEngineCanvasNodeHitTestContext) => boolean
+    context: NodeWrightCanvasNodeLayoutContext,
+  ) => NodeWrightCanvasPortLayout[] | void
+  draw?: (context: NodeWrightCanvasNodeRenderContext) => void
+  hitTestNode?: (context: NodeWrightCanvasNodeHitTestContext) => boolean
 }
 
-export type NodeEngineDomNodeRendererMode = 'replace' | 'overlay'
-export type NodeEngineDomNodePointerEvents = 'none' | 'auto'
-export type NodeEngineDomNodeClassValue = string | string[] | Record<string, boolean>
+export type NodeWrightDomNodeRendererMode = 'replace' | 'overlay'
+export type NodeWrightDomNodePointerEvents = 'none' | 'auto'
+export type NodeWrightDomNodeClassValue = string | string[] | Record<string, boolean>
 
-export interface NodeEngineDomNodeRenderContext {
+export interface NodeWrightDomNodeRenderContext {
   node: GraphNode
   schema?: NodeDefinition
   definition?: NodeTypeDefinition
-  bounds: NodeEngineBounds
-  screenBounds: NodeEngineBounds
+  bounds: NodeWrightBounds
+  screenBounds: NodeWrightBounds
   selected: boolean
   dragging: boolean
   /** The node's entry of the `nodeStatus` editor option. */
-  status?: NodeEngineNodeStatus
+  status?: NodeWrightNodeStatus
   readonly: boolean
   zoom: number
-  inputs: NodeEnginePortAnchor[]
-  outputs: NodeEnginePortAnchor[]
+  inputs: NodeWrightPortAnchor[]
+  outputs: NodeWrightPortAnchor[]
   connectionSource?: GraphEndpoint
   connectionTarget?: GraphEndpoint
-  theme: NodeEngineCanvasNodeTheme
-  context: NodeEngineRenderContext
+  theme: NodeWrightCanvasNodeTheme
+  context: NodeWrightRenderContext
 }
 
-export interface NodeEngineDomNodeSizeConstraints {
+export interface NodeWrightDomNodeSizeConstraints {
   minWidth: number
   minHeight: number
 }
 
-export interface NodeEngineResolvedDomNodeLayout extends NodeEngineDomNodeSizeConstraints {
+export interface NodeWrightResolvedDomNodeLayout extends NodeWrightDomNodeSizeConstraints {
   headerHeight: number
   portTop: number
   portGap: number
@@ -145,7 +145,7 @@ export interface NodeEngineResolvedDomNodeLayout extends NodeEngineDomNodeSizeCo
   fieldRowGap: number
 }
 
-export interface NodeEngineResolvedDomNodePort {
+export interface NodeWrightResolvedDomNodePort {
   key: string
   id: string
   side: PortSide
@@ -155,24 +155,24 @@ export interface NodeEngineResolvedDomNodePort {
   active?: boolean
   connectable?: boolean | null
   connectionValidation?: ConnectionValidationResult | null
-  anchor: NodeEnginePortAnchor
+  anchor: NodeWrightPortAnchor
   port: GraphPort
 }
 
-export interface NodeEngineResolvedDomFieldDriveSource {
+export interface NodeWrightResolvedDomFieldDriveSource {
   edgeId: string
   source: GraphEndpoint
   target: GraphEndpoint
   sourcePort?: GraphPort
 }
 
-export interface NodeEngineResolvedDomNodeField {
+export interface NodeWrightResolvedDomNodeField {
   key: string
   label: string
   description?: string
-  kind: NodeEngineDomFieldKind
+  kind: NodeWrightDomFieldKind
   inputPortId?: string
-  inputPort?: NodeEngineResolvedDomNodePort
+  inputPort?: NodeWrightResolvedDomNodePort
   top: number
   height: number
   value: unknown
@@ -180,7 +180,7 @@ export interface NodeEngineResolvedDomNodeField {
   resolvedValue: unknown
   resolvedTextValue: string
   driven: boolean
-  driveSource?: NodeEngineResolvedDomFieldDriveSource
+  driveSource?: NodeWrightResolvedDomFieldDriveSource
   placeholder?: string
   highlighted: boolean
   /** The parameter's own options. */
@@ -189,37 +189,37 @@ export interface NodeEngineResolvedDomNodeField {
   max?: number
   step?: number
   aspectRatio?: number
-  fit?: NodeEngineDomImageFieldFit
+  fit?: NodeWrightDomImageFieldFit
   downloadable?: boolean
   openable?: boolean
   emptyHint?: string
 }
 
-export interface NodeEngineResolvedDomNodeModel {
+export interface NodeWrightResolvedDomNodeModel {
   title: string
   subtitle?: string
   /** Accent colour of the node (`meta.accent`, then the node type's `accent`). */
   accent?: string
-  fieldSource: NodeEngineDomNodeFieldSource
-  layout: NodeEngineResolvedDomNodeLayout
+  fieldSource: NodeWrightDomNodeFieldSource
+  layout: NodeWrightResolvedDomNodeLayout
   minWidth: number
   minHeight: number
   fieldsTop: number
   maxVisibleFields: number
-  inputs: NodeEngineResolvedDomNodePort[]
-  outputs: NodeEngineResolvedDomNodePort[]
-  fields: NodeEngineResolvedDomNodeField[]
+  inputs: NodeWrightResolvedDomNodePort[]
+  outputs: NodeWrightResolvedDomNodePort[]
+  fields: NodeWrightResolvedDomNodeField[]
 }
 
-export type NodeEngineDomNodeResizeHandle = 'nw' | 'ne' | 'sw' | 'se'
+export type NodeWrightDomNodeResizeHandle = 'nw' | 'ne' | 'sw' | 'se'
 
-export interface NodeEngineDomNodeApi {
+export interface NodeWrightDomNodeApi {
   getNode: () => GraphNode | undefined
   getSchema: () => NodeDefinition | undefined
   getDefinition: () => NodeTypeDefinition | undefined
-  getBounds: (space?: NodeEngineCoordinateSpace) => NodeEngineBounds | null
-  getContext: () => NodeEngineDomNodeRenderContext | null
-  getModel: () => NodeEngineResolvedDomNodeModel | null
+  getBounds: (space?: NodeWrightCoordinateSpace) => NodeWrightBounds | null
+  getContext: () => NodeWrightDomNodeRenderContext | null
+  getModel: () => NodeWrightResolvedDomNodeModel | null
   focus: () => void
   interaction: {
     pointerDown: (event: PointerEvent) => boolean
@@ -250,67 +250,67 @@ export interface NodeEngineDomNodeApi {
     ) => GraphSnapshot
   }
   ports: {
-    get: (portId: string, space?: NodeEngineCoordinateSpace) => NodeEnginePortAnchor | null
+    get: (portId: string, space?: NodeWrightCoordinateSpace) => NodeWrightPortAnchor | null
     startConnection: (portId: string, event: PointerEvent) => boolean
     finishConnection: (portId: string, event: PointerEvent) => boolean
     previewConnection: (portId: string | null) => boolean
   }
   resize: {
     get: () => { width: number; height: number } | null
-    getConstraints: () => NodeEngineDomNodeSizeConstraints | null
-    start: (event: PointerEvent, handle?: NodeEngineDomNodeResizeHandle) => boolean
+    getConstraints: () => NodeWrightDomNodeSizeConstraints | null
+    start: (event: PointerEvent, handle?: NodeWrightDomNodeResizeHandle) => boolean
   }
 }
 
-export type NodeEngineDomNodeServicesValue = Record<string, unknown>
-export type NodeEngineDomNodeActionsValue = Record<string, unknown>
+export type NodeWrightDomNodeServicesValue = Record<string, unknown>
+export type NodeWrightDomNodeActionsValue = Record<string, unknown>
 
 /** Everything a DOM node component receives, independent of the UI framework rendering it. */
-export interface NodeEngineDomNodeProps extends NodeEngineDomNodeRenderContext {
-  domModel: NodeEngineResolvedDomNodeModel
-  domApi: NodeEngineDomNodeApi
-  domServices: NodeEngineDomNodeServicesValue
-  domActions: NodeEngineDomNodeActionsValue
+export interface NodeWrightDomNodeProps extends NodeWrightDomNodeRenderContext {
+  domModel: NodeWrightResolvedDomNodeModel
+  domApi: NodeWrightDomNodeApi
+  domServices: NodeWrightDomNodeServicesValue
+  domActions: NodeWrightDomNodeActionsValue
 }
 
-export interface NodeEngineDomNodeRenderer {
+export interface NodeWrightDomNodeRenderer {
   /**
    * Key of the DOM node component registered with the UI adapter. Defaults to the adapter's
-   * built-in default node component (`NODE_ENGINE_DEFAULT_DOM_COMPONENT`).
+   * built-in default node component (`NODE_WRIGHT_DEFAULT_DOM_COMPONENT`).
    */
   component?: string
-  mode?: NodeEngineDomNodeRendererMode
+  mode?: NodeWrightDomNodeRendererMode
   defaults?:
-    | Partial<NodeEngineDomNodeDefinition>
+    | Partial<NodeWrightDomNodeDefinition>
     | ((
-        context: NodeEngineDomNodeRenderContext,
-      ) => Partial<NodeEngineDomNodeDefinition> | undefined | void)
-  visible?: (context: NodeEngineDomNodeRenderContext) => boolean
+        context: NodeWrightDomNodeRenderContext,
+      ) => Partial<NodeWrightDomNodeDefinition> | undefined | void)
+  visible?: (context: NodeWrightDomNodeRenderContext) => boolean
   pointerEvents?:
-    | NodeEngineDomNodePointerEvents
-    | ((context: NodeEngineDomNodeRenderContext) => NodeEngineDomNodePointerEvents | undefined)
+    | NodeWrightDomNodePointerEvents
+    | ((context: NodeWrightDomNodeRenderContext) => NodeWrightDomNodePointerEvents | undefined)
   className?:
-    | NodeEngineDomNodeClassValue
-    | ((context: NodeEngineDomNodeRenderContext) => NodeEngineDomNodeClassValue | undefined)
+    | NodeWrightDomNodeClassValue
+    | ((context: NodeWrightDomNodeRenderContext) => NodeWrightDomNodeClassValue | undefined)
   style?:
-    | NodeEngineStyleDeclaration
-    | ((context: NodeEngineDomNodeRenderContext) => NodeEngineStyleDeclaration | undefined | void)
+    | NodeWrightStyleDeclaration
+    | ((context: NodeWrightDomNodeRenderContext) => NodeWrightStyleDeclaration | undefined | void)
   services?:
-    | NodeEngineDomNodeServicesValue
+    | NodeWrightDomNodeServicesValue
     | ((
-        context: NodeEngineDomNodeRenderContext,
-      ) => NodeEngineDomNodeServicesValue | undefined | void)
+        context: NodeWrightDomNodeRenderContext,
+      ) => NodeWrightDomNodeServicesValue | undefined | void)
   actions?:
-    | NodeEngineDomNodeActionsValue
+    | NodeWrightDomNodeActionsValue
     | ((
-        context: NodeEngineDomNodeRenderContext,
-      ) => NodeEngineDomNodeActionsValue | undefined | void)
-  props?: (context: NodeEngineDomNodeRenderContext) => Record<string, unknown> | undefined | void
+        context: NodeWrightDomNodeRenderContext,
+      ) => NodeWrightDomNodeActionsValue | undefined | void)
+  props?: (context: NodeWrightDomNodeRenderContext) => Record<string, unknown> | undefined | void
 }
 
-export type NodeEngineDomNodeRendererDefinition = false | NodeEngineDomNodeRenderer
+export type NodeWrightDomNodeRendererDefinition = false | NodeWrightDomNodeRenderer
 
-export interface NodeEngineCanvasEdgeTheme {
+export interface NodeWrightCanvasEdgeTheme {
   /** Data edges whose source port has no semantic colour. */
   stroke: string
   activeStroke: string
@@ -322,41 +322,41 @@ export interface NodeEngineCanvasEdgeTheme {
   selection: string
 }
 
-export interface NodeEngineCanvasEdgeRenderContext {
+export interface NodeWrightCanvasEdgeRenderContext {
   ctx: CanvasRenderingContext2D
   edge: GraphEdge
   schema?: EdgeDefinition
   definition?: EdgeTypeDefinition
   selected: boolean
   readonly: boolean
-  source?: NodeEnginePortAnchor
-  target?: NodeEnginePortAnchor
+  source?: NodeWrightPortAnchor
+  target?: NodeWrightPortAnchor
   stroke: string
   strokeWidth: number
   zoom: number
-  theme: NodeEngineCanvasEdgeTheme
-  context: NodeEngineRenderContext
+  theme: NodeWrightCanvasEdgeTheme
+  context: NodeWrightRenderContext
 }
 
-export interface NodeEngineCanvasEdgeHitTestContext extends NodeEngineCanvasEdgeRenderContext {
+export interface NodeWrightCanvasEdgeHitTestContext extends NodeWrightCanvasEdgeRenderContext {
   point: XYPosition
 }
 
-export interface NodeEngineCanvasEdgeRenderer {
-  draw?: (context: NodeEngineCanvasEdgeRenderContext) => void
-  hitTest?: (context: NodeEngineCanvasEdgeHitTestContext) => boolean
+export interface NodeWrightCanvasEdgeRenderer {
+  draw?: (context: NodeWrightCanvasEdgeRenderContext) => void
+  hitTest?: (context: NodeWrightCanvasEdgeHitTestContext) => boolean
 }
 
-export interface NodeEngineCanvasGroupTheme {
+export interface NodeWrightCanvasGroupTheme {
   background: string
   border: string
   label: string
 }
 
-export interface NodeEngineCanvasGroupRenderContext {
+export interface NodeWrightCanvasGroupRenderContext {
   ctx: CanvasRenderingContext2D
   group: GraphGroup
-  bounds: NodeEngineBounds
+  bounds: NodeWrightBounds
   headerHeight: number
   collapsed: boolean
   readonly: boolean
@@ -364,31 +364,31 @@ export interface NodeEngineCanvasGroupRenderContext {
   borderColor: string
   backgroundColor: string
   labelColor: string
-  theme: NodeEngineCanvasGroupTheme
-  context: NodeEngineRenderContext
+  theme: NodeWrightCanvasGroupTheme
+  context: NodeWrightRenderContext
 }
 
-export interface NodeEngineCanvasGroupHitTestContext extends NodeEngineCanvasGroupRenderContext {
+export interface NodeWrightCanvasGroupHitTestContext extends NodeWrightCanvasGroupRenderContext {
   point: XYPosition
 }
 
-export type NodeEngineCanvasGroupHitAreaKind = 'body' | 'drag-handle' | 'action' | 'resize-handle'
+export type NodeWrightCanvasGroupHitAreaKind = 'body' | 'drag-handle' | 'action' | 'resize-handle'
 
-export interface NodeEngineCanvasGroupHitArea {
+export interface NodeWrightCanvasGroupHitArea {
   id: string
-  kind?: NodeEngineCanvasGroupHitAreaKind
+  kind?: NodeWrightCanvasGroupHitAreaKind
 }
 
-export interface NodeEngineCanvasGroupRenderer {
-  draw?: (context: NodeEngineCanvasGroupRenderContext) => void
-  hitTest?: (context: NodeEngineCanvasGroupHitTestContext) => boolean
+export interface NodeWrightCanvasGroupRenderer {
+  draw?: (context: NodeWrightCanvasGroupRenderContext) => void
+  hitTest?: (context: NodeWrightCanvasGroupHitTestContext) => boolean
   hitAreaAt?: (
-    context: NodeEngineCanvasGroupHitTestContext,
-  ) => NodeEngineCanvasGroupHitArea | null | void
+    context: NodeWrightCanvasGroupHitTestContext,
+  ) => NodeWrightCanvasGroupHitArea | null | void
 }
 
-export interface NodeEngineCanvasRenderers {
-  node?: NodeEngineCanvasNodeRenderer
-  edge?: NodeEngineCanvasEdgeRenderer
-  group?: NodeEngineCanvasGroupRenderer
+export interface NodeWrightCanvasRenderers {
+  node?: NodeWrightCanvasNodeRenderer
+  edge?: NodeWrightCanvasEdgeRenderer
+  group?: NodeWrightCanvasGroupRenderer
 }

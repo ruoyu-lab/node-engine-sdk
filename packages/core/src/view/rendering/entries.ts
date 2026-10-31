@@ -8,17 +8,17 @@ import type {
 } from '../../protocol/index.js'
 import type {
   EdgeTypeDefinition,
-  NodeEngineCanvasEdgeHitTestContext,
-  NodeEngineCanvasEdgeRenderer,
-  NodeEngineCanvasEdgeTheme,
-  NodeEngineCanvasGroupHitTestContext,
-  NodeEngineCanvasGroupRenderer,
-  NodeEngineCanvasGroupTheme,
-  NodeEngineCanvasNodeLayoutContext,
-  NodeEngineCanvasNodeRenderer,
-  NodeEngineEdgeRendererContribution,
-  NodeEngineGroupRendererContribution,
-  NodeEngineRenderContext,
+  NodeWrightCanvasEdgeHitTestContext,
+  NodeWrightCanvasEdgeRenderer,
+  NodeWrightCanvasEdgeTheme,
+  NodeWrightCanvasGroupHitTestContext,
+  NodeWrightCanvasGroupRenderer,
+  NodeWrightCanvasGroupTheme,
+  NodeWrightCanvasNodeLayoutContext,
+  NodeWrightCanvasNodeRenderer,
+  NodeWrightEdgeRendererContribution,
+  NodeWrightGroupRendererContribution,
+  NodeWrightRenderContext,
   NodeTypeDefinition,
 } from '../types/index.js'
 import type { GraphCanvasDraftEdge, GraphCanvasEdgeEntry } from './edge-canvas.js'
@@ -34,7 +34,7 @@ export interface VisibleEdgeEntry {
   target: PortLayout
   schema?: EdgeDefinition
   definition?: EdgeTypeDefinition
-  renderer?: NodeEngineCanvasEdgeRenderer
+  renderer?: NodeWrightCanvasEdgeRenderer
   selected: boolean
   stroke: string
   strokeWidth: number
@@ -42,7 +42,7 @@ export interface VisibleEdgeEntry {
 
 export interface VisibleGroupEntry {
   group: GraphGroup
-  renderer?: NodeEngineCanvasGroupRenderer
+  renderer?: NodeWrightCanvasGroupRenderer
   bounds: GraphRect
   headerHeight: number
   collapsed: boolean
@@ -58,14 +58,14 @@ export interface CanvasEntryOptions<Theme> {
   readonly: boolean
   zoom: number
   theme: Theme
-  context: NodeEngineRenderContext
+  context: NodeWrightRenderContext
   getCanvasContext: () => CanvasRenderingContext2D
 }
 
 /** Fills the canvas hooks a node type leaves undefined with the editor-wide node renderer. */
 export function mergeNodeRenderer(
   definition: NodeTypeDefinition | undefined,
-  renderer: NodeEngineCanvasNodeRenderer | undefined,
+  renderer: NodeWrightCanvasNodeRenderer | undefined,
 ): NodeTypeDefinition | undefined {
   if (!renderer) {
     return definition
@@ -87,9 +87,9 @@ export function resolveEdgeRenderer(
   edge: GraphEdge,
   schema: EdgeDefinition | undefined,
   definition: EdgeTypeDefinition | undefined,
-  renderers: NodeEngineEdgeRendererContribution[],
-  defaultRenderer: NodeEngineCanvasEdgeRenderer | undefined,
-): NodeEngineCanvasEdgeRenderer | undefined {
+  renderers: NodeWrightEdgeRendererContribution[],
+  defaultRenderer: NodeWrightCanvasEdgeRenderer | undefined,
+): NodeWrightCanvasEdgeRenderer | undefined {
   for (let index = renderers.length - 1; index >= 0; index -= 1) {
     const renderer = renderers[index]!
 
@@ -107,9 +107,9 @@ export function resolveEdgeRenderer(
 
 export function resolveGroupRenderer(
   group: GraphGroup,
-  renderers: NodeEngineGroupRendererContribution[],
-  defaultRenderer: NodeEngineCanvasGroupRenderer | undefined,
-): NodeEngineCanvasGroupRenderer | undefined {
+  renderers: NodeWrightGroupRendererContribution[],
+  defaultRenderer: NodeWrightCanvasGroupRenderer | undefined,
+): NodeWrightCanvasGroupRenderer | undefined {
   for (let index = renderers.length - 1; index >= 0; index -= 1) {
     const renderer = renderers[index]!
 
@@ -164,7 +164,7 @@ export function getDraftEdgeEntry(options: {
 
 export function applyCanvasMeasureToNode(
   node: ResolvedNodeView,
-  layoutContext: NodeEngineCanvasNodeLayoutContext,
+  layoutContext: NodeWrightCanvasNodeLayoutContext,
 ): ResolvedNodeView {
   const measured = node.definition?.canvas?.measure?.(layoutContext)
 
@@ -181,7 +181,7 @@ export function applyCanvasMeasureToNode(
 
 export function createCanvasEdgeEntry(
   entry: VisibleEdgeEntry,
-  options: CanvasEntryOptions<NodeEngineCanvasEdgeTheme>,
+  options: CanvasEntryOptions<NodeWrightCanvasEdgeTheme>,
 ): GraphCanvasEdgeEntry {
   const renderer = entry.renderer
   const createContext = (ctx: CanvasRenderingContext2D, zoom: number) => ({
@@ -214,7 +214,7 @@ export function createCanvasEdgeEntry(
             renderer.hitTest?.({
               ...createContext(options.getCanvasContext(), zoom),
               point,
-            } satisfies NodeEngineCanvasEdgeHitTestContext),
+            } satisfies NodeWrightCanvasEdgeHitTestContext),
           )
       : undefined,
   }
@@ -222,7 +222,7 @@ export function createCanvasEdgeEntry(
 
 export function createCanvasGroupEntry(
   entry: VisibleGroupEntry,
-  options: CanvasEntryOptions<NodeEngineCanvasGroupTheme>,
+  options: CanvasEntryOptions<NodeWrightCanvasGroupTheme>,
 ): GraphCanvasGroupEntry {
   const renderer = entry.renderer
   const createContext = (ctx: CanvasRenderingContext2D) => ({
@@ -259,7 +259,7 @@ export function createCanvasGroupEntry(
             renderer.hitTest?.({
               ...createContext(options.getCanvasContext()),
               point,
-            } satisfies NodeEngineCanvasGroupHitTestContext),
+            } satisfies NodeWrightCanvasGroupHitTestContext),
           )
       : undefined,
   }

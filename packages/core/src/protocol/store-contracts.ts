@@ -168,19 +168,19 @@ export interface GraphPluginContext {
   registerDiagnosticProvider: (provider: GraphDiagnosticProvider) => () => void
 }
 
-export interface NodeEngineExtensionContributions {
+export interface NodeWrightExtensionContributions {
   diagnostics?: GraphDiagnosticProvider[]
   nodeDefinitions?: NodeDefinition[]
   edgeDefinitions?: EdgeDefinition[]
   commands?: GraphCommandRegistryEntry[]
 }
 
-export interface NodeEngineExtensionManifest {
+export interface NodeWrightExtensionManifest {
   name: string
-  contributes?: NodeEngineExtensionContributions
+  contributes?: NodeWrightExtensionContributions
 }
 
-export interface GraphPlugin extends NodeEngineExtensionManifest {
+export interface GraphPlugin extends NodeWrightExtensionManifest {
   setup?: (context: GraphPluginContext) => void | (() => void)
 }
 

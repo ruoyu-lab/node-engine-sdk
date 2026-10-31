@@ -16,14 +16,14 @@ import {
   resolveDomTimeSegment,
   sanitizeDomNumberDraft,
   type DomNodeControlsSource,
-  type NodeEngineDomNodeApi,
-  type NodeEngineResolvedDomNodeField,
-  type NodeEngineResolvedDomNodeModel,
-  type NodeEngineResolvedDomNodePort,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightDomNodeApi,
+  type NodeWrightResolvedDomNodeField,
+  type NodeWrightResolvedDomNodeModel,
+  type NodeWrightResolvedDomNodePort,
+} from '@node-wright/core/view'
 import { describe, expect, it, vi } from 'vitest'
 
-function field(patch: Partial<NodeEngineResolvedDomNodeField>): NodeEngineResolvedDomNodeField {
+function field(patch: Partial<NodeWrightResolvedDomNodeField>): NodeWrightResolvedDomNodeField {
   return {
     key: 'value',
     label: 'Value',
@@ -55,11 +55,11 @@ function createApi() {
   }
 }
 
-function createSource(fields: NodeEngineResolvedDomNodeField[], selected = true) {
+function createSource(fields: NodeWrightResolvedDomNodeField[], selected = true) {
   const api = createApi()
   const source: DomNodeControlsSource = {
-    api: api as unknown as NodeEngineDomNodeApi,
-    model: { fields } as NodeEngineResolvedDomNodeModel,
+    api: api as unknown as NodeWrightDomNodeApi,
+    model: { fields } as NodeWrightResolvedDomNodeModel,
     selected,
   }
 
@@ -120,26 +120,26 @@ describe('default DOM field values', () => {
       connectable: false,
       port: { id: 'run', direction: 'input', kind: 'exec' },
       anchor: { connectionCount: 2 },
-    } as NodeEngineResolvedDomNodePort
+    } as NodeWrightResolvedDomNodePort
 
-    expect(resolveDomPortDotStyle(incompatible)).toEqual({ '--ne-port-color': '#abc' })
+    expect(resolveDomPortDotStyle(incompatible)).toEqual({ '--nw-port-color': '#abc' })
     expect(resolveDomPortDotClass(incompatible)).toEqual({
-      'ne-default-dom-node__port-dot--exec': true,
-      'ne-default-dom-node__port-dot--connected': true,
-      'ne-default-dom-node__port-dot--active': false,
-      'ne-default-dom-node__port-dot--compatible': false,
-      'ne-default-dom-node__port-dot--incompatible': true,
+      'nw-default-dom-node__port-dot--exec': true,
+      'nw-default-dom-node__port-dot--connected': true,
+      'nw-default-dom-node__port-dot--active': false,
+      'nw-default-dom-node__port-dot--compatible': false,
+      'nw-default-dom-node__port-dot--incompatible': true,
     })
     expect(
       resolveDomFieldPortDotClass({ ...incompatible, connectable: true, active: true }),
     ).toMatchObject({
-      'ne-default-dom-node__field-port-dot--active': true,
-      'ne-default-dom-node__field-port-dot--compatible': true,
-      'ne-default-dom-node__field-port-dot--incompatible': false,
+      'nw-default-dom-node__field-port-dot--active': true,
+      'nw-default-dom-node__field-port-dot--compatible': true,
+      'nw-default-dom-node__field-port-dot--incompatible': false,
     })
     expect(resolveDomPortLabelClass(incompatible)).toEqual({
-      'ne-default-dom-node__port-label--active': false,
-      'ne-default-dom-node__port-label--incompatible': true,
+      'nw-default-dom-node__port-label--active': false,
+      'nw-default-dom-node__port-label--incompatible': true,
     })
   })
 
@@ -152,14 +152,14 @@ describe('default DOM field values', () => {
           field({ label: 'Short' }),
           field({ label: 'Ignored long label', kind: 'textarea' }),
         ],
-      } as NodeEngineResolvedDomNodeModel,
+      } as NodeWrightResolvedDomNodeModel,
       (label) => label.length * 10,
     )
 
     expect(style).toMatchObject({
       top: '80px',
       left: '9px',
-      '--ne-field-label-column-width': '76px',
+      '--nw-field-label-column-width': '76px',
     })
   })
 })

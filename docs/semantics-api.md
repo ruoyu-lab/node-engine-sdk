@@ -1,6 +1,6 @@
-# Semantics API（`@node-engine-sdk/core/semantics`）
+# Semantics API（`@node-wright/core/semantics`）
 
-`@node-engine-sdk/core/semantics` 负责端口语义与连线规则：端口 kind、数据类型、容量、环路、必填输入，以及函数、子图、变量的签名与引用。它不持有 Store 或 UI 状态，也不执行节点；只依赖 `protocol`。
+`@node-wright/core/semantics` 负责端口语义与连线规则：端口 kind、数据类型、容量、环路、必填输入，以及函数、子图、变量的签名与引用。它不持有 Store 或 UI 状态，也不执行节点；只依赖 `protocol`。
 
 ## 流程插件
 
@@ -11,7 +11,7 @@ import {
   createDataflowPlugin,
   createExecflowPlugin,
   createHybridFlowPlugin,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 
 export const dataflow = createDataflowPlugin()
 export const execflow = createExecflowPlugin({ preventCycles: true })
@@ -23,9 +23,9 @@ export const hybrid = createHybridFlowPlugin({
 
 | 插件                       | 插件名                    | 默认规则                                                                           |
 | -------------------------- | ------------------------- | ---------------------------------------------------------------------------------- |
-| `createDataflowPlugin()`   | `node-engine:dataflow`    | 同节点、方向、kind、数据类型、容量、数据环（`preventCycles` 默认 `true`）          |
-| `createExecflowPlugin()`   | `node-engine:execflow`    | 同节点、方向、kind、数据类型、容量；执行环默认允许（`preventCycles: true` 时禁止） |
-| `createHybridFlowPlugin()` | `node-engine:hybrid-flow` | 按连接类型分别运行 dataflow 与 execflow 规则                                       |
+| `createDataflowPlugin()`   | `node-wright:dataflow`    | 同节点、方向、kind、数据类型、容量、数据环（`preventCycles` 默认 `true`）          |
+| `createExecflowPlugin()`   | `node-wright:execflow`    | 同节点、方向、kind、数据类型、容量；执行环默认允许（`preventCycles: true` 时禁止） |
+| `createHybridFlowPlugin()` | `node-wright:hybrid-flow` | 按连接类型分别运行 dataflow 与 execflow 规则                                       |
 
 三个插件都会同时注册交互连接校验器和整图诊断 provider，并开启必填输入诊断：同一套规则既用于拖线预览，也用于 `store.validateGraph()` / `api.diagnostics.list()`，不会漂移。默认规则数组也可以单独取得：`createDataflowConnectionRules(options)`、`createExecflowConnectionRules(options)`、`createHybridFlowConnectionRules(options)`。
 
@@ -62,7 +62,7 @@ import {
   createKindRule,
   createSameNodeRule,
   defineConnectionRule,
-} from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/semantics'
 
 const noPreviewChains = defineConnectionRule('no-preview-chains', (context) =>
   context.sourceNode?.type === 'data:preview'
@@ -126,7 +126,7 @@ export const rulesPlugin = createConnectionRulesPlugin(
 节点能力只定义在 `SemanticNodeDefinition.capabilities`（`SemanticNodeDefinition` 继承 `NodeDefinition`）：
 
 ```ts
-import type { SemanticNodeDefinition } from '@node-engine-sdk/core/semantics'
+import type { SemanticNodeDefinition } from '@node-wright/core/semantics'
 
 export const requestNode: SemanticNodeDefinition = {
   type: 'http:request',
@@ -150,7 +150,7 @@ export const requestNode: SemanticNodeDefinition = {
 端口可以只写 `dataType: 'string'`。需要结构化类型时，唯一入口是 `port.data.type`：
 
 ```ts
-import type { GraphPort } from '@node-engine-sdk/core/protocol'
+import type { GraphPort } from '@node-wright/core/protocol'
 
 export const payloadPort: GraphPort = {
   id: 'payload',
@@ -176,7 +176,7 @@ export const payloadPort: GraphPort = {
 semantics 只描述函数签名，不执行函数，也不生成 UI：
 
 ```ts
-import type { FunctionDefinition } from '@node-engine-sdk/core/semantics'
+import type { FunctionDefinition } from '@node-wright/core/semantics'
 
 export const formatMessage: FunctionDefinition = {
   id: 'format-message',
@@ -187,7 +187,7 @@ export const formatMessage: FunctionDefinition = {
 }
 ```
 
-`mode` 可为 `'pure'`、`'effect'`、`'async'`、`'subgraph'` 或自定义字符串。`createFunctionDefinition()`、`createFunctionReference()`、`normalizeFunctionId()` 要求非空 id，空值直接抛错。函数 handler 注册在 [runtime](./runtime-api.md#函数)，调用节点来自 `@node-engine-sdk/presets/nodes/function`。
+`mode` 可为 `'pure'`、`'effect'`、`'async'`、`'subgraph'` 或自定义字符串。`createFunctionDefinition()`、`createFunctionReference()`、`normalizeFunctionId()` 要求非空 id，空值直接抛错。函数 handler 注册在 [runtime](./runtime-api.md#函数)，调用节点来自 `@node-wright/presets/nodes/function`。
 
 ### 签名校验
 
@@ -198,18 +198,18 @@ export const formatMessage: FunctionDefinition = {
 | `FUNCTION_SIGNATURE_PORT_ID_DUPLICATE` / `SUBGRAPH_SIGNATURE_PORT_ID_DUPLICATE` | 输入或输出的 id 与先出现的输入/输出相同（同一列表内重复，或输出与输入同 id） |
 | `FUNCTION_SIGNATURE_PORT_ID_RESERVED` / `SUBGRAPH_SIGNATURE_PORT_ID_RESERVED`   | 使用了调用节点保留的执行端口 id（`exec:in`、`exec:then`、`exec:error`）      |
 
-诊断带 `portId` 与定位到具体条目的 `path`（如 `outputs.0.id`；传入 `path` 前缀时为 `functionDefinitions.1.outputs.0.id`），`message` 写明函数或子图 id 以及与之冲突的条目。三处使用这同一份校验：`createFunctionDefinition()` / `createSubgraphDefinition()` 在签名无效时抛出列出全部诊断的错误；`@node-engine-sdk/presets` 的调用节点与边界节点端口生成函数先经过它们，不会生成重复端口；`compileGraph()` / `runtime.compile()` 把注册的函数与子图签名诊断（路径前缀 `functionDefinitions.<i>` / `subgraphDefinitions.<i>`）计入编译结果，签名无效时编译失败。
+诊断带 `portId` 与定位到具体条目的 `path`（如 `outputs.0.id`；传入 `path` 前缀时为 `functionDefinitions.1.outputs.0.id`），`message` 写明函数或子图 id 以及与之冲突的条目。三处使用这同一份校验：`createFunctionDefinition()` / `createSubgraphDefinition()` 在签名无效时抛出列出全部诊断的错误；`@node-wright/presets` 的调用节点与边界节点端口生成函数先经过它们，不会生成重复端口；`compileGraph()` / `runtime.compile()` 把注册的函数与子图签名诊断（路径前缀 `functionDefinitions.<i>` / `subgraphDefinitions.<i>`）计入编译结果，签名无效时编译失败。
 
 ## 子图签名
 
 ```ts
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import type { SubgraphDefinition } from '@node-engine-sdk/core/semantics'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import type { SubgraphDefinition } from '@node-wright/core/semantics'
 
 export const wrapMessage: SubgraphDefinition = {
   id: 'wrap-message',
   graph: {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],
@@ -232,4 +232,4 @@ export const wrapMessage: SubgraphDefinition = {
 
 ## 执行端口常量
 
-`EXEC_IN_PORT_ID`（`'exec:in'`）、`EXEC_THEN_PORT_ID`（`'exec:then'`）、`EXEC_ERROR_PORT_ID`（`'exec:error'`）是执行流节点约定的端口 id，`@node-engine-sdk/presets/nodes/execflow` 也转出了它们。
+`EXEC_IN_PORT_ID`（`'exec:in'`）、`EXEC_THEN_PORT_ID`（`'exec:then'`）、`EXEC_ERROR_PORT_ID`（`'exec:error'`）是执行流节点约定的端口 id，`@node-wright/presets/nodes/execflow` 也转出了它们。

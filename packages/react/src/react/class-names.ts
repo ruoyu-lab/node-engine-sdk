@@ -1,6 +1,6 @@
-import type { NodeEngineDomNodeClassValue } from '@node-engine-sdk/core/view'
+import type { NodeWrightDomNodeClassValue } from '@node-wright/core/view'
 
-type ClassNameValue = NodeEngineDomNodeClassValue | null | undefined | false
+type ClassNameValue = NodeWrightDomNodeClassValue | null | undefined | false
 
 /** Joins class values like a Vue `:class` binding: strings, string arrays and `{ name: on }` maps. */
 export function toClassName(values: readonly ClassNameValue[]): string {

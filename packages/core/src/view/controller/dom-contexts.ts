@@ -3,11 +3,11 @@ import type { ReadonlySignal } from '../reactive.js'
 import type { GraphRect } from '../rendering/geometry.js'
 import type { ResolvedNodeView } from '../rendering/node-layout.js'
 import type {
-  NodeEngineCanvasNodeTheme,
-  NodeEngineDomNodeRenderContext,
-  NodeEngineNodeStatus,
-  NodeEnginePortAnchor,
-  NodeEngineRenderContext,
+  NodeWrightCanvasNodeTheme,
+  NodeWrightDomNodeRenderContext,
+  NodeWrightNodeStatus,
+  NodeWrightPortAnchor,
+  NodeWrightRenderContext,
   NodeTypeDefinition,
 } from '../types/index.js'
 import type { EditorCoordinates } from './coordinates.js'
@@ -21,28 +21,28 @@ export interface DomContextInput {
   bounds: GraphRect
   selected: boolean
   dragging: boolean
-  inputs: NodeEnginePortAnchor[]
-  outputs: NodeEnginePortAnchor[]
+  inputs: NodeWrightPortAnchor[]
+  outputs: NodeWrightPortAnchor[]
 }
 
 /** Builds the render contexts passed to DOM renderer callbacks and DOM node components. */
 export interface DomContextFactory {
-  create: (input: DomContextInput) => NodeEngineDomNodeRenderContext
+  create: (input: DomContextInput) => NodeWrightDomNodeRenderContext
   /** Context for sizing before port positions are known: every port anchors at the origin. */
-  createStatic: (node: ResolvedNodeView) => NodeEngineDomNodeRenderContext
+  createStatic: (node: ResolvedNodeView) => NodeWrightDomNodeRenderContext
 }
 
 export function createDomContextFactory(options: {
   readonly: () => boolean
-  nodeStatus: () => Readonly<Record<string, NodeEngineNodeStatus>>
+  nodeStatus: () => Readonly<Record<string, NodeWrightNodeStatus>>
   coordinates: EditorCoordinates
   state: InteractionState
-  theme: ReadonlySignal<NodeEngineCanvasNodeTheme>
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
+  theme: ReadonlySignal<NodeWrightCanvasNodeTheme>
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
   selectedNodeIds: ReadonlySignal<ReadonlySet<string>>
   drag: DragPreview
 }): DomContextFactory {
-  function create(input: DomContextInput): NodeEngineDomNodeRenderContext {
+  function create(input: DomContextInput): NodeWrightDomNodeRenderContext {
     return {
       node: input.node,
       schema: input.schema,
@@ -66,11 +66,11 @@ export function createDomContextFactory(options: {
   return {
     create,
     createStatic(node) {
-      const inputs: NodeEnginePortAnchor[] = []
-      const outputs: NodeEnginePortAnchor[] = []
+      const inputs: NodeWrightPortAnchor[] = []
+      const outputs: NodeWrightPortAnchor[] = []
 
       for (const port of node.ports) {
-        const anchor: NodeEnginePortAnchor = {
+        const anchor: NodeWrightPortAnchor = {
           endpoint: { nodeId: node.id, portId: port.id },
           x: node.x,
           y: node.y,

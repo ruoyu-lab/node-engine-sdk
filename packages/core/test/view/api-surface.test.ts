@@ -1,4 +1,4 @@
-import { createEditorController } from '@node-engine-sdk/core/view'
+import { createEditorController } from '@node-wright/core/view'
 import { describe, expect, it } from 'vitest'
 import { createGraph } from './editor-harness'
 

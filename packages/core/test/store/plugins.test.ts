@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import type { GraphPluginContext, GraphStoreEvent } from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import type { GraphPluginContext, GraphStoreEvent } from '@node-wright/core/protocol'
 import { GraphStore } from '../../src/store/index'
 
 function createStore(): GraphStore {
   return new GraphStore({
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [{ id: 'a', type: 'demo', x: 0, y: 0, ports: [{ id: 'out', direction: 'output' }] }],
     edges: [],
     groups: [],
@@ -13,7 +13,7 @@ function createStore(): GraphStore {
   })
 }
 
-describe('@node-engine-sdk/core/store plugins', () => {
+describe('@node-wright/core/store plugins', () => {
   it('hands setup a context whose store API acts on the store', () => {
     const store = createStore()
     let context: GraphPluginContext | undefined

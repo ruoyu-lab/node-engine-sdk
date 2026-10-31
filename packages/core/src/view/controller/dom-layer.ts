@@ -25,15 +25,15 @@ import {
 import { computed, type ReadonlySignal } from '../reactive.js'
 import type { CanvasNodeEntry } from '../rendering/node-canvas.js'
 import type {
-  NodeEngineAccessibleNode,
-  NodeEngineApi,
-  NodeEngineDomNodeApi,
-  NodeEngineDomNodeEntry,
-  NodeEngineDomNodeRenderContext,
-  NodeEngineDomNodeRenderer,
-  NodeEngineDomNodeSizeConstraints,
-  NodeEngineResolvePortValueHook,
-  NodeEngineResolvedDomNodeModel,
+  NodeWrightAccessibleNode,
+  NodeWrightApi,
+  NodeWrightDomNodeApi,
+  NodeWrightDomNodeEntry,
+  NodeWrightDomNodeRenderContext,
+  NodeWrightDomNodeRenderer,
+  NodeWrightDomNodeSizeConstraints,
+  NodeWrightResolvePortValueHook,
+  NodeWrightResolvedDomNodeModel,
   NodeTypeDefinition,
 } from '../types/index.js'
 import type { DomContextFactory } from './dom-contexts.js'
@@ -43,12 +43,12 @@ import type { InteractionState } from './interaction-state.js'
 import type { NodeViews } from './node-views.js'
 
 /** Component key adapters register their built-in default DOM node under. */
-export const NODE_ENGINE_DEFAULT_DOM_COMPONENT = 'node-engine.default'
+export const NODE_WRIGHT_DEFAULT_DOM_COMPONENT = 'node-wright.default'
 
 interface DomRenderEntry {
   entry: CanvasNodeEntry
-  context: NodeEngineDomNodeRenderContext
-  renderer: NodeEngineDomNodeRenderer | null
+  context: NodeWrightDomNodeRenderContext
+  renderer: NodeWrightDomNodeRenderer | null
 }
 
 interface CachedDomNodeModel {
@@ -60,7 +60,7 @@ interface CachedDomNodeModel {
   portStroke: string
   inputsSignature: string
   outputsSignature: string
-  model: NodeEngineResolvedDomNodeModel
+  model: NodeWrightResolvedDomNodeModel
 }
 
 /**
@@ -70,11 +70,11 @@ interface CachedDomNodeModel {
  */
 export interface DomLayer {
   readonly paintedNodes: ReadonlySignal<CanvasNodeEntry[]>
-  readonly nodes: ReadonlySignal<NodeEngineDomNodeEntry[]>
-  readonly accessibleNodes: ReadonlySignal<NodeEngineAccessibleNode[]>
-  getContext: (nodeId: string) => NodeEngineDomNodeRenderContext | null
-  getModel: (nodeId: string) => NodeEngineResolvedDomNodeModel | null
-  getResizeConstraints: (nodeId: string) => NodeEngineDomNodeSizeConstraints
+  readonly nodes: ReadonlySignal<NodeWrightDomNodeEntry[]>
+  readonly accessibleNodes: ReadonlySignal<NodeWrightAccessibleNode[]>
+  getContext: (nodeId: string) => NodeWrightDomNodeRenderContext | null
+  getModel: (nodeId: string) => NodeWrightResolvedDomNodeModel | null
+  getResizeConstraints: (nodeId: string) => NodeWrightDomNodeSizeConstraints
   prune: (graph: GraphSnapshot) => void
   reset: () => void
 }
@@ -88,9 +88,9 @@ export function createDomLayer(options: {
   domContexts: DomContextFactory
   state: InteractionState
   connection: ConnectionGesture
-  getResolvePortValue: () => NodeEngineResolvePortValueHook | undefined
-  getApi: () => NodeEngineApi
-  getDomApi: (nodeId: string) => NodeEngineDomNodeApi
+  getResolvePortValue: () => NodeWrightResolvePortValueHook | undefined
+  getApi: () => NodeWrightApi
+  getDomApi: (nodeId: string) => NodeWrightDomNodeApi
 }): DomLayer {
   let modelCache = new Map<string, CachedDomNodeModel>()
   /**
@@ -102,7 +102,7 @@ export function createDomLayer(options: {
     () => new Map(options.graph.value.nodes.map((node) => [node.id, node])),
   )
 
-  function contextOf(entry: CanvasNodeEntry): NodeEngineDomNodeRenderContext {
+  function contextOf(entry: CanvasNodeEntry): NodeWrightDomNodeRenderContext {
     return options.domContexts.create(entry)
   }
 
@@ -154,9 +154,9 @@ export function createDomLayer(options: {
 
   function resolveStaticModel(
     entry: CanvasNodeEntry,
-    context: NodeEngineDomNodeRenderContext,
-    renderer: NodeEngineDomNodeRenderer,
-  ): NodeEngineResolvedDomNodeModel {
+    context: NodeWrightDomNodeRenderContext,
+    renderer: NodeWrightDomNodeRenderer,
+  ): NodeWrightResolvedDomNodeModel {
     if (typeof renderer.defaults === 'function') {
       return resolveDomNodeModel(context)
     }
@@ -198,7 +198,7 @@ export function createDomLayer(options: {
     return model
   }
 
-  function resolveModel(item: DomRenderEntry & { renderer: NodeEngineDomNodeRenderer }) {
+  function resolveModel(item: DomRenderEntry & { renderer: NodeWrightDomNodeRenderer }) {
     const graph = options.graph.value
     const model = applyDomFieldDriveState(
       resolveStaticModel(item.entry, item.context, item.renderer),
@@ -215,7 +215,7 @@ export function createDomLayer(options: {
     })
   }
 
-  const nodes = computed<NodeEngineDomNodeEntry[]>(() =>
+  const nodes = computed<NodeWrightDomNodeEntry[]>(() =>
     renderEntries.value.flatMap((item, index) => {
       const { renderer, context } = item
 
@@ -246,7 +246,7 @@ export function createDomLayer(options: {
       return [
         {
           id: item.entry.node.id,
-          component: renderer.component ?? NODE_ENGINE_DEFAULT_DOM_COMPONENT,
+          component: renderer.component ?? NODE_WRIGHT_DEFAULT_DOM_COMPONENT,
           props: {
             ...context,
             domModel: resolveModel({ ...item, renderer }),

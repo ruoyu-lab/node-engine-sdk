@@ -17,14 +17,14 @@ import {
 import type { PortLayout, ResolvedNodeView } from '../rendering/node-layout.js'
 import { resolvePortRadius } from '../rendering/node-painter.js'
 import type {
-  NodeEngineCanvasGroupHitTestContext,
-  NodeEngineCanvasGroupTheme,
-  NodeEngineCanvasNodeHitTestContext,
-  NodeEngineCanvasNodeTheme,
-  NodeEngineRenderContext,
+  NodeWrightCanvasGroupHitTestContext,
+  NodeWrightCanvasGroupTheme,
+  NodeWrightCanvasNodeHitTestContext,
+  NodeWrightCanvasNodeTheme,
+  NodeWrightRenderContext,
 } from '../types/index.js'
 import type { CanvasHitTarget, InteractionState } from './interaction-state.js'
-import type { ResolvedNodeEngineBehaviors } from './theme.js'
+import type { ResolvedNodeWrightBehaviors } from './theme.js'
 
 const CONNECTION_SNAP_DISTANCE_PX = 20
 
@@ -50,10 +50,10 @@ export function createCanvasHitTester(options: {
   getStore: () => GraphStore
   state: InteractionState
   readonly: () => boolean
-  groupBehaviors: ReadonlySignal<ResolvedNodeEngineBehaviors['group']>
-  nodeTheme: ReadonlySignal<NodeEngineCanvasNodeTheme>
-  groupTheme: ReadonlySignal<NodeEngineCanvasGroupTheme>
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
+  groupBehaviors: ReadonlySignal<ResolvedNodeWrightBehaviors['group']>
+  nodeTheme: ReadonlySignal<NodeWrightCanvasNodeTheme>
+  groupTheme: ReadonlySignal<NodeWrightCanvasGroupTheme>
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
   getCanvasContext: () => CanvasRenderingContext2D
   connectionTargetDirection: () => GraphPort['direction'] | null
   validateConnectionTarget: (
@@ -63,7 +63,7 @@ export function createCanvasHitTester(options: {
   function nodeHitContext(
     entry: CanvasNodeEntry,
     point: XYPosition,
-  ): NodeEngineCanvasNodeHitTestContext {
+  ): NodeWrightCanvasNodeHitTestContext {
     return {
       ctx: options.getCanvasContext(),
       node: entry.node,
@@ -87,7 +87,7 @@ export function createCanvasHitTester(options: {
   function groupHitContext(
     entry: VisibleGroupEntry,
     point: XYPosition,
-  ): NodeEngineCanvasGroupHitTestContext {
+  ): NodeWrightCanvasGroupHitTestContext {
     return {
       ctx: options.getCanvasContext(),
       point,

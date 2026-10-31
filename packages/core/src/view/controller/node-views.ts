@@ -21,8 +21,8 @@ import {
   type ResolvedNodeView,
 } from '../rendering/node-layout.js'
 import type {
-  NodeEngineCanvasNodeLayoutContext,
-  NodeEngineRenderContext,
+  NodeWrightCanvasNodeLayoutContext,
+  NodeWrightRenderContext,
   NodeTypeDefinition,
 } from '../types/index.js'
 import type { DomContextFactory } from './dom-contexts.js'
@@ -71,7 +71,7 @@ export function createNodeViews(options: {
   selectedNodeIds: ReadonlySignal<ReadonlySet<string>>
   drag: DragPreview
   resize: ResizePreview
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
   domContexts: DomContextFactory
   endpointStyles: EndpointStyles
 }): NodeViews {
@@ -162,7 +162,7 @@ export function createNodeViews(options: {
     return width === node.width && height === node.height ? node : { ...node, width, height }
   }
 
-  function createLayoutContext(node: ResolvedNodeView): NodeEngineCanvasNodeLayoutContext {
+  function createLayoutContext(node: ResolvedNodeView): NodeWrightCanvasNodeLayoutContext {
     return {
       node,
       schema: node.schema,

@@ -5,9 +5,9 @@ import {
   subgraphNodeDefinitions,
   subgraphRuntimeDefinitions,
 } from './nodes/subgraph/index.js'
-import type { NodeTypeRegistry } from '@node-engine-sdk/core/view'
+import type { NodeTypeRegistry } from '@node-wright/core/view'
 import { PRESET_NODE_ACCENTS } from './accents.js'
-import type { NodeEnginePreset, SubgraphPresetOptions } from './types.js'
+import type { NodeWrightPreset, SubgraphPresetOptions } from './types.js'
 import { createPresetLayout } from './layout.js'
 
 export {
@@ -54,7 +54,7 @@ export const subgraphNodeTypes: NodeTypeRegistry = {
   },
 }
 
-export function createSubgraphPreset(options: SubgraphPresetOptions = {}): NodeEnginePreset {
+export function createSubgraphPreset(options: SubgraphPresetOptions = {}): NodeWrightPreset {
   const includeDefaultNodes = options.includeDefaultNodes !== false
 
   return {

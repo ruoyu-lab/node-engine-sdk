@@ -27,7 +27,7 @@ export function DemoSidebar(props: {
           </svg>
         </span>
         <div className="demo-sidebar__brand">
-          <strong>Node Engine SDK</strong>
+          <strong>Node Wright</strong>
           <span>Playground</span>
         </div>
         <button

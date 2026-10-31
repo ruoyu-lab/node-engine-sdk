@@ -1,13 +1,13 @@
 import { computed, signal, type ReadonlySignal, type Signal } from '../reactive.js'
 import type { GraphCanvasTheme } from '../rendering/graph-canvas.js'
 import type {
-  NodeEngineCanvasEdgeTheme,
-  NodeEngineCanvasGroupTheme,
-  NodeEngineCanvasNodeTheme,
-  NodeEngineColorScheme,
-  NodeEngineEditorOptions,
-  NodeEngineNodeStatus,
-  NodeEngineStyleDeclaration,
+  NodeWrightCanvasEdgeTheme,
+  NodeWrightCanvasGroupTheme,
+  NodeWrightCanvasNodeTheme,
+  NodeWrightColorScheme,
+  NodeWrightEditorOptions,
+  NodeWrightNodeStatus,
+  NodeWrightStyleDeclaration,
 } from '../types/index.js'
 import type { GridSnapping } from './interactions/drag.js'
 import { resolveEditorOptions, type ResolvedEditorOptions } from './options.js'
@@ -21,34 +21,34 @@ import {
   resolveGridColors,
   resolvePerformanceOptions,
   resolveRootStyle,
-  type ResolvedNodeEngineBehaviors,
-  type ResolvedNodeEngineGridColors,
-  type ResolvedNodeEnginePerformanceOptions,
+  type ResolvedNodeWrightBehaviors,
+  type ResolvedNodeWrightGridColors,
+  type ResolvedNodeWrightPerformanceOptions,
 } from './theme.js'
 
 /** The current editor options and every setting derived from them. */
 export interface EditorSettings {
   readonly options: Signal<ResolvedEditorOptions>
   readonly readonly: ReadonlySignal<boolean>
-  readonly nodeStatus: ReadonlySignal<Readonly<Record<string, NodeEngineNodeStatus>>>
-  readonly colorScheme: ReadonlySignal<NodeEngineColorScheme>
-  readonly behaviors: ReadonlySignal<ResolvedNodeEngineBehaviors>
-  readonly groupBehaviors: ReadonlySignal<ResolvedNodeEngineBehaviors['group']>
-  readonly editorBehavior: ReadonlySignal<ResolvedNodeEngineBehaviors['editor']>
-  readonly performance: ReadonlySignal<ResolvedNodeEnginePerformanceOptions>
+  readonly nodeStatus: ReadonlySignal<Readonly<Record<string, NodeWrightNodeStatus>>>
+  readonly colorScheme: ReadonlySignal<NodeWrightColorScheme>
+  readonly behaviors: ReadonlySignal<ResolvedNodeWrightBehaviors>
+  readonly groupBehaviors: ReadonlySignal<ResolvedNodeWrightBehaviors['group']>
+  readonly editorBehavior: ReadonlySignal<ResolvedNodeWrightBehaviors['editor']>
+  readonly performance: ReadonlySignal<ResolvedNodeWrightPerformanceOptions>
   readonly graphTheme: ReadonlySignal<GraphCanvasTheme>
-  readonly nodeTheme: ReadonlySignal<NodeEngineCanvasNodeTheme>
-  readonly edgeTheme: ReadonlySignal<NodeEngineCanvasEdgeTheme>
-  readonly groupTheme: ReadonlySignal<NodeEngineCanvasGroupTheme>
-  readonly gridColors: ReadonlySignal<ResolvedNodeEngineGridColors>
-  readonly rootStyle: ReadonlySignal<NodeEngineStyleDeclaration>
+  readonly nodeTheme: ReadonlySignal<NodeWrightCanvasNodeTheme>
+  readonly edgeTheme: ReadonlySignal<NodeWrightCanvasEdgeTheme>
+  readonly groupTheme: ReadonlySignal<NodeWrightCanvasGroupTheme>
+  readonly gridColors: ReadonlySignal<ResolvedNodeWrightGridColors>
+  readonly rootStyle: ReadonlySignal<NodeWrightStyleDeclaration>
   isReadonly: () => boolean
   getSnapping: () => GridSnapping
   getZoomRange: () => { minZoom: number; maxZoom: number }
   getGroupMinimumSize: () => { width: number; height: number }
 }
 
-export function createEditorSettings(input: NodeEngineEditorOptions): EditorSettings {
+export function createEditorSettings(input: NodeWrightEditorOptions): EditorSettings {
   const options = signal(resolveEditorOptions(input))
   const readonly = computed(() => options.value.readonly)
   const behaviors = computed(() => resolveBehaviorOptions(options.value.behaviors))

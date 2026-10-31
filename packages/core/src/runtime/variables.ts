@@ -9,51 +9,51 @@ import {
   type VariableScope,
 } from '../semantics/index.js'
 
-export type NodeEngineRuntimeVariableValues = Record<string, unknown>
-export type NodeEngineRuntimeVariableInput = VariableReferenceInput
+export type NodeWrightRuntimeVariableValues = Record<string, unknown>
+export type NodeWrightRuntimeVariableInput = VariableReferenceInput
 
-export interface NodeEngineRuntimeVariableSnapshot {
-  run: NodeEngineRuntimeVariableValues
-  graph: NodeEngineRuntimeVariableValues
-  nodes: Record<string, NodeEngineRuntimeVariableValues>
-  scopes: Record<string, NodeEngineRuntimeVariableValues>
+export interface NodeWrightRuntimeVariableSnapshot {
+  run: NodeWrightRuntimeVariableValues
+  graph: NodeWrightRuntimeVariableValues
+  nodes: Record<string, NodeWrightRuntimeVariableValues>
+  scopes: Record<string, NodeWrightRuntimeVariableValues>
 }
 
-export type NodeEngineRuntimeInitialVariables = Partial<NodeEngineRuntimeVariableSnapshot>
+export type NodeWrightRuntimeInitialVariables = Partial<NodeWrightRuntimeVariableSnapshot>
 
-export interface NodeEngineRuntimeVariableAccessOptions {
+export interface NodeWrightRuntimeVariableAccessOptions {
   defaultScope?: VariableScope
   nodeId?: string
 }
 
-export interface NodeEngineRuntimeVariableApi {
+export interface NodeWrightRuntimeVariableApi {
   get: (
-    reference: NodeEngineRuntimeVariableInput,
-    options?: NodeEngineRuntimeVariableAccessOptions,
+    reference: NodeWrightRuntimeVariableInput,
+    options?: NodeWrightRuntimeVariableAccessOptions,
   ) => unknown
   set: (
-    reference: NodeEngineRuntimeVariableInput,
+    reference: NodeWrightRuntimeVariableInput,
     value: unknown,
-    options?: NodeEngineRuntimeVariableAccessOptions,
+    options?: NodeWrightRuntimeVariableAccessOptions,
   ) => void
   has: (
-    reference: NodeEngineRuntimeVariableInput,
-    options?: NodeEngineRuntimeVariableAccessOptions,
+    reference: NodeWrightRuntimeVariableInput,
+    options?: NodeWrightRuntimeVariableAccessOptions,
   ) => boolean
   delete: (
-    reference: NodeEngineRuntimeVariableInput,
-    options?: NodeEngineRuntimeVariableAccessOptions,
+    reference: NodeWrightRuntimeVariableInput,
+    options?: NodeWrightRuntimeVariableAccessOptions,
   ) => boolean
   list: (
     scope?: VariableScope,
-    options?: Pick<NodeEngineRuntimeVariableAccessOptions, 'nodeId'>,
-  ) => NodeEngineRuntimeVariableValues
-  snapshot: () => NodeEngineRuntimeVariableSnapshot
+    options?: Pick<NodeWrightRuntimeVariableAccessOptions, 'nodeId'>,
+  ) => NodeWrightRuntimeVariableValues
+  snapshot: () => NodeWrightRuntimeVariableSnapshot
 }
 
 export function createRuntimeVariableSnapshot(
-  initialVariables?: NodeEngineRuntimeInitialVariables,
-): NodeEngineRuntimeVariableSnapshot {
+  initialVariables?: NodeWrightRuntimeInitialVariables,
+): NodeWrightRuntimeVariableSnapshot {
   if (!initialVariables || typeof initialVariables !== 'object') {
     return createEmptyVariableSnapshot()
   }
@@ -67,22 +67,22 @@ export function createRuntimeVariableSnapshot(
 }
 
 export function createRuntimeVariableApi(
-  variables: NodeEngineRuntimeVariableSnapshot,
-  context: NodeEngineRuntimeVariableAccessOptions = {},
-): NodeEngineRuntimeVariableApi {
+  variables: NodeWrightRuntimeVariableSnapshot,
+  context: NodeWrightRuntimeVariableAccessOptions = {},
+): NodeWrightRuntimeVariableApi {
   const resolveReference = (
-    reference: NodeEngineRuntimeVariableInput,
-    options: NodeEngineRuntimeVariableAccessOptions = {},
+    reference: NodeWrightRuntimeVariableInput,
+    options: NodeWrightRuntimeVariableAccessOptions = {},
   ): VariableReference =>
     createVariableReference(reference, {
       defaultScope: options.defaultScope ?? context.defaultScope ?? VARIABLE_SCOPE_RUN,
       nodeId: options.nodeId ?? context.nodeId,
     })
 
-  const readBucket = (reference: VariableReference): NodeEngineRuntimeVariableValues | undefined =>
+  const readBucket = (reference: VariableReference): NodeWrightRuntimeVariableValues | undefined =>
     resolveVariableBucket(variables, reference, { create: false })
 
-  const writeBucket = (reference: VariableReference): NodeEngineRuntimeVariableValues =>
+  const writeBucket = (reference: VariableReference): NodeWrightRuntimeVariableValues =>
     resolveVariableBucket(variables, reference, { create: true }) ?? {}
 
   return {
@@ -124,7 +124,7 @@ export function createRuntimeVariableApi(
   }
 }
 
-function createEmptyVariableSnapshot(): NodeEngineRuntimeVariableSnapshot {
+function createEmptyVariableSnapshot(): NodeWrightRuntimeVariableSnapshot {
   return {
     run: {},
     graph: {},
@@ -134,10 +134,10 @@ function createEmptyVariableSnapshot(): NodeEngineRuntimeVariableSnapshot {
 }
 
 function resolveVariableBucket(
-  variables: NodeEngineRuntimeVariableSnapshot,
+  variables: NodeWrightRuntimeVariableSnapshot,
   reference: VariableReference,
   options: { create: boolean },
-): NodeEngineRuntimeVariableValues | undefined {
+): NodeWrightRuntimeVariableValues | undefined {
   const scope = reference.scope ?? VARIABLE_SCOPE_RUN
 
   if (scope === VARIABLE_SCOPE_RUN) {
@@ -173,13 +173,13 @@ function resolveVariableBucket(
   return variables.scopes[scope]
 }
 
-function cloneVariableRecord(value: unknown): NodeEngineRuntimeVariableValues {
+function cloneVariableRecord(value: unknown): NodeWrightRuntimeVariableValues {
   return value && typeof value === 'object' && !Array.isArray(value)
-    ? cloneValue(value as NodeEngineRuntimeVariableValues)
+    ? cloneValue(value as NodeWrightRuntimeVariableValues)
     : {}
 }
 
-function cloneVariableRecordMap(value: unknown): Record<string, NodeEngineRuntimeVariableValues> {
+function cloneVariableRecordMap(value: unknown): Record<string, NodeWrightRuntimeVariableValues> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return {}
   }

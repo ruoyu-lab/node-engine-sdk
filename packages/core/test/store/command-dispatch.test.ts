@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import type { GraphCommandDefinition, GraphStoreEvent } from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import type { GraphCommandDefinition, GraphStoreEvent } from '@node-wright/core/protocol'
 import { GraphStore } from '../../src/store/index'
 
 interface RenamePayload {
@@ -10,7 +10,7 @@ interface RenamePayload {
 
 function createStore(): GraphStore {
   return new GraphStore({
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [{ id: 'a', type: 'demo', x: 0, y: 0 }],
     edges: [],
     groups: [],
@@ -28,7 +28,7 @@ function command(
   }
 }
 
-describe('@node-engine-sdk/core/store command dispatch', () => {
+describe('@node-wright/core/store command dispatch', () => {
   it('runs a registered command with its payload, draft, command API, and store', () => {
     const store = createStore()
     const executed: GraphStoreEvent[] = []
@@ -131,7 +131,7 @@ describe('@node-engine-sdk/core/store command dispatch', () => {
 
   it('reports connection failures through connect and reconnectEdge', () => {
     const store = new GraphStore({
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         { id: 'a', type: 'demo', x: 0, y: 0, ports: [{ id: 'out', direction: 'output' }] },
         { id: 'b', type: 'demo', x: 100, y: 0, ports: [{ id: 'in', direction: 'input' }] },

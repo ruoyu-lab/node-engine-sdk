@@ -1,11 +1,11 @@
 import {
   createEditorController,
-  type NodeEngineEditorController,
-  type NodeEngineEditorOptions,
-  type NodeEngineEventName,
-  type NodeEngineEventSink,
-  type NodeEngineViewSnapshot,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightEditorController,
+  type NodeWrightEditorOptions,
+  type NodeWrightEventName,
+  type NodeWrightEventSink,
+  type NodeWrightViewSnapshot,
+} from '@node-wright/core/view'
 import {
   useImperativeHandle,
   useRef,
@@ -14,10 +14,10 @@ import {
   type ForwardedRef,
   type RefObject,
 } from 'react'
-import type { NodeEngineEventHandlerName, NodeEngineHandle, NodeEngineProps } from '../types.js'
+import type { NodeWrightEventHandlerName, NodeWrightHandle, NodeWrightProps } from '../types.js'
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect.js'
 
-type EditorOptionValues = Omit<NodeEngineEditorOptions, 'onEvent'>
+type EditorOptionValues = Omit<NodeWrightEditorOptions, 'onEvent'>
 type EditorOptionKey = keyof EditorOptionValues
 
 /** Every editor option a prop can carry; `satisfies` keeps the list complete. */
@@ -65,20 +65,20 @@ const EDITOR_OPTION_KEYS = Object.keys({
 
 const NO_EDITOR = {
   subscribe: () => () => undefined,
-  getSnapshot: (): NodeEngineViewSnapshot | null => null,
+  getSnapshot: (): NodeWrightViewSnapshot | null => null,
 }
 
-export interface NodeEngineEditorBinding {
+export interface NodeWrightEditorBinding {
   /** `null` until the first commit and during server rendering. */
-  controller: NodeEngineEditorController | null
-  view: NodeEngineViewSnapshot | null
+  controller: NodeWrightEditorController | null
+  view: NodeWrightViewSnapshot | null
   rootRef: RefObject<HTMLDivElement | null>
   canvasRef: RefObject<HTMLCanvasElement | null>
   gridCanvasRef: RefObject<HTMLCanvasElement | null>
 }
 
 /**
- * Binds a framework-independent editor controller to the `NodeEngine` component.
+ * Binds a framework-independent editor controller to the `NodeWright` component.
  *
  * The controller is created, mounted and destroyed in one layout effect: it is an external
  * resource, so it is never created while rendering, where React may discard the result (a
@@ -89,17 +89,17 @@ export interface NodeEngineEditorBinding {
  * graph that the controller itself emitted through `onGraphChange`. The snapshot is read with
  * `useSyncExternalStore`, the ref exposes the API from the same commit on.
  */
-export function useNodeEngineEditor(
-  props: NodeEngineProps,
-  ref: ForwardedRef<NodeEngineHandle>,
-): NodeEngineEditorBinding {
+export function useNodeWrightEditor(
+  props: NodeWrightProps,
+  ref: ForwardedRef<NodeWrightHandle>,
+): NodeWrightEditorBinding {
   const rootRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const gridCanvasRef = useRef<HTMLCanvasElement | null>(null)
   const propsRef = useRef(props)
-  const controllerRef = useRef<NodeEngineEditorController | null>(null)
+  const controllerRef = useRef<NodeWrightEditorController | null>(null)
   const appliedOptionsRef = useRef<EditorOptionValues>({})
-  const [controller, setController] = useState<NodeEngineEditorController | null>(null)
+  const [controller, setController] = useState<NodeWrightEditorController | null>(null)
   const [forward] = useState(() => createEventForwarder(() => propsRef.current))
 
   useIsomorphicLayoutEffect(() => {
@@ -112,7 +112,7 @@ export function useNodeEngineEditor(
     const gridCanvas = gridCanvasRef.current
 
     if (!root || !canvas || !gridCanvas) {
-      throw new Error('NodeEngine rendered without its root and canvas elements.')
+      throw new Error('NodeWright rendered without its root and canvas elements.')
     }
 
     const options = pickEditorOptions(propsRef.current)
@@ -154,16 +154,16 @@ export function useNodeEngineEditor(
 
 /** Layout effects run in declaration order, after the one that creates the controller. */
 function requireController(
-  controller: NodeEngineEditorController | null,
-): NodeEngineEditorController {
+  controller: NodeWrightEditorController | null,
+): NodeWrightEditorController {
   if (!controller) {
-    throw new Error('NodeEngine editor controller is not mounted.')
+    throw new Error('NodeWright editor controller is not mounted.')
   }
 
   return controller
 }
 
-function pickEditorOptions(props: NodeEngineProps): EditorOptionValues {
+function pickEditorOptions(props: NodeWrightProps): EditorOptionValues {
   const options: EditorOptionValues = {}
 
   for (const key of EDITOR_OPTION_KEYS) {
@@ -187,11 +187,11 @@ function haveSameOptions(left: EditorOptionValues, right: EditorOptionValues): b
   return EDITOR_OPTION_KEYS.every((key) => left[key] === right[key])
 }
 
-const handlerNames = new Map<NodeEngineEventName, string>()
+const handlerNames = new Map<NodeWrightEventName, string>()
 
-function toEventHandlerName<Name extends NodeEngineEventName>(
+function toEventHandlerName<Name extends NodeWrightEventName>(
   name: Name,
-): NodeEngineEventHandlerName<Name> {
+): NodeWrightEventHandlerName<Name> {
   let handlerName = handlerNames.get(name)
 
   if (!handlerName) {
@@ -202,11 +202,11 @@ function toEventHandlerName<Name extends NodeEngineEventName>(
     handlerNames.set(name, handlerName)
   }
 
-  return handlerName as NodeEngineEventHandlerName<Name>
+  return handlerName as NodeWrightEventHandlerName<Name>
 }
 
 /** Forwards every editor event to the callback prop of the latest render. */
-function createEventForwarder(getProps: () => NodeEngineProps): NodeEngineEventSink {
+function createEventForwarder(getProps: () => NodeWrightProps): NodeWrightEventSink {
   return (event, ...args) => {
     const handler = getProps()[toEventHandlerName(event)] as
       ((...input: typeof args) => void) | undefined

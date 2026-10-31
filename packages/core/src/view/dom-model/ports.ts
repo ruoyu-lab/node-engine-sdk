@@ -1,10 +1,10 @@
 import type { GraphPort } from '../../protocol/index.js'
 import type {
-  NodeEngineCanvasNodeTheme,
-  NodeEnginePortAnchor,
-  NodeEngineResolvedDomNodeField,
-  NodeEngineResolvedDomNodeLayout,
-  NodeEngineResolvedDomNodePort,
+  NodeWrightCanvasNodeTheme,
+  NodeWrightPortAnchor,
+  NodeWrightResolvedDomNodeField,
+  NodeWrightResolvedDomNodeLayout,
+  NodeWrightResolvedDomNodePort,
 } from '../types/index.js'
 import { asRecord } from './definition.js'
 import { resolveDomNodePortTop } from './layout.js'
@@ -28,7 +28,7 @@ export const PORT_DATA_TYPE_COLOR_PALETTE = [
   '#b25dc8',
 ]
 
-type DomPortAnchorLike = Pick<NodeEnginePortAnchor, 'connectionColor' | 'port'>
+type DomPortAnchorLike = Pick<NodeWrightPortAnchor, 'connectionColor' | 'port'>
 
 export function normalizePortDataType(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim() ? value.trim().toLowerCase() : undefined
@@ -52,7 +52,7 @@ function resolveDataTypeColor(dataType: string): string {
 
 export function resolveDomNodePortColor(
   port: DomPortAnchorLike,
-  theme: Pick<NodeEngineCanvasNodeTheme, 'portStroke'>,
+  theme: Pick<NodeWrightCanvasNodeTheme, 'portStroke'>,
 ): string {
   if (port.connectionColor) {
     return port.connectionColor
@@ -88,10 +88,10 @@ export function resolvePortSemanticColor(
 }
 
 export function buildResolvedDomPorts(
-  ports: NodeEnginePortAnchor[],
-  theme: Pick<NodeEngineCanvasNodeTheme, 'portStroke'>,
-  layout: NodeEngineResolvedDomNodeLayout,
-): NodeEngineResolvedDomNodePort[] {
+  ports: NodeWrightPortAnchor[],
+  theme: Pick<NodeWrightCanvasNodeTheme, 'portStroke'>,
+  layout: NodeWrightResolvedDomNodeLayout,
+): NodeWrightResolvedDomNodePort[] {
   return ports.map((port, index) => ({
     key: `${port.side}-${port.port.id}`,
     id: port.port.id,
@@ -105,9 +105,9 @@ export function buildResolvedDomPorts(
 }
 
 export function bindDomFieldInputPorts(
-  fields: NodeEngineResolvedDomNodeField[],
-  inputs: NodeEngineResolvedDomNodePort[],
-): NodeEngineResolvedDomNodeField[] {
+  fields: NodeWrightResolvedDomNodeField[],
+  inputs: NodeWrightResolvedDomNodePort[],
+): NodeWrightResolvedDomNodeField[] {
   const inputPortMap = new Map(inputs.map((port) => [port.id, port]))
 
   return fields.map((field) => ({

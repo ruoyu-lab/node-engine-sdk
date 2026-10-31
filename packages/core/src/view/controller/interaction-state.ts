@@ -9,9 +9,9 @@ import { signal, type Signal } from '../reactive.js'
 import type { GraphRect } from '../rendering/geometry.js'
 import type { PortLayout, ResolvedNodeView } from '../rendering/node-layout.js'
 import type {
-  NodeEngineCanvasGroupHitAreaKind,
-  NodeEngineDomNodeResizeHandle,
-  NodeEngineSelectionMode,
+  NodeWrightCanvasGroupHitAreaKind,
+  NodeWrightDomNodeResizeHandle,
+  NodeWrightSelectionMode,
   ViewportState,
 } from '../types/index.js'
 
@@ -40,7 +40,7 @@ export interface DragState {
 
 export interface NodeResizeState {
   nodeId: string
-  handle: NodeEngineDomNodeResizeHandle
+  handle: NodeWrightDomNodeResizeHandle
   pointerStart: XYPosition
   origin: GraphRect
   currentBounds: GraphRect
@@ -63,7 +63,7 @@ export interface ConnectionState {
 export interface MarqueeState {
   start: XYPosition
   current: XYPosition
-  mode: NodeEngineSelectionMode
+  mode: NodeWrightSelectionMode
 }
 
 export type CanvasHitTarget =
@@ -75,7 +75,7 @@ export type CanvasHitTarget =
       kind: 'group'
       group: GraphGroup
       areaId: string
-      areaKind: NodeEngineCanvasGroupHitAreaKind
+      areaKind: NodeWrightCanvasGroupHitAreaKind
     }
 
 export interface InteractionState {

@@ -1,18 +1,18 @@
 import type { GraphSnapshot } from '../../protocol/index.js'
 import { computed, type ReadonlySignal } from '../reactive.js'
 import type {
-  NodeEngineAccessibleNode,
-  NodeEngineColorScheme,
-  NodeEngineContextMenuState,
-  NodeEngineDomNodeEntry,
-  NodeEngineGridState,
-  NodeEngineInteractionState,
-  NodeEngineMinimapState,
-  NodeEngineNodeEditorState,
-  NodeEnginePerformanceSample,
-  NodeEngineRenderContext,
-  NodeEngineStyleDeclaration,
-  NodeEngineViewSnapshot,
+  NodeWrightAccessibleNode,
+  NodeWrightColorScheme,
+  NodeWrightContextMenuState,
+  NodeWrightDomNodeEntry,
+  NodeWrightGridState,
+  NodeWrightInteractionState,
+  NodeWrightMinimapState,
+  NodeWrightNodeEditorState,
+  NodeWrightPerformanceSample,
+  NodeWrightRenderContext,
+  NodeWrightStyleDeclaration,
+  NodeWrightViewSnapshot,
   SelectionState,
   ViewportState,
 } from '../types/index.js'
@@ -23,24 +23,24 @@ export function createViewSnapshot(options: {
   graph: ReadonlySignal<GraphSnapshot>
   selection: ReadonlySignal<SelectionState>
   readonly: ReadonlySignal<boolean>
-  colorScheme: ReadonlySignal<NodeEngineColorScheme>
-  gridState: ReadonlySignal<NodeEngineGridState>
-  interaction: ReadonlySignal<NodeEngineInteractionState>
-  nodeEditor: ReadonlySignal<NodeEngineNodeEditorState | null>
-  contextMenu: ReadonlySignal<NodeEngineContextMenuState | null>
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
-  rootStyle: ReadonlySignal<NodeEngineStyleDeclaration>
+  colorScheme: ReadonlySignal<NodeWrightColorScheme>
+  gridState: ReadonlySignal<NodeWrightGridState>
+  interaction: ReadonlySignal<NodeWrightInteractionState>
+  nodeEditor: ReadonlySignal<NodeWrightNodeEditorState | null>
+  contextMenu: ReadonlySignal<NodeWrightContextMenuState | null>
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
+  rootStyle: ReadonlySignal<NodeWrightStyleDeclaration>
   cursor: ReadonlySignal<string>
   liveViewport: ReadonlySignal<ViewportState>
   state: InteractionState
-  domNodes: ReadonlySignal<NodeEngineDomNodeEntry[]>
-  accessibleNodes: ReadonlySignal<NodeEngineAccessibleNode[]>
-  marqueeStyle: ReadonlySignal<NodeEngineStyleDeclaration | null>
+  domNodes: ReadonlySignal<NodeWrightDomNodeEntry[]>
+  accessibleNodes: ReadonlySignal<NodeWrightAccessibleNode[]>
+  marqueeStyle: ReadonlySignal<NodeWrightStyleDeclaration | null>
   overlayVisible: ReadonlySignal<boolean>
   overlayDismissible: ReadonlySignal<boolean>
-  performanceSample: ReadonlySignal<NodeEnginePerformanceSample | null>
-  minimap: ReadonlySignal<NodeEngineMinimapState | null>
-}): ReadonlySignal<NodeEngineViewSnapshot> {
+  performanceSample: ReadonlySignal<NodeWrightPerformanceSample | null>
+  minimap: ReadonlySignal<NodeWrightMinimapState | null>
+}): ReadonlySignal<NodeWrightViewSnapshot> {
   /** The DOM layer is promoted to its own compositor layer while the viewport moves. */
   const composited = computed(() => {
     const source = options.state.viewportSource.value
@@ -76,7 +76,7 @@ export function createViewSnapshot(options: {
     sample: options.performanceSample.value,
   }))
 
-  return computed<NodeEngineViewSnapshot>(() => ({
+  return computed<NodeWrightViewSnapshot>(() => ({
     graph: options.graph.value,
     selection: options.selection.value,
     readonly: options.readonly.value,

@@ -1,5 +1,5 @@
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   createGraphValidationResult,
   cloneGraph,
   resolvePortKind,
@@ -7,7 +7,7 @@ import {
   type GraphDiagnostic,
   type GraphNode,
   type GraphSnapshot,
-  type NodeEngineCompileResult,
+  type NodeWrightCompileResult,
 } from '../protocol/index.js'
 import {
   hasNodeCapability,
@@ -15,9 +15,9 @@ import {
   validateSubgraphSignature,
   type SemanticNodeDefinition,
 } from '../semantics/index.js'
-import type { NodeEngineCompileOptions, NodeEngineRuntimeNodeDefinition } from './types.js'
+import type { NodeWrightCompileOptions, NodeWrightRuntimeNodeDefinition } from './types.js'
 
-export function compileGraph(options: NodeEngineCompileOptions): NodeEngineCompileResult {
+export function compileGraph(options: NodeWrightCompileOptions): NodeWrightCompileResult {
   const graph = cloneGraph(options.graph)
   const definitions = options.definitions ?? []
   const runtimeDefinitions = new Map(
@@ -93,7 +93,7 @@ export function compileGraph(options: NodeEngineCompileOptions): NodeEngineCompi
     diagnostics,
     plan: {
       id: `plan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       graph,
       entryNodeId: entry.id,
       nodeOrder: resolveExecutionOrder(graph, entry),
@@ -116,7 +116,7 @@ function resolveEntryNode(
 
 function shouldRequireRuntimeHandler(
   node: GraphNode,
-  definition: NodeEngineRuntimeNodeDefinition | undefined,
+  definition: NodeWrightRuntimeNodeDefinition | undefined,
 ): boolean {
   if (definition?.handler) {
     return false

@@ -1,10 +1,10 @@
-import type { NodeEnginePerformanceSample } from '../types/index.js'
+import type { NodeWrightPerformanceSample } from '../types/index.js'
 
-export type PerformanceSampleInput = Omit<NodeEnginePerformanceSample, 'timestamp' | 'fps'>
+export type PerformanceSampleInput = Omit<NodeWrightPerformanceSample, 'timestamp' | 'fps'>
 
 export function createPerformanceSample(
   input: PerformanceSampleInput,
-): NodeEnginePerformanceSample {
+): NodeWrightPerformanceSample {
   const fps = input.avgFrameMs > 0 ? 1000 / input.avgFrameMs : 0
 
   return {

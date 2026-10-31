@@ -4,39 +4,36 @@
 
 ## 选择入口
 
-| 目标                     | 使用                                                              | 说明                                                                  |
-| ------------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
-| 定义、保存、严格解析图   | `@node-engine-sdk/core/protocol`                                  | `GraphSnapshot`、`parseGraph`、诊断与参数 schema                      |
-| 无界面编辑图数据         | `@node-engine-sdk/core/store`（或根入口 `@node-engine-sdk/core`） | `GraphStore`、命令、事务、历史、插件与连接校验                        |
-| 快速搭建 Vue 编辑器      | `@node-engine-sdk/vue` + `@node-engine-sdk/presets`               | 默认节点、DOM 渲染、语义插件、布局策略、初始视口                      |
-| 快速搭建 React 编辑器    | `@node-engine-sdk/react` + `@node-engine-sdk/presets`             | 与 Vue 版同名同语义的 props、事件与 ref API                           |
-| 端口语义与连线规则       | `@node-engine-sdk/core/semantics`                                 | 端口 kind、数据类型、容量、环路、必填输入                             |
-| 执行节点图               | `@node-engine-sdk/core/runtime`                                   | headless 执行，不依赖 DOM 与 UI 框架                                  |
-| 自动布局                 | `@node-engine-sdk/core/layout`                                    | 输入 `GraphSnapshot`，输出位置 patch                                  |
-| 调试运行结果             | `@node-engine-sdk/core/debug`                                     | 查询 trace、callFrames、nodeStates                                    |
-| 为其他 UI 框架编写适配层 | `@node-engine-sdk/core/view`                                      | `createEditorController`，见 [controller-api.md](./controller-api.md) |
+| 目标                     | 使用                                                      | 说明                                                                  |
+| ------------------------ | --------------------------------------------------------- | --------------------------------------------------------------------- |
+| 定义、保存、严格解析图   | `@node-wright/core/protocol`                              | `GraphSnapshot`、`parseGraph`、诊断与参数 schema                      |
+| 无界面编辑图数据         | `@node-wright/core/store`（或根入口 `@node-wright/core`） | `GraphStore`、命令、事务、历史、插件与连接校验                        |
+| 快速搭建 Vue 编辑器      | `@node-wright/vue` + `@node-wright/presets`               | 默认节点、DOM 渲染、语义插件、布局策略、初始视口                      |
+| 快速搭建 React 编辑器    | `@node-wright/react` + `@node-wright/presets`             | 与 Vue 版同名同语义的 props、事件与 ref API                           |
+| 端口语义与连线规则       | `@node-wright/core/semantics`                             | 端口 kind、数据类型、容量、环路、必填输入                             |
+| 执行节点图               | `@node-wright/core/runtime`                               | headless 执行，不依赖 DOM 与 UI 框架                                  |
+| 自动布局                 | `@node-wright/core/layout`                                | 输入 `GraphSnapshot`，输出位置 patch                                  |
+| 调试运行结果             | `@node-wright/core/debug`                                 | 查询 trace、callFrames、nodeStates                                    |
+| 为其他 UI 框架编写适配层 | `@node-wright/core/view`                                  | `createEditorController`，见 [controller-api.md](./controller-api.md) |
 
 ## 1. 准备图与 preset
 
 `GraphSnapshot` 是唯一持久化格式；preset 提供节点定义、DOM 渲染配置、语义插件、Runtime definitions、布局策略与初始视口。下面两个框架示例使用同一份图：
 
 ```ts
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import {
   DATA_PREVIEW_NODE_TYPE,
   DATA_SOURCE_NODE_TYPE,
   DATA_TRANSFORM_NODE_TYPE,
   createDataflowPreset,
-} from '@node-engine-sdk/presets'
+} from '@node-wright/presets'
 
 export const preset = createDataflowPreset()
 
 export function createDemoGraph(): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'source', type: DATA_SOURCE_NODE_TYPE, x: 80, y: 120, data: { params: { value: 21 } } },
       {
@@ -75,15 +72,15 @@ export function createDemoGraph(): GraphSnapshot {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineApi } from '@node-engine-sdk/core/view'
-import { DATA_PREVIEW_NODE_TYPE } from '@node-engine-sdk/presets'
-import { NodeEngine } from '@node-engine-sdk/vue'
-import '@node-engine-sdk/vue/style.css'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightApi } from '@node-wright/core/view'
+import { DATA_PREVIEW_NODE_TYPE } from '@node-wright/presets'
+import { NodeWright } from '@node-wright/vue'
+import '@node-wright/vue/style.css'
 import { createDemoGraph, preset } from './demo-graph'
 
 const graph = ref<GraphSnapshot>(createDemoGraph())
-const editor = ref<NodeEngineApi | null>(null)
+const editor = ref<NodeWrightApi | null>(null)
 
 function addPreview(): void {
   // nodes.create 会套用节点定义的尺寸、端口与默认数据，并记录一条可撤销历史。
@@ -93,7 +90,7 @@ function addPreview(): void {
 
 <template>
   <div style="height: 100vh">
-    <NodeEngine
+    <NodeWright
       ref="editor"
       v-model:graph="graph"
       :node-definitions="preset.nodeDefinitions"
@@ -116,31 +113,31 @@ function addPreview(): void {
           </button>
         </div>
       </template>
-    </NodeEngine>
+    </NodeWright>
   </div>
 </template>
 ```
 
 - `v-model:graph` 双向绑定图：编辑器内的每次图变化以 `update:graph` 发出；父组件把收到的同一个对象传回时不会触发替换，撤销历史得以保留。
-- 组件 ref 暴露 [`NodeEngineApi`](./controller-api.md#nodeengineapi-全表)。
+- 组件 ref 暴露 [`NodeWrightApi`](./controller-api.md#nodewrightapi-全表)。
 - 默认已经包含画布交互、默认 DOM 节点、分组、连线校验、复制粘贴、撤销重做与快捷键。完整 props 见 [vue-adapter.md](./vue-adapter.md)。
 
 ## 2b. React 编辑器
 
 ```tsx
 import { useRef, useState } from 'react'
-import { DATA_PREVIEW_NODE_TYPE } from '@node-engine-sdk/presets'
-import { NodeEngine, type NodeEngineHandle } from '@node-engine-sdk/react'
-import '@node-engine-sdk/react/style.css'
+import { DATA_PREVIEW_NODE_TYPE } from '@node-wright/presets'
+import { NodeWright, type NodeWrightHandle } from '@node-wright/react'
+import '@node-wright/react/style.css'
 import { createDemoGraph, preset } from './demo-graph'
 
 export function App() {
   const [graph, setGraph] = useState(createDemoGraph)
-  const editor = useRef<NodeEngineHandle>(null)
+  const editor = useRef<NodeWrightHandle>(null)
 
   return (
     <div style={{ height: '100vh' }}>
-      <NodeEngine
+      <NodeWright
         ref={editor}
         graph={graph}
         onGraphChange={setGraph}
@@ -186,15 +183,15 @@ export function App() {
 
 ## 3. 接入 Runtime
 
-Runtime 可选，编辑器本身不会创建它。需要执行时把当前图交给 `NodeEngineRuntime`：
+Runtime 可选，编辑器本身不会创建它。需要执行时把当前图交给 `NodeWrightRuntime`：
 
 ```ts
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { NodeEngineRuntime, type NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { NodeWrightRuntime, type NodeWrightRunResult } from '@node-wright/core/runtime'
 import { preset } from './demo-graph'
 
-export async function runGraph(graph: GraphSnapshot): Promise<NodeEngineRunResult> {
-  const runtime = new NodeEngineRuntime({
+export async function runGraph(graph: GraphSnapshot): Promise<NodeWrightRunResult> {
+  const runtime = new NodeWrightRuntime({
     graph,
     definitions: preset.nodeDefinitions,
     runtimeDefinitions: preset.runtimeDefinitions,
@@ -215,7 +212,7 @@ export async function runGraph(graph: GraphSnapshot): Promise<NodeEngineRunResul
 ## 4. 自动布局
 
 ```ts
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
 import { preset } from './demo-graph'
 
 export function layout(graph: GraphSnapshot): GraphSnapshot {
@@ -223,20 +220,20 @@ export function layout(graph: GraphSnapshot): GraphSnapshot {
 }
 ```
 
-把返回的新图交给 `v-model:graph` / `setGraph` 即可；如需进入撤销历史，改用 `api.graph.apply(layout(api.graph.get()))`。完全自定义的策略可直接使用 [`@node-engine-sdk/core/layout`](./layout-api.md)。
+把返回的新图交给 `v-model:graph` / `setGraph` 即可；如需进入撤销历史，改用 `api.graph.apply(layout(api.graph.get()))`。完全自定义的策略可直接使用 [`@node-wright/core/layout`](./layout-api.md)。
 
 ## 5. 保存与加载
 
 ```ts
-import { parseGraph, type GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineApi } from '@node-engine-sdk/core/view'
+import { parseGraph, type GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightApi } from '@node-wright/core/view'
 import { preset } from './demo-graph'
 
-export function save(api: NodeEngineApi): string {
+export function save(api: NodeWrightApi): string {
   return JSON.stringify(api.graph.export())
 }
 
-export function load(api: NodeEngineApi, json: string): GraphSnapshot {
+export function load(api: NodeWrightApi, json: string): GraphSnapshot {
   // graph.import 内部同样经过 parseGraph 严格解析，并替换图、清空历史。
   return api.graph.import(JSON.parse(json))
 }
@@ -251,7 +248,7 @@ export function loadWithoutEditor(json: string): GraphSnapshot {
 ## 下一步
 
 1. [architecture.md](./architecture.md)：理解分层与依赖方向。
-2. [controller-api.md](./controller-api.md)：编辑器选项、事件与 `NodeEngineApi` 全表。
+2. [controller-api.md](./controller-api.md)：编辑器选项、事件与 `NodeWrightApi` 全表。
 3. [node-definition-guide.md](./node-definition-guide.md)：开发自己的节点。
 4. [editor-integration.md](./editor-integration.md)：工具栏、菜单、快捷键与参数控制器。
 5. [runtime-api.md](./runtime-api.md)：变量、函数、子图、调度与调试。

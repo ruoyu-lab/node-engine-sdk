@@ -8,13 +8,13 @@ describe('playground site', () => {
   })
 
   it('places the Vue app at the Pages root and the React app under react/', () => {
-    expect(resolvePlaygroundSite('vue', '/node-engine-sdk/')).toEqual({
-      base: '/node-engine-sdk/',
-      companion: { label: 'React 版', href: '/node-engine-sdk/react/' },
+    expect(resolvePlaygroundSite('vue', '/node-wright/')).toEqual({
+      base: '/node-wright/',
+      companion: { label: 'React 版', href: '/node-wright/react/' },
     })
-    expect(resolvePlaygroundSite('react', '/node-engine-sdk/')).toEqual({
-      base: '/node-engine-sdk/react/',
-      companion: { label: 'Vue 版', href: '/node-engine-sdk/' },
+    expect(resolvePlaygroundSite('react', '/node-wright/')).toEqual({
+      base: '/node-wright/react/',
+      companion: { label: 'Vue 版', href: '/node-wright/' },
     })
   })
 
@@ -26,7 +26,7 @@ describe('playground site', () => {
   })
 
   it('rejects a base that is not an absolute directory path', () => {
-    for (const base of ['', 'node-engine-sdk/', '/node-engine-sdk', '//', 'https://example.com/']) {
+    for (const base of ['', 'node-wright/', '/node-wright', '//', 'https://example.com/']) {
       expect(() => resolvePlaygroundSite('vue', base)).toThrow(/PAGES_BASE/u)
     }
   })

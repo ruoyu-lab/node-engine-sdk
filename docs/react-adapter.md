@@ -1,49 +1,49 @@
-# React 适配层（`@node-engine-sdk/react`）
+# React 适配层（`@node-wright/react`）
 
-`@node-engine-sdk/react` 是官方 React 适配层，把底层 SDK `@node-engine-sdk/core/view` 的编辑器控制器渲染为 React 组件。props、事件、ref API 与默认 DOM 节点行为都与 Vue 版一致（两者运行同一份适配层契约测试），本文说明 React 侧的用法与专属约定。
+`@node-wright/react` 是官方 React 适配层，把底层核心 `@node-wright/core/view` 的编辑器控制器渲染为 React 组件。props、事件、ref API 与默认 DOM 节点行为都与 Vue 版一致（两者运行同一份适配层契约测试），本文说明 React 侧的用法与专属约定。
 
 ## 安装与导入
 
-- 依赖：`@node-engine-sdk/core`（随本包安装）。
+- 依赖：`@node-wright/core`（随本包安装）。
 - peer dependencies：`react`、`react-dom` `^18.3.0 || ^19.0.0`；`@types/react` 为可选 peer。
-- 样式：`@node-engine-sdk/react/style.css`（已打包 `@node-engine-sdk/core/view/style.css`），需要显式导入一次。
+- 样式：`@node-wright/react/style.css`（已打包 `@node-wright/core/view/style.css`），需要显式导入一次。
 
 ```ts
 import {
   DefaultDomNode,
-  NodeEngine,
-  useNodeEngineApi,
-  type NodeEngineHandle,
-} from '@node-engine-sdk/react'
-import '@node-engine-sdk/react/style.css'
+  NodeWright,
+  useNodeWrightApi,
+  type NodeWrightHandle,
+} from '@node-wright/react'
+import '@node-wright/react/style.css'
 ```
 
 | 导出                                                               | 说明                                                                   |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| `NodeEngine`                                                       | 编辑器组件（`forwardRef`，ref 类型为 `NodeEngineHandle`）              |
-| `DefaultDomNode`                                                   | 默认 DOM 节点组件（`memo`，props 为 `NodeEngineDomNodeProps`）         |
-| `useNodeEngineApi()`                                               | 在 render props 内容与 DOM 节点组件中取得所在编辑器的 `NodeEngineApi`  |
-| `NodeEngineProps`                                                  | 组件 props 类型                                                        |
-| `NodeEngineHandle`                                                 | ref 的值，即 `NodeEngineApi`                                           |
-| `NodeEngineEventHandlers`                                          | 全部事件回调 props 的类型                                              |
-| `NodeEngineEventHandlerName<Name>`                                 | 事件名到回调 prop 名的类型映射（`'graph-change'` → `'onGraphChange'`） |
-| `NodeEngineDomComponent`                                           | DOM 节点组件类型：`ComponentType<NodeEngineDomNodeProps>`              |
-| `NodeEngineBackgroundRenderProps` / `NodeEngineOverlayRenderProps` | render props 的参数类型                                                |
+| `NodeWright`                                                       | 编辑器组件（`forwardRef`，ref 类型为 `NodeWrightHandle`）              |
+| `DefaultDomNode`                                                   | 默认 DOM 节点组件（`memo`，props 为 `NodeWrightDomNodeProps`）         |
+| `useNodeWrightApi()`                                               | 在 render props 内容与 DOM 节点组件中取得所在编辑器的 `NodeWrightApi`  |
+| `NodeWrightProps`                                                  | 组件 props 类型                                                        |
+| `NodeWrightHandle`                                                 | ref 的值，即 `NodeWrightApi`                                           |
+| `NodeWrightEventHandlers`                                          | 全部事件回调 props 的类型                                              |
+| `NodeWrightEventHandlerName<Name>`                                 | 事件名到回调 prop 名的类型映射（`'graph-change'` → `'onGraphChange'`） |
+| `NodeWrightDomComponent`                                           | DOM 节点组件类型：`ComponentType<NodeWrightDomNodeProps>`              |
+| `NodeWrightBackgroundRenderProps` / `NodeWrightOverlayRenderProps` | render props 的参数类型                                                |
 
 最小可运行示例见 [README](../README.zh-CN.md#react) 与 [getting-started.md](./getting-started.md#2b-react-编辑器)。
 
 ## Props
 
-`NodeEngineProps` = `NodeEngineEditorOptions`（不含 `onEvent`）+ 事件回调 + 以下 React 专属 props。编辑器选项的类型、默认值与语义见 [controller-api.md](./controller-api.md#编辑器选项)。
+`NodeWrightProps` = `NodeWrightEditorOptions`（不含 `onEvent`）+ 事件回调 + 以下 React 专属 props。编辑器选项的类型、默认值与语义见 [controller-api.md](./controller-api.md#编辑器选项)。
 
 | Prop               | 类型                                                    | 说明                                              |
 | ------------------ | ------------------------------------------------------- | ------------------------------------------------- |
 | `ariaLabel`        | `string`                                                | 根元素可访问名称，默认 `'Node graph editor'`      |
-| `className`        | `string`                                                | 追加到根元素 `ne-root` 之后                       |
+| `className`        | `string`                                                | 追加到根元素 `nw-root` 之后                       |
 | `style`            | `CSSProperties`                                         | 与主题根样式合并（后者为 CSS 自定义属性）         |
-| `domComponents`    | `Readonly<Record<string, NodeEngineDomComponent>>`      | DOM 节点组件注册表，键为 DOM 渲染器的 `component` |
-| `renderBackground` | `(props: NodeEngineBackgroundRenderProps) => ReactNode` | 渲染在画布之上、DOM 节点层之下                    |
-| `renderOverlay`    | `(props: NodeEngineOverlayRenderProps) => ReactNode`    | 渲染在所有编辑器图层之上                          |
+| `domComponents`    | `Readonly<Record<string, NodeWrightDomComponent>>`      | DOM 节点组件注册表，键为 DOM 渲染器的 `component` |
+| `renderBackground` | `(props: NodeWrightBackgroundRenderProps) => ReactNode` | 渲染在画布之上、DOM 节点层之下                    |
+| `renderOverlay`    | `(props: NodeWrightOverlayRenderProps) => ReactNode`    | 渲染在所有编辑器图层之上                          |
 
 ### 引用比较
 
@@ -57,17 +57,17 @@ import '@node-engine-sdk/react/style.css'
 ```tsx
 const [graph, setGraph] = useState(initialGraph)
 
-<NodeEngine graph={graph} onGraphChange={setGraph} />
+<NodeWright graph={graph} onGraphChange={setGraph} />
 ```
 
 `graph` + `onGraphChange` 对应 Vue 的 `v-model:graph`。`onGraphChange` 回传的图对象原样传回 `graph` 时被识别为回声，不会替换图，撤销历史得以保留；传入其他图对象时替换图并清空历史。只传 `graph` 不接 `onGraphChange` 时，编辑器内部仍然可以编辑，`graph` 只在引用变化时覆盖内部状态。
 
 ## 事件
 
-每个 [`NodeEngineEventMap`](./controller-api.md#事件) 事件对应一个 `on` + 驼峰名的回调 prop，参数与 Vue 事件相同：`graph-change` → `onGraphChange`、`selection-change` → `onSelectionChange`、`node-drag-end` → `onNodeDragEnd`、`connect` → `onConnect`、`command-error` → `onCommandError`。
+每个 [`NodeWrightEventMap`](./controller-api.md#事件) 事件对应一个 `on` + 驼峰名的回调 prop，参数与 Vue 事件相同：`graph-change` → `onGraphChange`、`selection-change` → `onSelectionChange`、`node-drag-end` → `onNodeDragEnd`、`connect` → `onConnect`、`command-error` → `onCommandError`。
 
 ```tsx
-<NodeEngine
+<NodeWright
   graph={graph}
   onGraphChange={setGraph}
   onSelectionChange={(selection, _graph, source) => console.log(source, selection.nodes)}
@@ -75,22 +75,22 @@ const [graph, setGraph] = useState(initialGraph)
 />
 ```
 
-## ref 与 `useNodeEngineApi`
+## ref 与 `useNodeWrightApi`
 
 ```tsx
-const editor = useRef<NodeEngineHandle>(null)
+const editor = useRef<NodeWrightHandle>(null)
 
 useLayoutEffect(() => {
   editor.current?.view.fit.graph(72)
 }, [])
 
-return <NodeEngine ref={editor} graph={graph} onGraphChange={setGraph} />
+return <NodeWright ref={editor} graph={graph} onGraphChange={setGraph} />
 ```
 
-- ref 中的 `NodeEngineApi` 从挂载的同一次提交起可用：父组件第一个 `useLayoutEffect` / `useEffect` 中即可调用。
+- ref 中的 `NodeWrightApi` 从挂载的同一次提交起可用：父组件第一个 `useLayoutEffect` / `useEffect` 中即可调用。
 - StrictMode 的模拟重挂载会换成新的控制器，ref 随之指向新控制器的 API。
 - `onMount(api)` 在每个控制器挂载到渲染出的元素后调用，是首次适配视口的位置：StrictMode 重挂载与 `key` 变化创建的新控制器都会再调用一次，因此不会遗漏，例如 `onMount={(api) => api.view.fit.graph(72)}`。
-- `useNodeEngineApi()` 只能在 `renderBackground` / `renderOverlay` 渲染的内容和 DOM 节点组件中调用，其他位置会抛错。
+- `useNodeWrightApi()` 只能在 `renderBackground` / `renderOverlay` 渲染的内容和 DOM 节点组件中调用，其他位置会抛错。
 
 ## Render props
 
@@ -103,14 +103,14 @@ return <NodeEngine ref={editor} graph={graph} onGraphChange={setGraph} />
 
 ```tsx
 import { useState } from 'react'
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineToolbarItem } from '@node-engine-sdk/core/view'
-import { NodeEngine, type NodeEngineOverlayRenderProps } from '@node-engine-sdk/react'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightToolbarItem } from '@node-wright/core/view'
+import { NodeWright, type NodeWrightOverlayRenderProps } from '@node-wright/react'
 
 declare const initialGraph: GraphSnapshot
-declare const toolbarItems: NodeEngineToolbarItem[]
+declare const toolbarItems: NodeWrightToolbarItem[]
 
-function Toolbar({ api }: NodeEngineOverlayRenderProps) {
+function Toolbar({ api }: NodeWrightOverlayRenderProps) {
   return (
     <div className="toolbar">
       {api.menu.resolve.toolbar().map((item) => (
@@ -131,7 +131,7 @@ export function Editor() {
   const [graph, setGraph] = useState(initialGraph)
 
   return (
-    <NodeEngine
+    <NodeWright
       graph={graph}
       onGraphChange={setGraph}
       toolbarItems={toolbarItems}
@@ -150,24 +150,24 @@ render props 在控制器创建之后才会调用；服务端渲染与首次提�
 ```tsx
 const LIGHT = { colorScheme: 'light' } as const
 
-const [nodeStatus, setNodeStatus] = useState<Record<string, NodeEngineNodeStatus>>({})
+const [nodeStatus, setNodeStatus] = useState<Record<string, NodeWrightNodeStatus>>({})
 
-return <NodeEngine graph={graph} onGraphChange={setGraph} theme={LIGHT} nodeStatus={nodeStatus} />
+return <NodeWright graph={graph} onGraphChange={setGraph} theme={LIGHT} nodeStatus={nodeStatus} />
 ```
 
 节点类型的 `accent` 决定默认节点标题栏的色标，见 [controller-api.md](./controller-api.md#nodetypedefinition)。
 
 ## 小地图
 
-`minimap` prop 打开小地图：`true` 使用默认尺寸 200 × 136，也可以传入 `NodeEngineMinimapOptions`（`width`、`height`、`padding`）：
+`minimap` prop 打开小地图：`true` 使用默认尺寸 200 × 136，也可以传入 `NodeWrightMinimapOptions`（`width`、`height`、`padding`）：
 
 ```tsx
-<NodeEngine graph={graph} onGraphChange={setGraph} minimap />
+<NodeWright graph={graph} onGraphChange={setGraph} minimap />
 
-<NodeEngine graph={graph} onGraphChange={setGraph} minimap={{ width: 240, height: 160 }} />
+<NodeWright graph={graph} onGraphChange={setGraph} minimap={{ width: 240, height: 160 }} />
 ```
 
-小地图渲染在根元素内、性能浮层之后、`renderOverlay` 的内容之前（`.ne-minimap`，内含 `.ne-minimap__canvas` 与可见区域框 `.ne-minimap__viewport`，拖动时加 `.ne-minimap--dragging`），外观来自 `style.css`，可以在应用样式中覆盖这些类名。点击小地图把视口中心移到该处，拖动平移视口，获得焦点后方向键平移视口（Shift 加速）；平移结束时调用一次 `onViewportChange`（`source` 为 `'minimap'` 或 `'minimap.keyboard'`）。完整行为见 [controller-api.md](./controller-api.md#小地图)。
+小地图渲染在根元素内、性能浮层之后、`renderOverlay` 的内容之前（`.nw-minimap`，内含 `.nw-minimap__canvas` 与可见区域框 `.nw-minimap__viewport`，拖动时加 `.nw-minimap--dragging`），外观来自 `style.css`，可以在应用样式中覆盖这些类名。点击小地图把视口中心移到该处，拖动平移视口，获得焦点后方向键平移视口（Shift 加速）；平移结束时调用一次 `onViewportChange`（`source` 为 `'minimap'` 或 `'minimap.keyboard'`）。完整行为见 [controller-api.md](./controller-api.md#小地图)。
 
 - `minimap` 与其他选项一样按引用比较：内联对象每次渲染都会触发一次 `update()`，但控制器按值比较尺寸，内容相同时不会重算或重绘。
 - 小地图元素在 layout effect 中挂载到控制器，StrictMode 的模拟重挂载会先解绑再重新挂载；关闭 `minimap` 或卸载组件时解绑。
@@ -186,7 +186,7 @@ return <NodeEngine graph={graph} onGraphChange={setGraph} theme={LIGHT} nodeStat
 - 服务端只输出根元素（含 `className`、`aria-label`）与两个画布，不访问 DOM，也不调用 render props；`gridVisible={false}` 时网格画布带 `display:none`。
 - 客户端首次渲染与服务端输出一致，hydrate 不会出现不一致；节点层在挂载后的提交中渲染。
 - 适配层在服务端使用 `useEffect` 代替 `useLayoutEffect`，React 18 不会报告 layout effect 警告。
-- 包内没有 `'use client'` 指令。在 React Server Components 框架中，请在客户端组件里渲染 `NodeEngine`。
+- 包内没有 `'use client'` 指令。在 React Server Components 框架中，请在客户端组件里渲染 `NodeWright`。
 
 ## 原生事件注意事项
 
@@ -200,16 +200,16 @@ React 的合成事件委托在根容器上派发，`nativeEvent.currentTarget` �
 ```tsx
 import { memo, useEffect, useRef } from 'react'
 import type {
-  NodeEngineDomNodeApi,
-  NodeEngineDomNodeProps,
-  NodeEngineResolvedDomNodePort,
-} from '@node-engine-sdk/core/view'
-import type { NodeEngineDomComponent } from '@node-engine-sdk/react'
+  NodeWrightDomNodeApi,
+  NodeWrightDomNodeProps,
+  NodeWrightResolvedDomNodePort,
+} from '@node-wright/core/view'
+import type { NodeWrightDomComponent } from '@node-wright/react'
 
 function TaskPort(props: {
-  port: NodeEngineResolvedDomNodePort
+  port: NodeWrightResolvedDomNodePort
   side: 'input' | 'output'
-  domApi: NodeEngineDomNodeApi
+  domApi: NodeWrightDomNodeApi
 }) {
   const { port, side, domApi } = props
   const ref = useRef<HTMLSpanElement>(null)
@@ -257,7 +257,7 @@ function TaskPort(props: {
   )
 }
 
-function TaskNodeView({ domApi, domModel, selected }: NodeEngineDomNodeProps) {
+function TaskNodeView({ domApi, domModel, selected }: NodeWrightDomNodeProps) {
   const ref = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -289,7 +289,7 @@ function TaskNodeView({ domApi, domModel, selected }: NodeEngineDomNodeProps) {
 }
 
 /** 只比较本组件读取的 props，平移和缩放不会重渲染它。 */
-export const TaskNode: NodeEngineDomComponent = memo(
+export const TaskNode: NodeWrightDomComponent = memo(
   TaskNodeView,
   (previous, next) =>
     previous.domModel === next.domModel &&
@@ -302,11 +302,11 @@ export const TaskNode: NodeEngineDomComponent = memo(
 
 ## `domComponents` 契约
 
-- 键为节点类型 `dom.component` 的值，值为 `ComponentType<NodeEngineDomNodeProps>`；缺失的键在渲染该节点时抛出 `NodeEngine has no DOM node component registered as "<key>".`。默认节点的键（`NODE_ENGINE_DEFAULT_DOM_COMPONENT`）由适配层内置，无需注册。
+- 键为节点类型 `dom.component` 的值，值为 `ComponentType<NodeWrightDomNodeProps>`；缺失的键在渲染该节点时抛出 `NodeWright has no DOM node component registered as "<key>".`。默认节点的键（`NODE_WRIGHT_DEFAULT_DOM_COMPONENT`）由适配层内置，无需注册。
 - 组件收到的 props 见 [DOM 节点组件契约](./controller-api.md#dom-节点组件契约)，另加渲染器 `props(context)` 返回的附加字段。
 - `context`、`screenBounds`、`zoom`、`theme`、`inputs` / `outputs` 每个视口帧都会更新；`domModel` 与 `domApi` 在节点本身变化前保持引用不变。默认节点只比较 `domModel`、`domApi`、`selected`、`dragging`、`connectionSource`；自定义组件需要时用 `memo` 自行比较。
 - 连线锚点按 `domModel` 计算：输入端口在节点左边缘、输出端口在右边缘，纵向位置为 `port.top`。
-- 组件内可以调用 `useNodeEngineApi()` 取得编辑器 API。
+- 组件内可以调用 `useNodeWrightApi()` 取得编辑器 API。
 - 注册的组件请在模块级定义：在渲染过程中内联创建的组件每次渲染都是新的组件类型，会导致对应节点反复卸载重挂。`domComponents` 不是编辑器选项，变化时不会重建 Store。
 
 ## 与 Vue 适配层的对应关系

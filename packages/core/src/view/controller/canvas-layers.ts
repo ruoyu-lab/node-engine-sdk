@@ -14,25 +14,25 @@ import type { GraphCanvasGroupEntry } from '../rendering/group-canvas.js'
 import { drawCanvasNodes, type CanvasNodeEntry } from '../rendering/node-canvas.js'
 import { endpointKey, type PortLayout } from '../rendering/node-layout.js'
 import type {
-  NodeEngineCanvasEdgeTheme,
-  NodeEngineCanvasGroupTheme,
-  NodeEngineCanvasNodeTheme,
-  NodeEngineGridState,
-  NodeEngineRenderContext,
+  NodeWrightCanvasEdgeTheme,
+  NodeWrightCanvasGroupTheme,
+  NodeWrightCanvasNodeTheme,
+  NodeWrightGridState,
+  NodeWrightRenderContext,
   ViewportState,
 } from '../types/index.js'
 import type { EndpointStyles } from './endpoint-styles.js'
 import type { InteractionState } from './interaction-state.js'
 import type { LivePreview } from './live-preview.js'
-import type { ResolvedNodeEngineGridColors } from './theme.js'
+import type { ResolvedNodeWrightGridColors } from './theme.js'
 import type { RenderSurface } from './visibility.js'
 
 /** Everything one paint of the grid canvas depends on. */
 export interface GridFrame {
   surface: RenderSurface
   viewport: ViewportState
-  grid: NodeEngineGridState
-  colors: ResolvedNodeEngineGridColors
+  grid: NodeWrightGridState
+  colors: ResolvedNodeWrightGridColors
 }
 
 /** Everything one paint of the graph canvas depends on. */
@@ -46,10 +46,10 @@ export interface CanvasFrame {
   hoveredEdgeId: string | null
   nodes: CanvasNodeEntry[]
   readonly: boolean
-  nodeTheme: NodeEngineCanvasNodeTheme
+  nodeTheme: NodeWrightCanvasNodeTheme
   connectionSource?: GraphEndpoint
   connectionTarget?: GraphEndpoint
-  context: NodeEngineRenderContext
+  context: NodeWrightRenderContext
 }
 
 export interface CanvasLayers {
@@ -62,8 +62,8 @@ export interface CanvasLayers {
 export function createCanvasLayers(options: {
   surface: ReadonlySignal<RenderSurface>
   liveViewport: ReadonlySignal<ViewportState>
-  gridState: ReadonlySignal<NodeEngineGridState>
-  gridColors: ReadonlySignal<ResolvedNodeEngineGridColors>
+  gridState: ReadonlySignal<NodeWrightGridState>
+  gridColors: ReadonlySignal<ResolvedNodeWrightGridColors>
   visibleEdges: ReadonlySignal<VisibleEdgeEntry[]>
   visibleGroups: ReadonlySignal<VisibleGroupEntry[]>
   paintedNodes: ReadonlySignal<CanvasNodeEntry[]>
@@ -72,10 +72,10 @@ export function createCanvasLayers(options: {
   readonly: () => boolean
   connectionPreview: () => boolean
   graphTheme: ReadonlySignal<GraphCanvasTheme>
-  edgeTheme: ReadonlySignal<NodeEngineCanvasEdgeTheme>
-  groupTheme: ReadonlySignal<NodeEngineCanvasGroupTheme>
-  nodeTheme: ReadonlySignal<NodeEngineCanvasNodeTheme>
-  renderContext: ReadonlySignal<NodeEngineRenderContext>
+  edgeTheme: ReadonlySignal<NodeWrightCanvasEdgeTheme>
+  groupTheme: ReadonlySignal<NodeWrightCanvasGroupTheme>
+  nodeTheme: ReadonlySignal<NodeWrightCanvasNodeTheme>
+  renderContext: ReadonlySignal<NodeWrightRenderContext>
   endpointStyles: EndpointStyles
   live: LivePreview
   getCanvasContext: () => CanvasRenderingContext2D

@@ -1,10 +1,10 @@
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   type GraphNode,
   type GraphSnapshot,
   type GraphValue,
-} from '@node-engine-sdk/core/protocol'
-import { resolveDomNodeDefinition, resolveDomNodeFields } from '@node-engine-sdk/core/view'
+} from '@node-wright/core/protocol'
+import { resolveDomNodeDefinition, resolveDomNodeFields } from '@node-wright/core/view'
 import { describe, expect, it } from 'vitest'
 import * as presets from '../src/index'
 import {
@@ -141,7 +141,7 @@ describe('standard preset DOM fields', () => {
 
 function createGraph(sourceType: string, targetType: string): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [
       { id: 'source', type: sourceType, x: 0, y: 0, width: 200, height: 100 },
       { id: 'target', type: targetType, x: 0, y: 0, width: 200, height: 100 },

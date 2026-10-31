@@ -1,10 +1,10 @@
 import type {
-  NodeEngineDomNodeDefinition,
-  NodeEngineDomNodeLayoutDefinition,
-  NodeEngineDomNodeRenderContext,
-  NodeEngineDomNodeSizeConstraints,
-  NodeEngineResolvedDomNodeLayout,
-  NodeEngineResolvedDomNodeModel,
+  NodeWrightDomNodeDefinition,
+  NodeWrightDomNodeLayoutDefinition,
+  NodeWrightDomNodeRenderContext,
+  NodeWrightDomNodeSizeConstraints,
+  NodeWrightResolvedDomNodeLayout,
+  NodeWrightResolvedDomNodeModel,
 } from '../types/index.js'
 import {
   resolveDomNodeDefinition,
@@ -29,9 +29,9 @@ import { bindDomFieldInputPorts, buildResolvedDomPorts } from './ports.js'
  * port rows, parameter fields with their bound input ports, and row positions.
  */
 export function resolveDomNodeModel(
-  context: NodeEngineDomNodeRenderContext,
-  options?: Partial<NodeEngineDomNodeLayoutDefinition>,
-): NodeEngineResolvedDomNodeModel {
+  context: NodeWrightDomNodeRenderContext,
+  options?: Partial<NodeWrightDomNodeLayoutDefinition>,
+): NodeWrightResolvedDomNodeModel {
   const domDefinition = resolveDomNodeDefinition(context)
   const layout = resolveDomNodeLayoutDefinition(domDefinition.layout, options)
   const content = resolveDomNodeContent(context, domDefinition, layout)
@@ -68,16 +68,16 @@ export function resolveDomNodeModel(
 }
 
 export function resolveDomNodeLayout(
-  context: NodeEngineDomNodeRenderContext,
-  options?: Partial<NodeEngineDomNodeLayoutDefinition>,
-): NodeEngineResolvedDomNodeLayout {
+  context: NodeWrightDomNodeRenderContext,
+  options?: Partial<NodeWrightDomNodeLayoutDefinition>,
+): NodeWrightResolvedDomNodeLayout {
   return resolveDomNodeLayoutDefinition(resolveDomNodeDefinition(context).layout, options)
 }
 
 export function resolveDomNodeSizeConstraints(
-  context: NodeEngineDomNodeRenderContext,
-  options?: Partial<NodeEngineDomNodeLayoutDefinition>,
-): NodeEngineDomNodeSizeConstraints {
+  context: NodeWrightDomNodeRenderContext,
+  options?: Partial<NodeWrightDomNodeLayoutDefinition>,
+): NodeWrightDomNodeSizeConstraints {
   const domDefinition = resolveDomNodeDefinition(context)
   const layout = resolveDomNodeLayoutDefinition(domDefinition.layout, options)
 
@@ -89,9 +89,9 @@ export function resolveDomNodeSizeConstraints(
 
 /** Input ports that are bound to a field row are rendered by that row, not the port column. */
 function resolveDomNodeContent(
-  context: NodeEngineDomNodeRenderContext,
-  domDefinition: NodeEngineDomNodeDefinition,
-  layout: NodeEngineResolvedDomNodeLayout,
+  context: NodeWrightDomNodeRenderContext,
+  domDefinition: NodeWrightDomNodeDefinition,
+  layout: NodeWrightResolvedDomNodeLayout,
 ): DomNodeContent {
   const inputs = buildResolvedDomPorts(context.inputs, context.theme, layout)
   const outputs = buildResolvedDomPorts(context.outputs, context.theme, layout)

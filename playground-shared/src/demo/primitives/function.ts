@@ -1,5 +1,5 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import type { NodeEngineRuntimeFunctionDefinition } from '@node-engine-sdk/core/runtime'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import type { NodeWrightRuntimeFunctionDefinition } from '@node-wright/core/runtime'
 import {
   PRESET_NODE_ACCENTS,
   DATA_PREVIEW_NODE_TYPE,
@@ -7,13 +7,13 @@ import {
   FUNCTION_CALL_NODE_TYPE,
   createFunctionCallPorts,
   createHybridFlowPreset,
-} from '@node-engine-sdk/presets'
+} from '@node-wright/presets'
 import type { DemoScenario } from '../scenarios'
 import { dataEdge, groupOf, primitiveNode, snapshotOf } from './graph'
 
 const preset = createHybridFlowPreset()
 
-const formatGreetingFunction: NodeEngineRuntimeFunctionDefinition = {
+const formatGreetingFunction: NodeWrightRuntimeFunctionDefinition = {
   id: 'format-greeting',
   label: '格式化问候',
   mode: 'pure',
@@ -22,7 +22,7 @@ const formatGreetingFunction: NodeEngineRuntimeFunctionDefinition = {
   handler: ({ values }) => ({ values: { message: `你好，${String(values.name)}！` } }),
 }
 
-const appendLengthFunction: NodeEngineRuntimeFunctionDefinition = {
+const appendLengthFunction: NodeWrightRuntimeFunctionDefinition = {
   id: 'append-length',
   label: '附加字数',
   mode: 'pure',
@@ -61,7 +61,7 @@ function createFunctionGraph(): GraphSnapshot {
       position: { x: 60, y: 160 },
       width: 240,
       height: 150,
-      params: { value: 'Node Engine SDK' },
+      params: { value: 'Node Wright' },
     }),
     primitiveNode('fn-greet', FUNCTION_CALL_NODE_TYPE, {
       title: '格式化问候',

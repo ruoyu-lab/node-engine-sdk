@@ -8,27 +8,27 @@ import type {
 } from '../../protocol/index.js'
 import type {
   EdgeTypeRegistry,
-  NodeEngineAfterImportHook,
-  NodeEngineBeforeImportHook,
-  NodeEngineBehaviors,
-  NodeEngineCanvasRenderers,
-  NodeEngineContextMenuItem,
-  NodeEngineDeserializeHook,
-  NodeEngineEdgeRendererContribution,
-  NodeEngineEditorOptions,
-  NodeEngineEventListener,
-  NodeEngineGroupRendererContribution,
-  NodeEngineHotkey,
-  NodeEngineMinimapOptions,
-  NodeEngineNodeEditorRegistry,
-  NodeEngineNodeStatus,
-  NodeEnginePerformanceOptions,
-  NodeEnginePlugin,
-  NodeEngineResolvePortValueHook,
-  NodeEngineSerializeHook,
-  NodeEngineTheme,
-  NodeEngineToolbarItem,
-  NodeEngineWheelBehavior,
+  NodeWrightAfterImportHook,
+  NodeWrightBeforeImportHook,
+  NodeWrightBehaviors,
+  NodeWrightCanvasRenderers,
+  NodeWrightContextMenuItem,
+  NodeWrightDeserializeHook,
+  NodeWrightEdgeRendererContribution,
+  NodeWrightEditorOptions,
+  NodeWrightEventListener,
+  NodeWrightGroupRendererContribution,
+  NodeWrightHotkey,
+  NodeWrightMinimapOptions,
+  NodeWrightNodeEditorRegistry,
+  NodeWrightNodeStatus,
+  NodeWrightPerformanceOptions,
+  NodeWrightPlugin,
+  NodeWrightResolvePortValueHook,
+  NodeWrightSerializeHook,
+  NodeWrightTheme,
+  NodeWrightToolbarItem,
+  NodeWrightWheelBehavior,
   NodeTypeRegistry,
   SelectionState,
   ViewportState,
@@ -44,23 +44,23 @@ export interface ResolvedEditorOptions {
   initialViewport?: Partial<ViewportState>
   initialSelection?: Partial<SelectionState>
   nodeTypes: NodeTypeRegistry
-  nodeEditors: NodeEngineNodeEditorRegistry
+  nodeEditors: NodeWrightNodeEditorRegistry
   edgeTypes: EdgeTypeRegistry
-  renderers: Partial<NodeEngineCanvasRenderers>
+  renderers: Partial<NodeWrightCanvasRenderers>
   nodeDefinitions: readonly NodeDefinition[]
   edgeDefinitions: readonly EdgeDefinition[]
   commands: readonly GraphCommandRegistryEntry[]
-  plugins: readonly NodeEnginePlugin[]
-  groupRenderers: readonly NodeEngineGroupRendererContribution[]
-  edgeRenderers: readonly NodeEngineEdgeRendererContribution[]
-  toolbarItems: readonly NodeEngineToolbarItem[]
-  contextMenuItems: readonly NodeEngineContextMenuItem[]
-  hotkeys: readonly NodeEngineHotkey[]
+  plugins: readonly NodeWrightPlugin[]
+  groupRenderers: readonly NodeWrightGroupRendererContribution[]
+  edgeRenderers: readonly NodeWrightEdgeRendererContribution[]
+  toolbarItems: readonly NodeWrightToolbarItem[]
+  contextMenuItems: readonly NodeWrightContextMenuItem[]
+  hotkeys: readonly NodeWrightHotkey[]
   connectionValidator?: ConnectionValidator
-  theme: Partial<NodeEngineTheme>
-  nodeStatus: Readonly<Record<string, NodeEngineNodeStatus>>
-  behaviors: Partial<NodeEngineBehaviors>
-  performance: Partial<NodeEnginePerformanceOptions>
+  theme: Partial<NodeWrightTheme>
+  nodeStatus: Readonly<Record<string, NodeWrightNodeStatus>>
+  behaviors: Partial<NodeWrightBehaviors>
+  performance: Partial<NodeWrightPerformanceOptions>
   canvasBackground: string
   readonly: boolean
   gridVisible: boolean
@@ -70,19 +70,19 @@ export interface ResolvedEditorOptions {
   minZoom: number
   maxZoom: number
   connectionPreview: boolean
-  wheelBehavior: NodeEngineWheelBehavior
+  wheelBehavior: NodeWrightWheelBehavior
   wheelInertia: boolean
   /** `null` while the minimap is off. */
   minimap: ResolvedMinimapOptions | null
-  resolvePortValue?: NodeEngineResolvePortValueHook
-  serializeGraph?: NodeEngineSerializeHook
-  deserializeGraph?: NodeEngineDeserializeHook
-  beforeImport?: NodeEngineBeforeImportHook
-  afterImport?: NodeEngineAfterImportHook
-  onEvent?: NodeEngineEventListener
+  resolvePortValue?: NodeWrightResolvePortValueHook
+  serializeGraph?: NodeWrightSerializeHook
+  deserializeGraph?: NodeWrightDeserializeHook
+  beforeImport?: NodeWrightBeforeImportHook
+  afterImport?: NodeWrightAfterImportHook
+  onEvent?: NodeWrightEventListener
 }
 
-export type ResolvedMinimapOptions = Readonly<Required<NodeEngineMinimapOptions>>
+export type ResolvedMinimapOptions = Readonly<Required<NodeWrightMinimapOptions>>
 
 const NONE: readonly never[] = Object.freeze([])
 const EMPTY_RECORD: Readonly<Record<string, never>> = Object.freeze({})
@@ -103,9 +103,9 @@ const STORE_OWNED_OPTIONS = [
   'edgeDefinitions',
   'commands',
   'connectionValidator',
-] as const satisfies ReadonlyArray<keyof NodeEngineEditorOptions>
+] as const satisfies ReadonlyArray<keyof NodeWrightEditorOptions>
 
-export function resolveEditorOptions(input: NodeEngineEditorOptions): ResolvedEditorOptions {
+export function resolveEditorOptions(input: NodeWrightEditorOptions): ResolvedEditorOptions {
   assertStoreLayering(input)
 
   return {
@@ -154,7 +154,7 @@ export function resolveEditorOptions(input: NodeEngineEditorOptions): ResolvedEd
 
 /** `true` uses the default size; a missing or invalid size falls back to its default. */
 function resolveMinimapOptions(
-  input: NodeEngineEditorOptions['minimap'],
+  input: NodeWrightEditorOptions['minimap'],
 ): ResolvedMinimapOptions | null {
   if (!input) {
     return null
@@ -184,7 +184,7 @@ function isPositive(value: number | undefined): value is number {
  * Plugins still contribute their editor `components`; a plugin that also contributes to the store
  * (`contributes` / `setup`) must already be registered in the provided store.
  */
-function assertStoreLayering(input: NodeEngineEditorOptions): void {
+function assertStoreLayering(input: NodeWrightEditorOptions): void {
   const store = input.store
 
   if (!store) {

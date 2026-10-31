@@ -1,7 +1,7 @@
 import type { XYPosition } from '../../protocol/index.js'
 import type {
-  NodeEngineCanvasGroupHitAreaKind,
-  NodeEngineCanvasGroupHitTestContext,
+  NodeWrightCanvasGroupHitAreaKind,
+  NodeWrightCanvasGroupHitTestContext,
 } from '../types/index.js'
 import type { VisibleGroupEntry } from './entries.js'
 import { isPointInRect, type GraphRect } from './geometry.js'
@@ -64,9 +64,9 @@ export function resolveGroupHitArea(
     collapsed: boolean
     dragHandle: 'body' | 'header'
     /** Creates the renderer hit-test context; only called for renderers with hit-test hooks. */
-    createHitContext: () => NodeEngineCanvasGroupHitTestContext
+    createHitContext: () => NodeWrightCanvasGroupHitTestContext
   },
-): { id: string; kind: NodeEngineCanvasGroupHitAreaKind } | null {
+): { id: string; kind: NodeWrightCanvasGroupHitAreaKind } | null {
   const renderer = entry.renderer
   const area = renderer?.hitAreaAt?.(options.createHitContext())
 

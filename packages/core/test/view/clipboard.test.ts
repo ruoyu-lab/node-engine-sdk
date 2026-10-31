@@ -1,5 +1,5 @@
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import { createEditorController } from '@node-engine-sdk/core/view'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import { createEditorController } from '@node-wright/core/view'
 import { describe, expect, it, vi } from 'vitest'
 import { canvasOnlyNodeTypes, createConnectableGraph, createGraph } from './editor-harness'
 
@@ -109,7 +109,7 @@ describe('editor clipboard', () => {
 
     const imported = api.graph.import(
       JSON.stringify({
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [{ id: 'only', type: 'task', x: 0, y: 0 }],
         edges: [],
         groups: [],

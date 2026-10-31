@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   cloneValue,
   parseGraph,
   repairGraph,
@@ -9,10 +9,10 @@ import {
   type GraphSnapshot,
 } from '../../src/protocol/index'
 
-describe('@node-engine-sdk/core/protocol graph protocol', () => {
+describe('@node-wright/core/protocol graph protocol', () => {
   it('parses a complete graph into a detached snapshot', () => {
     const input = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [{ id: 'a', type: 'demo', x: 0, y: 0 }],
       edges: [],
       groups: [],
@@ -22,7 +22,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
 
     input.nodes[0].x = 100
 
-    expect(graph.schemaVersion).toBe(NODE_ENGINE_GRAPH_SCHEMA_VERSION)
+    expect(graph.schemaVersion).toBe(NODE_WRIGHT_GRAPH_SCHEMA_VERSION)
     expect(graph.nodes[0].x).toBe(0)
     expect(graph.meta).toEqual({ nested: { enabled: true } })
   })
@@ -51,7 +51,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
   it('rejects removed fields and non-JSON metadata', () => {
     expect(() =>
       parseGraph({
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [{ id: 'a', type: 'demo', x: 0, y: 0, parentId: 'old-group' }],
         edges: [],
         groups: [],
@@ -61,7 +61,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
 
     expect(() =>
       parseGraph({
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [],
         edges: [],
         groups: [],
@@ -72,7 +72,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
 
   it('validates duplicate ids and broken references', () => {
     const result = validateGraph({
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         { id: 'a', type: 'demo', x: 0, y: 0 },
         { id: 'a', type: 'demo', x: 100, y: 0 },
@@ -114,7 +114,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
     const ports = resolveNodePorts({ id: 'demo', type: 'demo', x: 0, y: 0 }, definitions)
     const result = validateGraph(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [
           {
             id: 'source',
@@ -156,7 +156,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
 
   it('repairs invalid edge and group references explicitly', () => {
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [{ id: 'a', type: 'demo', x: 0, y: 0 }],
       edges: [
         {
@@ -181,14 +181,14 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
   it('requires the complete graph structure at external boundaries', () => {
     expect(() =>
       parseGraph({
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       }),
     ).toThrow(/nodes.*expected an array/)
   })
 
   it('validates definition port ids and parameter port conflicts', () => {
     const graph: GraphSnapshot = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [{ id: 'a', type: 'demo', x: 0, y: 0 }],
       edges: [],
       groups: [],
@@ -219,7 +219,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
   it('rejects arbitrary edge port ids for a known zero-port node', () => {
     const result = validateGraph(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [
           { id: 'a', type: 'empty', x: 0, y: 0 },
           {
@@ -253,7 +253,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
   it('validateGraph runs custom diagnosticProviders alongside built-in checks', () => {
     const result = validateGraph(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [{ id: 'a', type: 'demo', x: 0, y: 0 }],
         edges: [],
         groups: [],
@@ -279,7 +279,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
 
   it('repairGraph fully sanitizes a graph with multiple kinds of breakage', () => {
     const result = repairGraph({
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         { id: 'a', type: 'demo', x: 0, y: 0 },
         { id: 'b', type: 'demo', x: 0, y: 0 },
@@ -317,7 +317,7 @@ describe('@node-engine-sdk/core/protocol graph protocol', () => {
   })
 })
 
-describe('@node-engine-sdk/core/protocol cloneValue', () => {
+describe('@node-wright/core/protocol cloneValue', () => {
   it('deep-clones nested structures and detaches from the original', () => {
     const source = { a: { b: [1, 2, { c: 'x' }] } }
     const clone = cloneValue(source)

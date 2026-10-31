@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
 import { GraphStore } from '../../src/store/index'
-import { NODE_ENGINE_GRAPH_SCHEMA_VERSION } from '@node-engine-sdk/core/protocol'
-import type { GraphSnapshot, GraphStoreEvent } from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION } from '@node-wright/core/protocol'
+import type { GraphSnapshot, GraphStoreEvent } from '@node-wright/core/protocol'
 
 function createGraph(patch: Partial<Omit<GraphSnapshot, 'schemaVersion'>> = {}): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],
@@ -14,10 +14,10 @@ function createGraph(patch: Partial<Omit<GraphSnapshot, 'schemaVersion'>> = {}):
   }
 }
 
-describe('@node-engine-sdk/core/store GraphStore', () => {
+describe('@node-wright/core/store GraphStore', () => {
   it('isolates internal state from constructor inputs and returned snapshots', () => {
     const graph = {
-      schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+      schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
       nodes: [
         {
           id: 'a',
@@ -158,7 +158,7 @@ describe('@node-engine-sdk/core/store GraphStore', () => {
 
     expect(() =>
       store.replaceGraph({
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [{ id: 'a', type: 'demo', x: 0, y: 0 }],
         edges: [
           {
@@ -415,7 +415,7 @@ describe('@node-engine-sdk/core/store GraphStore', () => {
   it('resolves parameter input ports through the store API and commands', () => {
     const store = new GraphStore(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [
           { id: 'source', type: 'source', x: 0, y: 0 },
           { id: 'target', type: 'target', x: 180, y: 0 },

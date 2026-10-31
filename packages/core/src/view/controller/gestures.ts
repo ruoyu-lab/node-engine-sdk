@@ -4,7 +4,7 @@ import { getEdgeBounds } from '../rendering/edge-canvas.js'
 import type { VisibleEdgeEntry } from '../rendering/entries.js'
 import { rectIntersects } from '../rendering/geometry.js'
 import type { PortLayout } from '../rendering/node-layout.js'
-import type { NodeEngineEventSink, ViewportState } from '../types/index.js'
+import type { NodeWrightEventSink, ViewportState } from '../types/index.js'
 import type { EditorCoordinates } from './coordinates.js'
 import type { EditorSettings } from './editor-settings.js'
 import type { FrameScheduler } from './frame-scheduler.js'
@@ -59,7 +59,7 @@ export function createEditorGestures(options: {
   getScheduler: () => FrameScheduler | null
   drawNow: (timestamp: number) => void
   closeContextMenu: () => void
-  emit: NodeEngineEventSink
+  emit: NodeWrightEventSink
 }): EditorGestures {
   const viewportInteraction = createViewportInteraction({
     source: options.state.viewportSource,

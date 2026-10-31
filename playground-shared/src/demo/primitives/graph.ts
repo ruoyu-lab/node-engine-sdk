@@ -1,5 +1,5 @@
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   type GraphEdge,
   type GraphGroup,
   type GraphMetadata,
@@ -7,7 +7,7 @@ import {
   type GraphPort,
   type GraphSnapshot,
   type XYPosition,
-} from '@node-engine-sdk/core/protocol'
+} from '@node-wright/core/protocol'
 
 /** Builders shared by the primitive scenario graphs; every scenario node shows its title. */
 
@@ -63,7 +63,7 @@ export function snapshotOf(
   groups: GraphGroup[] = [],
 ): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes,
     edges,
     groups,

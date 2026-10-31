@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }, testInfo) => {
 
 test('drags a DOM node by its header and keeps it selected', async ({ page }) => {
   const failures = captureBrowserFailures(page)
-  const header = domNode(page, '提示词').locator('.ne-default-dom-node__header')
+  const header = domNode(page, '提示词').locator('.nw-default-dom-node__header')
   const before = await box(header)
 
   await page.mouse.move(before.x + 40, before.y + before.height / 2)
@@ -32,14 +32,14 @@ test('drags a DOM node by its header and keeps it selected', async ({ page }) =>
 
   expect(after.x - before.x).toBeGreaterThan(60)
   expect(after.y - before.y).toBeGreaterThan(40)
-  await expect(domNode(page, '提示词')).toHaveClass(/ne-default-dom-node--selected/u)
+  await expect(domNode(page, '提示词')).toHaveClass(/nw-default-dom-node--selected/u)
   await expect(panelValue(page, '选中项')).toHaveText('prompt')
   expect(failures).toEqual([])
 })
 
 test('undoes and redoes a node drag from the toolbar', async ({ page }) => {
   const failures = captureBrowserFailures(page)
-  const header = domNode(page, '提示词').locator('.ne-default-dom-node__header')
+  const header = domNode(page, '提示词').locator('.nw-default-dom-node__header')
   const undo = editorToolbar(page).getByRole('button', { name: '撤销' })
   const redo = editorToolbar(page).getByRole('button', { name: '重做' })
   const before = await box(header)
@@ -62,7 +62,7 @@ test('undoes and redoes a node drag from the toolbar', async ({ page }) => {
 
 test('pans the canvas from the background and zooms with the wheel', async ({ page }) => {
   const failures = captureBrowserFailures(page)
-  const surface = page.locator('.ne-canvas-surface')
+  const surface = page.locator('.nw-canvas-surface')
   const area = await box(surface)
   const before = await box(domNode(page, '提示词'))
   // Empty canvas below the fitted graph, clear of the floating panels and the minimap.
@@ -133,6 +133,6 @@ test('creates a connected node from a connection released on the canvas', async 
   await expect(menu).toHaveCount(0)
   await expect(graphStats(page)).toContainText('5 个节点')
   await expect(graphStats(page)).toContainText('4 条连线')
-  await expect(domNode(page, '数据预览')).toHaveClass(/ne-default-dom-node--selected/u)
+  await expect(domNode(page, '数据预览')).toHaveClass(/nw-default-dom-node--selected/u)
   expect(failures).toEqual([])
 })

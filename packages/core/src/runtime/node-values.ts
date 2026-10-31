@@ -1,7 +1,7 @@
 import { cloneValue, resolveNodeParameterInputPortId, resolvePortKind } from '../protocol/index.js'
 import type { GraphMetadata, GraphNode, GraphPort } from '../protocol/index.js'
 import type { SemanticNodeDefinition } from '../semantics/index.js'
-import type { NodeEngineRuntimePortValues } from './types.js'
+import type { NodeWrightRuntimePortValues } from './types.js'
 
 /*
  * Values a node provides without evaluating the graph: values stored in its data, parameters, and
@@ -22,11 +22,11 @@ const NOT_FOUND: ValueLookup = Object.freeze({ found: false, value: undefined })
 export function resolveNodeParameterValues(
   node: GraphNode,
   definition: SemanticNodeDefinition | undefined,
-  values: NodeEngineRuntimePortValues,
+  values: NodeWrightRuntimePortValues,
   isPortConnected: (portId: string) => boolean,
-): NodeEngineRuntimePortValues {
+): NodeWrightRuntimePortValues {
   const storedParams = readStoredParams(node)
-  const params: NodeEngineRuntimePortValues = storedParams ? cloneValue(storedParams) : {}
+  const params: NodeWrightRuntimePortValues = storedParams ? cloneValue(storedParams) : {}
 
   for (const parameter of definition?.parameters ?? []) {
     const localValue = readParameterValue(node, parameter.key, parameter.dataPath)
@@ -71,9 +71,9 @@ export function readStoredPortValue(node: GraphNode, port: GraphPort): unknown {
  */
 export function readSubgraphInputValues(
   ports: GraphPort[],
-  inputs: NodeEngineRuntimePortValues | undefined,
-): NodeEngineRuntimePortValues {
-  const values: NodeEngineRuntimePortValues = {}
+  inputs: NodeWrightRuntimePortValues | undefined,
+): NodeWrightRuntimePortValues {
+  const values: NodeWrightRuntimePortValues = {}
 
   for (const port of ports) {
     if (port.direction === 'output' && resolvePortKind(port) === 'data') {

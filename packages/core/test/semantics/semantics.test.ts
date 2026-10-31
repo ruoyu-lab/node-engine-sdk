@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { GraphStore } from '@node-engine-sdk/core/store'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type NodeDefinition,
-} from '@node-engine-sdk/core/protocol'
+import { GraphStore } from '@node-wright/core/store'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type NodeDefinition } from '@node-wright/core/protocol'
 import {
   createDataflowPlugin,
   createFunctionReference,
@@ -29,11 +26,11 @@ const definitions: NodeDefinition[] = [
   },
 ]
 
-describe('@node-engine-sdk/core/semantics diagnostics', () => {
+describe('@node-wright/core/semantics diagnostics', () => {
   it('reports semantic connection and required input diagnostics', () => {
     const store = new GraphStore(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [
           { id: 'source', type: 'source', x: 0, y: 0 },
           { id: 'target', type: 'target', x: 100, y: 0 },
@@ -90,7 +87,7 @@ describe('@node-engine-sdk/core/semantics diagnostics', () => {
     ]
     const store = new GraphStore(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [
           { id: 'source', type: 'source', x: 0, y: 0 },
           { id: 'target', type: 'parameter-target', x: 100, y: 0 },
@@ -136,7 +133,7 @@ describe('@node-engine-sdk/core/semantics diagnostics', () => {
     ]
     const store = new GraphStore(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: [{ id: 'node', type: 'hybrid', x: 0, y: 0 }],
         edges: [],
         groups: [],
@@ -188,7 +185,7 @@ describe('@node-engine-sdk/core/semantics diagnostics', () => {
     }
     const store = new GraphStore(
       {
-        schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+        schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
         nodes: ['a', 'b', 'c'].map((id, index) => ({
           id,
           type: 'cycle',

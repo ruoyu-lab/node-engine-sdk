@@ -1,19 +1,16 @@
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
 import {
   createEditorController,
-  type NodeEngineEditorController,
-  type NodeEngineEditorOptions,
-  type NodeEngineEventMap,
-  type NodeEngineEventName,
-} from '@node-engine-sdk/core/view'
+  type NodeWrightEditorController,
+  type NodeWrightEditorOptions,
+  type NodeWrightEventMap,
+  type NodeWrightEventName,
+} from '@node-wright/core/view'
 import { vi } from 'vitest'
 
 export type RecordedEvent = {
-  [Name in NodeEngineEventName]: { name: Name; args: NodeEngineEventMap[Name] }
-}[NodeEngineEventName]
+  [Name in NodeWrightEventName]: { name: Name; args: NodeWrightEventMap[Name] }
+}[NodeWrightEventName]
 
 /** Animation frames are queued and only run when a test flushes them. */
 export interface FrameQueue {
@@ -52,14 +49,14 @@ export function installFrameQueue(): FrameQueue {
 }
 
 export interface EditorHarness {
-  controller: NodeEngineEditorController
+  controller: NodeWrightEditorController
   events: RecordedEvent[]
   root: HTMLElement
   canvas: HTMLCanvasElement
   gridCanvas: HTMLCanvasElement
   frames: FrameQueue
   eventNames: () => string[]
-  eventsNamed: <Name extends NodeEngineEventName>(name: Name) => NodeEngineEventMap[Name][]
+  eventsNamed: <Name extends NodeWrightEventName>(name: Name) => NodeWrightEventMap[Name][]
   pointer: (
     target: EventTarget,
     type: string,
@@ -77,7 +74,7 @@ export interface EditorHarness {
 }
 
 export function mountEditor(
-  options: NodeEngineEditorOptions = {},
+  options: NodeWrightEditorOptions = {},
   size: { width: number; height: number } = { width: 800, height: 600 },
 ): EditorHarness {
   const frames = installFrameQueue()
@@ -128,10 +125,10 @@ export function mountEditor(
     gridCanvas,
     frames,
     eventNames: () => events.map((event) => event.name),
-    eventsNamed: <Name extends NodeEngineEventName>(name: Name) =>
+    eventsNamed: <Name extends NodeWrightEventName>(name: Name) =>
       events
         .filter((event) => event.name === name)
-        .map((event) => event.args as NodeEngineEventMap[Name]),
+        .map((event) => event.args as NodeWrightEventMap[Name]),
     pointer,
     drag(from, to, init = {}) {
       pointer(canvas, 'pointerdown', from, init)
@@ -156,7 +153,7 @@ export function mountEditor(
 
 export function createGraph(partial: Partial<GraphSnapshot> = {}): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],

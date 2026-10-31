@@ -58,8 +58,8 @@ export async function center(locator: Locator) {
 }
 
 export function domNode(page: Page, title: string): Locator {
-  return page.locator('.ne-default-dom-node', {
-    has: page.locator('.ne-default-dom-node__title', { hasText: title }),
+  return page.locator('.nw-default-dom-node', {
+    has: page.locator('.nw-default-dom-node__title', { hasText: title }),
   })
 }
 
@@ -89,9 +89,9 @@ export function panelValue(page: Page, section: string): Locator {
 }
 
 export function outputPort(node: Locator): Locator {
-  return node.locator('.ne-default-dom-node__port--right .ne-default-dom-node__port-dot')
+  return node.locator('.nw-default-dom-node__port--right .nw-default-dom-node__port-dot')
 }
 
 export function inputPort(node: Locator): Locator {
-  return node.locator('.ne-default-dom-node__port--left .ne-default-dom-node__port-dot')
+  return node.locator('.nw-default-dom-node__port--left .nw-default-dom-node__port-dot')
 }

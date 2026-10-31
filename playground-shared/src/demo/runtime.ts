@@ -1,29 +1,29 @@
-import type { GraphSnapshot, NodeDefinition } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot, NodeDefinition } from '@node-wright/core/protocol'
 import {
-  NodeEngineRuntime,
-  type NodeEngineRunResult,
-  type NodeEngineRuntimeEvent,
-} from '@node-engine-sdk/core/runtime'
-import type { NodeEngineNodeStatus } from '@node-engine-sdk/core/view'
+  NodeWrightRuntime,
+  type NodeWrightRunResult,
+  type NodeWrightRuntimeEvent,
+} from '@node-wright/core/runtime'
+import type { NodeWrightNodeStatus } from '@node-wright/core/view'
 import type { DemoScenario } from './scenarios'
 
 export interface DemoRuntimeLogEntry {
   id: string
-  type: NodeEngineRuntimeEvent['type']
+  type: NodeWrightRuntimeEvent['type']
   nodeId?: string
   status: string
   detail: string
 }
 
 export interface DemoRuntimeRun {
-  result: NodeEngineRunResult
+  result: NodeWrightRunResult
   events: DemoRuntimeLogEntry[]
 }
 
 /** Node statuses while a run is in flight, keyed by node id. */
-export type DemoNodeStatusMap = Readonly<Record<string, NodeEngineNodeStatus>>
+export type DemoNodeStatusMap = Readonly<Record<string, NodeWrightNodeStatus>>
 
-const NODE_EVENT_STATUS: Partial<Record<NodeEngineRuntimeEvent['type'], NodeEngineNodeStatus>> = {
+const NODE_EVENT_STATUS: Partial<Record<NodeWrightRuntimeEvent['type'], NodeWrightNodeStatus>> = {
   'node:start': 'running',
   'node:success': 'success',
   'node:error': 'error',
@@ -47,7 +47,7 @@ export async function runDemoScenario(
   const events: DemoRuntimeLogEntry[] = []
   const nodeIds = new Set(graph.nodes.map((node) => node.id))
   let nodeStatus: DemoNodeStatusMap = {}
-  const runtime = new NodeEngineRuntime({
+  const runtime = new NodeWrightRuntime({
     graph,
     definitions,
     runtimeDefinitions: scenario.runtimeDefinitions ?? [],
@@ -92,7 +92,7 @@ export function describeRunError(error: unknown): string {
 }
 
 /** `sequence` is the event's position in the run, so entry ids are unique within one run. */
-function toLogEntry(event: NodeEngineRuntimeEvent, sequence: number): DemoRuntimeLogEntry {
+function toLogEntry(event: NodeWrightRuntimeEvent, sequence: number): DemoRuntimeLogEntry {
   return {
     id: `event:${sequence}`,
     type: event.type,
@@ -102,7 +102,7 @@ function toLogEntry(event: NodeEngineRuntimeEvent, sequence: number): DemoRuntim
   }
 }
 
-function describeEventTarget(event: NodeEngineRuntimeEvent): string {
+function describeEventTarget(event: NodeWrightRuntimeEvent): string {
   if (event.node) {
     return `${event.node.type} / ${event.node.id}`
   }

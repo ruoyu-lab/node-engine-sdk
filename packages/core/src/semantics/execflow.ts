@@ -17,7 +17,7 @@ export const EXEC_ERROR_PORT_ID = 'exec:error'
 
 export function createExecflowPlugin(options: ExecflowPluginOptions = {}): GraphPlugin {
   return createConnectionRulesPlugin(createExecflowConnectionRules(options), {
-    name: 'node-engine:execflow',
+    name: 'node-wright:execflow',
     validateRequiredInputs: true,
   })
 }

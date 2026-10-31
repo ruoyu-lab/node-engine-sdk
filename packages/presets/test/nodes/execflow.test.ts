@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { NodeEngineRuntime, compileGraph } from '@node-engine-sdk/core/runtime'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import { NodeWrightRuntime, compileGraph } from '@node-wright/core/runtime'
 import {
   EXEC_BRANCH_NODE_TYPE,
   EXEC_DELAY_NODE_TYPE,
@@ -25,7 +22,7 @@ import {
 
 function makeGraph(partial: Partial<GraphSnapshot>): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],
@@ -44,7 +41,7 @@ async function runExecflow(graph: GraphSnapshot, entryNodeId = 'event') {
 
   expect(compiled.valid, JSON.stringify(compiled.diagnostics)).toBe(true)
 
-  const runtime = new NodeEngineRuntime({
+  const runtime = new NodeWrightRuntime({
     definitions: execflowNodeDefinitions,
     runtimeDefinitions: execflowRuntimeDefinitions,
   })
@@ -52,7 +49,7 @@ async function runExecflow(graph: GraphSnapshot, entryNodeId = 'event') {
   return runtime.run(compiled.plan!)
 }
 
-describe('@node-engine-sdk/presets/nodes/execflow handlers', () => {
+describe('@node-wright/presets/nodes/execflow handlers', () => {
   it('event → log walks the exec chain and records the message in trace', async () => {
     const graph = makeGraph({
       nodes: [
@@ -160,7 +157,7 @@ describe('@node-engine-sdk/presets/nodes/execflow handlers', () => {
       })
 
       expect(compiled.valid).toBe(true)
-      const runtime = new NodeEngineRuntime({
+      const runtime = new NodeWrightRuntime({
         definitions: execflowNodeDefinitions,
         runtimeDefinitions: execflowRuntimeDefinitions,
         handlers: {
@@ -363,7 +360,7 @@ describe('@node-engine-sdk/presets/nodes/execflow handlers', () => {
 
     expect(compiled.valid, JSON.stringify(compiled.diagnostics)).toBe(true)
 
-    const runtime = new NodeEngineRuntime({
+    const runtime = new NodeWrightRuntime({
       definitions: sourcePreviewDefinitions,
       runtimeDefinitions: execflowRuntimeDefinitions,
       handlers: sourcePreviewHandlers,
@@ -447,7 +444,7 @@ describe('@node-engine-sdk/presets/nodes/execflow handlers', () => {
     expect(compiled.valid, JSON.stringify(compiled.diagnostics)).toBe(true)
 
     const start = Date.now()
-    const result = await new NodeEngineRuntime({ definitions, runtimeDefinitions }).run(
+    const result = await new NodeWrightRuntime({ definitions, runtimeDefinitions }).run(
       compiled.plan!,
     )
     const summary = (nodeId: string) =>

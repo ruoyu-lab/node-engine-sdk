@@ -1,7 +1,7 @@
 import type {
-  NodeEngineRuntimeNodeDefinition,
-  NodeEngineRuntimeNodeHandler,
-} from '@node-engine-sdk/core/runtime'
+  NodeWrightRuntimeNodeDefinition,
+  NodeWrightRuntimeNodeHandler,
+} from '@node-wright/core/runtime'
 import {
   DATA_MERGE_NODE_TYPE,
   DATA_PREVIEW_NODE_TYPE,
@@ -9,7 +9,7 @@ import {
   DATA_TRANSFORM_NODE_TYPE,
 } from './definitions.js'
 
-export const dataflowRuntimeHandlers: Record<string, NodeEngineRuntimeNodeHandler> = {
+export const dataflowRuntimeHandlers: Record<string, NodeWrightRuntimeNodeHandler> = {
   [DATA_SOURCE_NODE_TYPE]: ({ params }) => ({
     values: {
       value: params.value,
@@ -30,7 +30,7 @@ export const dataflowRuntimeHandlers: Record<string, NodeEngineRuntimeNodeHandle
   }),
 }
 
-export const dataflowRuntimeDefinitions: NodeEngineRuntimeNodeDefinition[] = Object.entries(
+export const dataflowRuntimeDefinitions: NodeWrightRuntimeNodeDefinition[] = Object.entries(
   dataflowRuntimeHandlers,
 ).map(([type, handler]) => ({
   type,

@@ -1,8 +1,8 @@
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
 import type {
-  NodeEngineRuntimeFunctionDefinition,
-  NodeEngineRuntimeSubgraphDefinition,
-} from '@node-engine-sdk/core/runtime'
+  NodeWrightRuntimeFunctionDefinition,
+  NodeWrightRuntimeSubgraphDefinition,
+} from '@node-wright/core/runtime'
 import {
   PRESET_NODE_ACCENTS,
   DATA_MERGE_NODE_TYPE,
@@ -18,13 +18,13 @@ import {
   createSubgraphCallPorts,
   createSubgraphInputPorts,
   createSubgraphOutputPorts,
-} from '@node-engine-sdk/presets'
+} from '@node-wright/presets'
 import type { DemoScenario } from '../scenarios'
 import { dataEdge, groupOf, primitiveNode, snapshotOf } from './graph'
 
 const preset = createHybridFlowPreset()
 
-const decorateTitleFunction: NodeEngineRuntimeFunctionDefinition = {
+const decorateTitleFunction: NodeWrightRuntimeFunctionDefinition = {
   id: 'decorate-title',
   label: '加书名号',
   mode: 'pure',
@@ -33,7 +33,7 @@ const decorateTitleFunction: NodeEngineRuntimeFunctionDefinition = {
   handler: ({ values }) => ({ values: { title: `《${String(values.text)}》` } }),
 }
 
-const titlePipelineSignature: NodeEngineRuntimeSubgraphDefinition = {
+const titlePipelineSignature: NodeWrightRuntimeSubgraphDefinition = {
   id: 'title-pipeline',
   label: '标题流水线',
   graph: snapshotOf({ subgraph: 'title-pipeline' }, [], []),
@@ -45,7 +45,7 @@ const titlePipelineSignature: NodeEngineRuntimeSubgraphDefinition = {
  * Registered subgraph: its input boundary passes the text through a string conversion and the
  * `decorate-title` function to its output boundary.
  */
-const titlePipelineSubgraph: NodeEngineRuntimeSubgraphDefinition = {
+const titlePipelineSubgraph: NodeWrightRuntimeSubgraphDefinition = {
   ...titlePipelineSignature,
   inputNodeId: 'sg-input',
   outputNodeId: 'sg-output',
@@ -114,7 +114,7 @@ function createSubgraphGraph(): GraphSnapshot {
       position: { x: 60, y: 100 },
       width: 240,
       height: 150,
-      params: { value: 'Node Engine SDK' },
+      params: { value: 'Node Wright' },
     }),
     primitiveNode('sub-second', DATA_SOURCE_NODE_TYPE, {
       title: '副标题',

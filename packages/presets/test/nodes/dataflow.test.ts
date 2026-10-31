@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
-  type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { NodeEngineRuntime, compileGraph } from '@node-engine-sdk/core/runtime'
+import { NODE_WRIGHT_GRAPH_SCHEMA_VERSION, type GraphSnapshot } from '@node-wright/core/protocol'
+import { NodeWrightRuntime, compileGraph } from '@node-wright/core/runtime'
 import {
   DATA_MERGE_NODE_TYPE,
   DATA_PREVIEW_NODE_TYPE,
@@ -15,7 +12,7 @@ import {
 
 function makeGraph(partial: Partial<GraphSnapshot>): GraphSnapshot {
   return {
-    schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+    schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
     nodes: [],
     edges: [],
     groups: [],
@@ -34,7 +31,7 @@ async function runDataflow(graph: GraphSnapshot, entryNodeId: string) {
 
   expect(compiled.valid).toBe(true)
 
-  const runtime = new NodeEngineRuntime({
+  const runtime = new NodeWrightRuntime({
     definitions: dataflowNodeDefinitions,
     runtimeDefinitions: dataflowRuntimeDefinitions,
   })
@@ -42,7 +39,7 @@ async function runDataflow(graph: GraphSnapshot, entryNodeId: string) {
   return runtime.run(compiled.plan!)
 }
 
-describe('@node-engine-sdk/presets/nodes/dataflow handlers', () => {
+describe('@node-wright/presets/nodes/dataflow handlers', () => {
   it('source emits its param value to downstream nodes', async () => {
     const graph = makeGraph({
       nodes: [

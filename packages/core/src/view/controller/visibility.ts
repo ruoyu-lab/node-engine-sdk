@@ -18,7 +18,7 @@ import {
 import type { CanvasNodeEntry } from '../rendering/node-canvas.js'
 import { endpointKey, type ResolvedNodeView } from '../rendering/node-layout.js'
 import type { GraphCanvasTheme } from '../rendering/graph-canvas.js'
-import type { NodeEngineCanvasEdgeTheme, SelectionState, ViewportState } from '../types/index.js'
+import type { NodeWrightCanvasEdgeTheme, SelectionState, ViewportState } from '../types/index.js'
 import type { EndpointStyles } from './endpoint-styles.js'
 import type { EditorExtensions } from './extensions.js'
 import { getGroupBoundsRect, isGroupCollapsed, resolveCollapsedGroupNodeIds } from './groups.js'
@@ -26,7 +26,7 @@ import type { DragPreview } from './interactions/drag.js'
 import type { LivePreview } from './live-preview.js'
 import type { NodeViews } from './node-views.js'
 import type { NodeStackOrder } from './stack-order.js'
-import type { ResolvedNodeEngineBehaviors } from './theme.js'
+import type { ResolvedNodeWrightBehaviors } from './theme.js'
 
 /** A coloured group fills its body with a faint tint of its colour. */
 const GROUP_TINT_ALPHA = 0.06
@@ -63,9 +63,9 @@ export function createEditorVisibility(options: {
   drag: DragPreview
   live: LivePreview
   stackOrder: NodeStackOrder
-  groupBehaviors: ReadonlySignal<ResolvedNodeEngineBehaviors['group']>
+  groupBehaviors: ReadonlySignal<ResolvedNodeWrightBehaviors['group']>
   graphTheme: ReadonlySignal<GraphCanvasTheme>
-  edgeTheme: ReadonlySignal<NodeEngineCanvasEdgeTheme>
+  edgeTheme: ReadonlySignal<NodeWrightCanvasEdgeTheme>
 }): EditorVisibility {
   const bounds = computed<GraphRect | null>(() => {
     const surface = options.surface.value

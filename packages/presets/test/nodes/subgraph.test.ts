@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
 import {
-  NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   parseGraph,
   type GraphMetadata,
   type GraphSnapshot,
-} from '@node-engine-sdk/core/protocol'
-import { NodeEngineRuntime, type NodeEngineRuntimeNodeContext } from '@node-engine-sdk/core/runtime'
-import type { SubgraphDefinition } from '@node-engine-sdk/core/semantics'
+} from '@node-wright/core/protocol'
+import { NodeWrightRuntime, type NodeWrightRuntimeNodeContext } from '@node-wright/core/runtime'
+import type { SubgraphDefinition } from '@node-wright/core/semantics'
 import {
   SUBGRAPH_CALL_NODE_TYPE,
   SUBGRAPH_INPUT_NODE_TYPE,
@@ -21,7 +21,7 @@ import {
 } from '../../src/nodes/subgraph/index'
 
 const emptyGraph: GraphSnapshot = {
-  schemaVersion: NODE_ENGINE_GRAPH_SCHEMA_VERSION,
+  schemaVersion: NODE_WRIGHT_GRAPH_SCHEMA_VERSION,
   nodes: [],
   edges: [],
   groups: [],
@@ -81,7 +81,7 @@ async function runCallNode(data: GraphMetadata) {
       },
     ],
   }
-  const runtime = new NodeEngineRuntime({
+  const runtime = new NodeWrightRuntime({
     graph,
     definitions: subgraphNodeDefinitions,
     runtimeDefinitions: subgraphRuntimeDefinitions,
@@ -91,7 +91,7 @@ async function runCallNode(data: GraphMetadata) {
   return runtime.run(runtime.compile('call').plan!)
 }
 
-describe('@node-engine-sdk/presets/nodes/subgraph', () => {
+describe('@node-wright/presets/nodes/subgraph', () => {
   it('calls the subgraph named by the subgraphId parameter with every input value', async () => {
     const callSubgraph = vi.fn().mockResolvedValue({
       values: { result: 'ok' },
@@ -102,7 +102,7 @@ describe('@node-engine-sdk/presets/nodes/subgraph', () => {
       params: { subgraphId: ' child ' },
       values: { subgraphId: 'other', input: 7 },
       callSubgraph,
-    } as unknown as NodeEngineRuntimeNodeContext
+    } as unknown as NodeWrightRuntimeNodeContext
 
     const result = await subgraphCallRuntimeHandler(context)
 

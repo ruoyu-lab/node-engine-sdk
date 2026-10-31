@@ -11,16 +11,16 @@ import type {
   XYPosition,
 } from '../../protocol/index.js'
 
-import type { NodeEngineContextTarget, NodeEngineRenderContext } from './common.js'
+import type { NodeWrightContextTarget, NodeWrightRenderContext } from './common.js'
 import type {
-  NodeEngineCanvasEdgeRenderer,
-  NodeEngineCanvasGroupRenderer,
-  NodeEngineCanvasRenderers,
-  NodeEngineCanvasNodeRenderer,
-  NodeEngineDomNodeRendererDefinition,
+  NodeWrightCanvasEdgeRenderer,
+  NodeWrightCanvasGroupRenderer,
+  NodeWrightCanvasRenderers,
+  NodeWrightCanvasNodeRenderer,
+  NodeWrightDomNodeRendererDefinition,
 } from './render.js'
-import type { NodeEngineNodeEditorDefinition, NodeEngineNodeEditorRegistry } from './editor.js'
-import type { NodeEngineApi } from './api.js'
+import type { NodeWrightNodeEditorDefinition, NodeWrightNodeEditorRegistry } from './editor.js'
+import type { NodeWrightApi } from './api.js'
 
 export interface NodeTypeDefinition {
   label?: string
@@ -32,48 +32,48 @@ export interface NodeTypeDefinition {
   accent?: string
   width?: number
   height?: number
-  canvas?: NodeEngineCanvasNodeRenderer
-  dom?: NodeEngineDomNodeRendererDefinition
-  editor?: NodeEngineNodeEditorDefinition
+  canvas?: NodeWrightCanvasNodeRenderer
+  dom?: NodeWrightDomNodeRendererDefinition
+  editor?: NodeWrightNodeEditorDefinition
   ports?: GraphPort[]
 }
 
 export interface EdgeTypeDefinition {
   stroke?: string
   strokeWidth?: number
-  canvas?: NodeEngineCanvasEdgeRenderer
+  canvas?: NodeWrightCanvasEdgeRenderer
 }
 
 export type NodeTypeRegistry = Record<string, NodeTypeDefinition>
 export type EdgeTypeRegistry = Record<string, EdgeTypeDefinition>
 
-export interface NodeEngineGroupRendererContribution {
+export interface NodeWrightGroupRendererContribution {
   id: string
   order?: number
   match?: (group: GraphGroup) => boolean
-  renderer: NodeEngineCanvasGroupRenderer
+  renderer: NodeWrightCanvasGroupRenderer
 }
 
-export interface NodeEngineEdgeRendererContribution {
+export interface NodeWrightEdgeRendererContribution {
   id: string
   type?: string
   order?: number
   match?: (edge: GraphEdge, schema: EdgeDefinition | undefined) => boolean
-  renderer: NodeEngineCanvasEdgeRenderer
+  renderer: NodeWrightCanvasEdgeRenderer
 }
 
-export interface NodeEngineToolbarItem {
+export interface NodeWrightToolbarItem {
   id: string
   label: string
   title?: string
   order?: number
   kind?: 'default' | 'accent'
-  visible?: (context: NodeEngineRenderContext) => boolean
-  disabled?: (context: NodeEngineRenderContext) => boolean
-  run: (context: NodeEngineRenderContext, event?: MouseEvent | KeyboardEvent) => void
+  visible?: (context: NodeWrightRenderContext) => boolean
+  disabled?: (context: NodeWrightRenderContext) => boolean
+  run: (context: NodeWrightRenderContext, event?: MouseEvent | KeyboardEvent) => void
 }
 
-export interface NodeEngineResolvedToolbarItem {
+export interface NodeWrightResolvedToolbarItem {
   id: string
   label: string
   title?: string
@@ -83,23 +83,23 @@ export interface NodeEngineResolvedToolbarItem {
   run: (event?: MouseEvent | KeyboardEvent) => void
 }
 
-export interface NodeEngineContextMenuContext extends NodeEngineRenderContext {
+export interface NodeWrightContextMenuContext extends NodeWrightRenderContext {
   position: XYPosition
   graphPosition: XYPosition
-  target: NodeEngineContextTarget
+  target: NodeWrightContextTarget
 }
 
-export interface NodeEngineContextMenuItem {
+export interface NodeWrightContextMenuItem {
   id: string
   label: string
   title?: string
   order?: number
-  visible?: (context: NodeEngineContextMenuContext) => boolean
-  disabled?: (context: NodeEngineContextMenuContext) => boolean
-  run: (context: NodeEngineContextMenuContext, event?: MouseEvent | KeyboardEvent) => void
+  visible?: (context: NodeWrightContextMenuContext) => boolean
+  disabled?: (context: NodeWrightContextMenuContext) => boolean
+  run: (context: NodeWrightContextMenuContext, event?: MouseEvent | KeyboardEvent) => void
 }
 
-export interface NodeEngineResolvedContextMenuItem {
+export interface NodeWrightResolvedContextMenuItem {
   id: string
   label: string
   title?: string
@@ -108,7 +108,7 @@ export interface NodeEngineResolvedContextMenuItem {
   run: (event?: MouseEvent | KeyboardEvent) => void
 }
 
-export interface NodeEngineHotkey {
+export interface NodeWrightHotkey {
   id: string
   key: string
   priority?: number
@@ -117,39 +117,39 @@ export interface NodeEngineHotkey {
   shift?: boolean
   alt?: boolean
   preventDefault?: boolean
-  visible?: (context: NodeEngineRenderContext) => boolean
-  run: (context: NodeEngineRenderContext, event: KeyboardEvent) => void
+  visible?: (context: NodeWrightRenderContext) => boolean
+  run: (context: NodeWrightRenderContext, event: KeyboardEvent) => void
 }
 
-export interface NodeEngineComponentsPluginContributions {
+export interface NodeWrightComponentsPluginContributions {
   nodeTypes?: NodeTypeRegistry
-  nodeEditors?: NodeEngineNodeEditorRegistry
+  nodeEditors?: NodeWrightNodeEditorRegistry
   edgeTypes?: EdgeTypeRegistry
-  renderers?: Partial<NodeEngineCanvasRenderers>
-  groupRenderers?: NodeEngineGroupRendererContribution[]
-  edgeRenderers?: NodeEngineEdgeRendererContribution[]
-  toolbarItems?: NodeEngineToolbarItem[]
-  contextMenuItems?: NodeEngineContextMenuItem[]
-  hotkeys?: NodeEngineHotkey[]
+  renderers?: Partial<NodeWrightCanvasRenderers>
+  groupRenderers?: NodeWrightGroupRendererContribution[]
+  edgeRenderers?: NodeWrightEdgeRendererContribution[]
+  toolbarItems?: NodeWrightToolbarItem[]
+  contextMenuItems?: NodeWrightContextMenuItem[]
+  hotkeys?: NodeWrightHotkey[]
 }
 
-export interface NodeEnginePlugin extends GraphPlugin {
-  components?: NodeEngineComponentsPluginContributions
+export interface NodeWrightPlugin extends GraphPlugin {
+  components?: NodeWrightComponentsPluginContributions
 }
 
-export interface NodeEngineResolvePortValueContext {
+export interface NodeWrightResolvePortValueContext {
   graph: GraphSnapshot
   endpoint: GraphEndpoint
   port?: GraphPort
   node?: GraphNode
   schema?: NodeDefinition
   definition?: NodeTypeDefinition
-  api: NodeEngineApi
+  api: NodeWrightApi
 }
 
-export type NodeEngineResolvePortValueHook = (context: NodeEngineResolvePortValueContext) => unknown
+export type NodeWrightResolvePortValueHook = (context: NodeWrightResolvePortValueContext) => unknown
 
-export type NodeEngineSerializeHook = (graph: GraphSnapshot) => GraphSnapshot
-export type NodeEngineDeserializeHook = (input: unknown) => unknown
-export type NodeEngineBeforeImportHook = (graph: GraphSnapshot) => GraphSnapshot | false | void
-export type NodeEngineAfterImportHook = (graph: GraphSnapshot) => void
+export type NodeWrightSerializeHook = (graph: GraphSnapshot) => GraphSnapshot
+export type NodeWrightDeserializeHook = (input: unknown) => unknown
+export type NodeWrightBeforeImportHook = (graph: GraphSnapshot) => GraphSnapshot | false | void
+export type NodeWrightAfterImportHook = (graph: GraphSnapshot) => void

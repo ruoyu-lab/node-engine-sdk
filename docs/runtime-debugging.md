@@ -1,17 +1,17 @@
 # Runtime 调试
 
-`@node-engine-sdk/core/runtime` 提供 headless 调试模型：运行轨迹、调用帧、节点状态、断点与单步控制都以数据形式暴露；`@node-engine-sdk/core/debug` 提供对运行结果的汇总与查询。调试 UI 由应用实现，不进入 core。
+`@node-wright/core/runtime` 提供 headless 调试模型：运行轨迹、调用帧、节点状态、断点与单步控制都以数据形式暴露；`@node-wright/core/debug` 提供对运行结果的汇总与查询。调试 UI 由应用实现，不进入 core。
 
 ## 采集配置
 
 ```ts
-import { NodeEngineRuntime } from '@node-engine-sdk/core/runtime'
+import { NodeWrightRuntime } from '@node-wright/core/runtime'
 import {
   dataflowNodeDefinitions,
   dataflowRuntimeDefinitions,
-} from '@node-engine-sdk/presets/nodes/dataflow'
+} from '@node-wright/presets/nodes/dataflow'
 
-export const runtime = new NodeEngineRuntime({
+export const runtime = new NodeWrightRuntime({
   definitions: dataflowNodeDefinitions,
   runtimeDefinitions: dataflowRuntimeDefinitions,
   debug: {
@@ -44,9 +44,9 @@ if (compiled.plan) {
 
 | 字段             | 说明                                                                                                                                                                                |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `trace`          | `NodeEngineRuntimeTraceEntry[]`：`kind`（`node` / `data` / `function` / `subgraph`）、`type`、`status`、起止时间与耗时、输入/输出值与摘要、`frameId`、`depth`、`callStack`、`error` |
-| `callFrames`     | `NodeEngineRuntimeCallFrame[]`：`kind`、`name`、`parentId`、`depth`、`nodeId` / `functionId` / `subgraphId`、`status`、耗时                                                         |
-| `nodeStates`     | `Record<nodeId, NodeEngineRuntimeNodeState>`：`status`、`inputValues`、`outputValues`、`values`、`error`、`frameId`、`callStack`                                                    |
+| `trace`          | `NodeWrightRuntimeTraceEntry[]`：`kind`（`node` / `data` / `function` / `subgraph`）、`type`、`status`、起止时间与耗时、输入/输出值与摘要、`frameId`、`depth`、`callStack`、`error` |
+| `callFrames`     | `NodeWrightRuntimeCallFrame[]`：`kind`、`name`、`parentId`、`depth`、`nodeId` / `functionId` / `subgraphId`、`status`、耗时                                                         |
+| `nodeStates`     | `Record<nodeId, NodeWrightRuntimeNodeState>`：`status`、`inputValues`、`outputValues`、`values`、`error`、`frameId`、`callStack`                                                    |
 | `variables`      | `run`、`graph`、`nodes`、`scopes` 四类变量                                                                                                                                          |
 | `listenerErrors` | 监听器错误；不改变运行结果                                                                                                                                                          |
 
@@ -55,18 +55,18 @@ if (compiled.plan) {
 ## 事件流
 
 ```ts
-import type { GraphSnapshot } from '@node-engine-sdk/core/protocol'
-import { NodeEngineRuntime, type NodeEngineRuntimeEvent } from '@node-engine-sdk/core/runtime'
+import type { GraphSnapshot } from '@node-wright/core/protocol'
+import { NodeWrightRuntime, type NodeWrightRuntimeEvent } from '@node-wright/core/runtime'
 import {
   dataflowNodeDefinitions,
   dataflowRuntimeDefinitions,
-} from '@node-engine-sdk/presets/nodes/dataflow'
+} from '@node-wright/presets/nodes/dataflow'
 
 declare const graph: GraphSnapshot
 
-export const events: NodeEngineRuntimeEvent[] = []
+export const events: NodeWrightRuntimeEvent[] = []
 
-export const recordingRuntime = new NodeEngineRuntime({
+export const recordingRuntime = new NodeWrightRuntime({
   graph,
   definitions: dataflowNodeDefinitions,
   runtimeDefinitions: dataflowRuntimeDefinitions,
@@ -109,7 +109,7 @@ runtime.clearBreakpoint('send-message')
 
 `runId` 可以从 `run:start` 事件的 `event.run.runId` 获取；`getRun(runId)` 返回进行中运行的公共快照。
 
-## `@node-engine-sdk/core/debug`
+## `@node-wright/core/debug`
 
 ```ts
 import {
@@ -120,10 +120,10 @@ import {
   getTraceEntriesByKind,
   getTraceForFrame,
   summarizeRunDebugState,
-} from '@node-engine-sdk/core/debug'
-import type { NodeEngineRunResult } from '@node-engine-sdk/core/runtime'
+} from '@node-wright/core/debug'
+import type { NodeWrightRunResult } from '@node-wright/core/runtime'
 
-export function describe(result: NodeEngineRunResult) {
+export function describe(result: NodeWrightRunResult) {
   return {
     summary: summarizeRunDebugState(result),
     current: getCurrentDebugNode(result),
